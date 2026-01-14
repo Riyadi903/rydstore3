@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE - Panel Pulsa</title>
+    <title>RYD STORE - Digital Payment</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -21,6 +21,7 @@
     </div>
 
 <script>
+    // --- CONFIG FIREBASE ---
     const firebaseConfig = {
         apiKey: "AIzaSyAgv7_Ysh6_Pz0q7VvF_Ew8A0p-6pM46eE",
         authDomain: "rydstore3.firebaseapp.com",
@@ -31,25 +32,29 @@
         appId: "1:338805214041:web:248106d91079366e60977e"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
+    
+    // --- NOMOR WA ADMIN BARU ---
     const WA_ADMIN = "6285881934739"; 
+    
     let currentUser = null;
-
     const app = document.getElementById('app');
 
     // --- VIEW: LOGIN ---
     function showLogin() {
         app.innerHTML = `
             <div class="p-8 pt-20 text-center">
-                <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-bold italic">RS</div>
+                <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-bold">R</div>
                 <h1 class="text-2xl font-bold text-gray-800">RYD STORE</h1>
-                <p class="text-gray-500 text-sm mb-10">Pusat Isi Ulang Pulsa Termurah</p>
+                <p class="text-gray-500 text-sm mb-10">Pusat Isi Ulang Pulsa</p>
                 <div class="space-y-4 text-left">
                     <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
                     <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">MASUK KE PANEL</button>
-                    <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-semibold">Daftar Akun Baru</button>
+                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">MASUK</button>
+                    <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-semibold text-center block">Daftar Akun Baru</button>
                 </div>
             </div>`;
     }
@@ -58,13 +63,12 @@
     function showRegister() {
         app.innerHTML = `
             <div class="p-8 pt-20">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Pendaftaran</h2>
-                <p class="text-gray-500 mb-8">Buat akun untuk mulai bertransaksi</p>
-                <div class="space-y-4">
-                    <input id="r_name" type="text" placeholder="Username (huruf kecil)" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
-                    <input id="r_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
-                    <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">DAFTAR SEKARANG</button>
-                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm font-semibold text-center block">Kembali ke Login</button>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Pendaftaran</h2>
+                <div class="space-y-4 mt-10">
+                    <input id="r_name" type="text" placeholder="Buat Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
+                    <input id="r_pass" type="password" placeholder="Buat Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
+                    <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold shadow-lg">DAFTAR SEKARANG</button>
+                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm text-center block">Kembali ke Login</button>
                 </div>
             </div>`;
     }
@@ -78,10 +82,10 @@
             app.innerHTML = `
                 <div class="blue-gradient p-6 pb-28 text-white rounded-b-[40px] shadow-xl">
                     <div class="flex justify-between items-center mb-8">
-                        <div><p class="text-xs opacity-70 italic tracking-widest">RYD STORE APP</p><p class="font-bold text-lg">@${currentUser}</p></div>
-                        <button onclick="location.reload()" class="bg-white/20 p-2 rounded-xl text-xs backdrop-blur-md px-4">Keluar</button>
+                        <div><p class="text-xs opacity-70">Selamat datang,</p><p class="font-bold text-lg">@${currentUser}</p></div>
+                        <button onclick="location.reload()" class="bg-white/20 p-2 rounded-xl text-xs backdrop-blur-md px-4">Logout</button>
                     </div>
-                    <p class="text-xs opacity-80 mb-1">Saldo Akun</p>
+                    <p class="text-xs opacity-80 mb-1">Total Saldo</p>
                     <h2 class="text-4xl font-bold tracking-tight">Rp ${Number(data.saldo || 0).toLocaleString('id-ID')}</h2>
                 </div>
 
@@ -91,17 +95,13 @@
                             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-1 text-xl">💸</div>
                             <span class="text-[10px] font-bold text-gray-600 uppercase">Transfer</span>
                         </button>
-                        <button onclick="alert('Kirim bukti transfer ke WhatsApp Admin untuk Top Up')" class="flex flex-col items-center">
+                        <button onclick="alert('Hubungi Admin WA 085881934739 untuk Top Up')" class="flex flex-col items-center">
                             <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl">➕</div>
                             <span class="text-[10px] font-bold text-gray-600 uppercase">Top Up</span>
                         </button>
-                        <button onclick="alert('Fitur segera hadir')" class="flex flex-col items-center opacity-40">
-                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 mb-1 text-xl">🕒</div>
-                            <span class="text-[10px] font-bold text-gray-600 uppercase">Riwayat</span>
-                        </button>
                     </div>
 
-                    <h3 class="font-bold text-gray-800 mb-4 px-2">Pilih Provider Pulsa</h3>
+                    <h3 class="font-bold text-gray-800 mb-4 px-2 tracking-tight text-center">PILIH OPERATOR</h3>
                     <div class="grid grid-cols-2 gap-4">
                         ${categoryCard("Telkomsel", "bg-red-50", "text-red-600", "🔴")}
                         ${categoryCard("Indosat", "bg-yellow-50", "text-yellow-600", "🟡")}
@@ -116,25 +116,22 @@
         return `
             <div onclick="showProducts('${name}')" class="${bg} p-6 rounded-3xl border border-white shadow-sm flex flex-col items-center category-card">
                 <span class="text-3xl mb-2">${icon}</span>
-                <span class="font-bold ${text} text-sm">${name}</span>
+                <span class="font-bold ${text} text-[12px]">${name}</span>
             </div>`;
     }
 
-    // --- VIEW: PRODUCTS ---
     function showProducts(provider) {
         const prices = [5000, 10000, 20000, 25000, 50000, 100000];
-        const markup = 1000; // Untung 1000 per produk
-
         let listHtml = `
             <div class="p-6">
                 <div class="flex items-center mb-6">
-                    <button onclick="showDashboard()" class="text-2xl mr-4">←</button>
+                    <button onclick="showDashboard()" class="text-2xl mr-4 text-blue-600">←</button>
                     <h2 class="text-xl font-bold">Pulsa ${provider}</h2>
                 </div>
                 <div class="space-y-3">`;
 
         prices.forEach(p => {
-            const finalPrice = p + markup;
+            const finalPrice = p + 1000;
             listHtml += `
                 <div onclick="beli('Pulsa ${provider} ${p.toLocaleString()}', ${finalPrice})" class="flex justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl items-center active:bg-blue-50">
                     <span class="text-sm font-semibold">${provider} ${p/1000}K</span>
@@ -146,31 +143,30 @@
         app.innerHTML = listHtml;
     }
 
-    // --- VIEW: TRANSFER ---
     function showTransfer() {
         app.innerHTML = `
             <div class="p-6">
                 <div class="flex items-center mb-8">
                     <button onclick="showDashboard()" class="text-2xl mr-4">←</button>
-                    <h2 class="text-xl font-bold">Transfer Saldo</h2>
+                    <h2 class="text-xl font-bold text-gray-800">Transfer Saldo</h2>
                 </div>
-                <div class="bg-blue-50 p-6 rounded-[32px] mb-6 shadow-inner">
-                    <label class="block text-[10px] font-bold text-blue-400 mb-2 uppercase tracking-widest text-left">Username Tujuan</label>
-                    <input id="tf_target" type="text" placeholder="Contoh: riyadi_user" class="w-full bg-transparent text-lg font-bold outline-none border-b-2 border-blue-100 pb-2 placeholder:text-blue-200">
+                <div class="bg-gray-50 p-6 rounded-[28px] mb-4 text-left">
+                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">Username Tujuan</label>
+                    <input id="tf_target" type="text" placeholder="Masukkan username" class="w-full bg-transparent text-lg font-bold outline-none border-b border-gray-200">
                 </div>
-                <div class="bg-gray-50 p-6 rounded-[32px] mb-10 shadow-inner">
-                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest text-left">Nominal Kirim</label>
-                    <input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-3xl font-bold text-gray-800 outline-none border-b-2 border-gray-100 pb-2">
+                <div class="bg-gray-50 p-6 rounded-[28px] mb-8 text-left">
+                    <label class="block text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest">Nominal</label>
+                    <input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-2xl font-bold text-blue-600 outline-none border-b border-gray-200">
                 </div>
-                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-[24px] font-bold shadow-xl active:scale-95 transition-all">KIRIM SALDO SEKARANG</button>
+                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-2xl font-bold shadow-lg">KIRIM SEKARANG</button>
             </div>`;
     }
 
-    // --- LOGIC FUNCTIONS ---
+    // --- LOGIC ---
     function handleRegister() {
         const user = document.getElementById('r_name').value.toLowerCase().trim();
         const pass = document.getElementById('r_pass').value;
-        if(user.length < 3) return alert("Username minimal 3 huruf");
+        if(user.length < 3 || !pass) return alert("Lengkapi data!");
         db.ref('users/' + user).set({ password: pass, saldo: 0 }).then(() => { alert("Pendaftaran Berhasil!"); showLogin(); });
     }
 
@@ -179,7 +175,7 @@
         const pass = document.getElementById('u_pass').value;
         db.ref('users/' + user).once('value', (s) => {
             if(s.exists() && s.val().password === pass) { currentUser = user; showDashboard(); }
-            else { alert("User tidak ditemukan atau password salah!"); }
+            else { alert("Login Gagal!"); }
         });
     }
 
@@ -187,16 +183,16 @@
         const target = document.getElementById('tf_target').value.toLowerCase().trim();
         const amount = parseInt(document.getElementById('tf_amount').value);
         if (!target || !amount || amount <= 0) return alert("Data tidak valid");
-        if (target === currentUser) return alert("Gak bisa transfer ke diri sendiri boss");
+        if (target === currentUser) return alert("Tidak bisa kirim ke sendiri");
 
         db.ref('users/' + currentUser).once('value', (s) => {
             const mySaldo = s.val().saldo || 0;
             if (mySaldo < amount) return alert("Saldo kurang!");
             db.ref('users/' + target).once('value', (t) => {
-                if (!t.exists()) return alert("User tujuan tidak ditemukan!");
+                if (!t.exists()) return alert("Tujuan tidak ditemukan!");
                 db.ref('users/' + currentUser).update({ saldo: mySaldo - amount });
                 db.ref('users/' + target).update({ saldo: (t.val().saldo || 0) + amount });
-                alert("Transfer Sukses ke " + target);
+                alert("Transfer Berhasil!");
                 showDashboard();
             });
         });
@@ -205,9 +201,9 @@
     function beli(produk, harga) {
         db.ref('users/' + currentUser).once('value', (s) => {
             if(s.val().saldo >= harga) {
-                const msg = `Halo Admin, saya beli ${produk}. User: ${currentUser}`;
+                const msg = `Halo Admin RYD STORE, saya ingin beli ${produk}. User: ${currentUser}`;
                 window.open(`https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`);
-            } else { alert("Saldo Tidak Cukup!"); }
+            } else { alert("Saldo tidak cukup!"); }
         });
     }
 
