@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYD STORE - Full Pulsa 100rb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: sans-serif; background-color: #0b0e11; color: white; }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .card-op { background: #1c2127; padding: 15px; border: 2px solid #2d3748; border-radius: 12px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.2s; }
+        .card-op.active { border-color: #f1c40f; color: #f1c40f; background: #2d3748; }
+        .product-item { background: #161a1e; border: 1px solid #2d3748; padding: 15px; border-radius: 12px; cursor: pointer; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .product-item:hover { border-color: #f1c40f; }
+    </style>
+</head>
+<body class="pb-10">
+
+    <nav class="bg-[#161a1e] p-4 sticky top-0 z-50 flex items-center gap-3 border-b border-gray-800">
+        <button onclick="goBack()" id="back-btn" style="display:none;" class="text-white p-2"><i class="fas fa-arrow-left"></i></button>
+        <h1 class="font-bold text-lg uppercase">RYD <span class="text-yellow-500">STORE</span></h1>
+    </nav>
+
+    <div class="max-w-md mx-auto px-5 mt-5">
+
+        <div id="step-1" class="step-content active">
+            <div class="bg-[#161a1e] p-5 rounded-2xl border border-gray-800 mb-5">
+                <label class="block text-xs text-gray-400 mb-2 font-bold uppercase">Nomor Tujuan</label>
+                <input type="number" id="nomor_hp" placeholder="08xxxxxxxxxx" class="w-full p-4 bg-gray-900 rounded-xl border border-gray-700 text-white font-bold outline-none focus:border-yellow-500 text-xl text-center">
+            </div>
+
+            <p class="text-xs font-bold text-gray-500 mb-3 uppercase">Pilih Operator</p>
+            <div class="grid grid-cols-2 gap-3 mb-8">
+                <div onclick="pilihOperator(this, 'TELKOMSEL')" class="card-op">TELKOMSEL</div>
+                <div onclick="pilihOperator(this, 'INDOSAT')" class="card-op">INDOSAT</div>
+                <div onclick="pilihOperator(this, 'XL')" class="card-op">XL AXIATA</div>
+                <div onclick="pilihOperator(this, 'THREE')" class="card-op">THREE (3)</div>
+            </div>
+
+            <p class="text-xs font-bold text-gray-500 mb-3 uppercase text-center">Pilih Jenis Layanan</p>
+            <div class="grid grid-cols-2 gap-3">
+                <div onclick="pilihKategori('PULSA')" class="bg-[#1c2127] p-6 rounded-2xl text-center border border-gray-700 cursor-pointer">
+                    <i class="fas fa-mobile-alt text-yellow-500 text-2xl mb-2"></i><br><b>PULSA</b>
+                </div>
+                <div onclick="pilihKategori('DATA')" class="bg-[#1c2127] p-6 rounded-2xl text-center border border-gray-700 cursor-pointer">
+                    <i class="fas fa-wifi text-blue-500 text-2xl mb-2"></i><br><b>DATA</b>
+                </div>
+            </div>
+        </div>
+
+        <div id="step-2" class="step-content">
+            <div class="text-center mb-6">
+                <h2 id="judul-kategori" class="text-xl font-bold text-yellow-500 uppercase italic"></h2>
+                <p class="text-[10px] text-gray-500 font-bold uppercase">Pilih Nominal Tersedia</p>
+            </div>
+            <div id="list-produk" class="max-h-[60vh] overflow-y-auto px-1"></div>
+        </div>
+
+        <div id="step-3" class="step-content text-center">
+            <div class="bg-white text-black p-6 rounded-[2rem] shadow-2xl border-4 border-yellow-500">
+                <h2 class="font-black text-2xl mb-1 italic uppercase leading-tight">Ringkasan Pembayaran</h2>
+                <div class="bg-gray-100 p-2 rounded-xl mb-4 mt-4 border border-gray-200">
+                    <img src="https://lh3.googleusercontent.com/u/0/d/1DcaGaY-Xesvfzn9sgpDpcjOtELT0loar" class="w-full rounded-lg" alt="QRIS">
+                </div>
+
+                <div class="text-left space-y-2 border-t border-dashed border-gray-300 pt-4 text-xs font-bold uppercase">
+                    <div class="flex justify-between"><span>Nomor:</span><b id="final-no"></b></div>
+                    <div class="flex justify-between"><span>Item:</span><b id="final-item" class="text-yellow-600"></b></div>
+                    <div class="flex justify-between text-lg pt-2 font-black border-t mt-2"><span>TOTAL:</span><b id="final-harga" class="text-green-600 font-black"></b></div>
+                </div>
+            </div>
+            <button onclick="kirimWA()" class="w-full bg-yellow-500 text-black font-black py-4 rounded-2xl mt-6 shadow-xl uppercase tracking-widest active:scale-95 transition">SUDAH TRANSFER (KONFIRMASI)</button>
+        </div>
+
+    </div>
+
+    <script>
+        let dataOrder = { no: '', op: '', cat: '', item: '', price: '' };
+
+        // HARGA PULSA LENGKAP SAMPAI 100RB
+        const databaseProduk = {
+            'TELKOMSEL': {
+                'PULSA': [
+                    {n:'5.000', p:'7.500'}, {n:'10.000', p:'12.500'}, {n:'20.000', p:'22.500'},
+                    {n:'25.000', p:'27.500'}, {n:'30.000', p:'32.500'}, {n:'50.000', p:'51.000'},
+                    {n:'100.000', p:'99.000'}
+                ],
+                'DATA': [{n:'OMG! 1GB', p:'15.000'}, {n:'OMG! 5GB', p:'42.000'}, {n:'OMG! 10GB', p:'75.000'}]
+            },
+            'INDOSAT': {
+                'PULSA': [
+                    {n:'5.000', p:'7.200'}, {n:'10.000', p:'12.200'}, {n:'20.000', p:'22.200'},
+                    {n:'25.000', p:'27.200'}, {n:'30.000', p:'32.200'}, {n:'50.000', p:'51.000'},
+                    {n:'100.000', p:'98.800'}
+                ],
+                'DATA': [{n:'Freedom 2GB', p:'18.000'}, {n:'Freedom 8GB', p:'40.000'}, {n:'Freedom 12GB', p:'60.000'}]
+            },
+            'XL': {
+                'PULSA': [
+                    {n:'5.000', p:'7.300'}, {n:'10.000', p:'12.300'}, {n:'20.000', p:'22.300'},
+                    {n:'25.000', p:'27.300'}, {n:'30.000', p:'32.300'}, {n:'50.000', p:'51.200'},
+                    {n:'100.000', p:'99.200'}
+                ],
+                'DATA': [{n:'Xtra Combo 5GB', p:'35.000'}, {n:'Xtra Combo 10GB', p:'58.000'}, {n:'Xtra Combo 20GB', p:'89.000'}]
+            },
+            'THREE': {
+                'PULSA': [
+                    {n:'5.000', p:'7.100'}, {n:'10.000', p:'12.100'}, {n:'20.000', p:'22.100'},
+                    {n:'25.000', p:'27.100'}, {n:'30.000', p:'32.100'}, {n:'50.000', p:'50.800'},
+                    {n:'100.000', p:'98.500'}
+                ],
+                'DATA': [{n:'Happy 2GB', p:'12.000'}, {n:'Happy 5GB', p:'25.000'}, {n:'Happy 18GB', p:'55.000'}]
+            }
+        };
+
+        function pilihOperator(el, nama) {
+            document.querySelectorAll('.card-op').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            dataOrder.op = nama;
+        }
+
+        function pilihKategori(cat) {
+            dataOrder.no = document.getElementById('nomor_hp').value;
+            if (!dataOrder.no || !dataOrder.op) {
+                alert("Masukkan Nomor HP & Pilih Operator!");
+                return;
+            }
+            dataOrder.cat = cat;
+            document.getElementById('judul-kategori').innerText = dataOrder.op + " " + cat;
+            
+            let listHtml = "";
+            let items = databaseProduk[dataOrder.op][cat];
+
+            items.forEach(item => {
+                listHtml += `
+                <div class="product-item" onclick="keCheckout('${item.n}', '${item.p}')">
+                    <span class="font-bold">${dataOrder.op} ${item.n}</span>
+                    <b class="text-yellow-500">Rp ${item.p}</b>
+                </div>`;
+            });
+
+            document.getElementById('list-produk').innerHTML = listHtml;
+            showStep(2);
+        }
+
+        function keCheckout(item, harga) {
+            dataOrder.item = item;
+            dataOrder.price = harga;
+            document.getElementById('final-no').innerText = dataOrder.no;
+            document.getElementById('final-item').innerText = dataOrder.op + " " + dataOrder.cat + " " + item;
+            document.getElementById('final-harga').innerText = "Rp " + harga;
+            showStep(3);
+        }
+
+        function showStep(n) {
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-' + n).classList.add('active');
+            document.getElementById('back-btn').style.display = n > 1 ? "block" : "none";
+            window.scrollTo(0,0);
+        }
+
+        function goBack() {
+            let current = 1;
+            if (document.getElementById('step-2').classList.contains('active')) current = 1;
+            if (document.getElementById('step-3').classList.contains('active')) current = 2;
+            showStep(current);
+        }
+
+        function kirimWA() {
+            const pesan = `Halo Admin RYD STORE,\n\nSaya mau konfirmasi pembayaran:\n📱 No HP: ${dataOrder.no}\n🏢 Operator: ${dataOrder.op}\n📦 Item: ${dataOrder.cat} ${dataOrder.item}\n💰 Total: Rp ${dataOrder.price}\n\nMohon segera diproses ya!`;
+            window.open(`https://wa.me/6285881934739?text=${encodeURIComponent(pesan)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
