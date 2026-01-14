@@ -8,7 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
         .blue-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
         .category-card { transition: all 0.2s; cursor: pointer; }
@@ -32,27 +32,24 @@
         appId: "1:338805214041:web:248106d91079366e60977e"
     };
 
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
     
     // --- KONFIGURASI ADMIN ---
     const WA_ADMIN = "6285881934739"; 
-    
     let currentUser = null;
     const app = document.getElementById('app');
 
     function showLogin() {
         app.innerHTML = `
             <div class="p-8 pt-20 text-center">
-                <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-bold tracking-tighter">RS</div>
-                <h1 class="text-2xl font-bold text-gray-800">RYD STORE</h1>
-                <p class="text-gray-500 text-sm mb-10">Solusi Pulsa & Top Up Cepat</p>
+                <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-black">R</div>
+                <h1 class="text-2xl font-black text-gray-800 tracking-tighter">RYD STORE</h1>
+                <p class="text-gray-500 text-sm mb-10">Solusi Pulsa & Top Up 24 Jam</p>
                 <div class="space-y-4 text-left">
-                    <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                    <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500 transition-all">
-                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">MASUK SEKARANG</button>
+                    <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">MASUK</button>
                     <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-semibold text-center block">Daftar Akun Baru</button>
                 </div>
             </div>`;
@@ -60,14 +57,13 @@
 
     function showRegister() {
         app.innerHTML = `
-            <div class="p-8 pt-20">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center text-blue-700">Pendaftaran</h2>
-                <p class="text-center text-gray-500 mb-10">Gabung menjadi mitra RYD STORE</p>
-                <div class="space-y-4 mt-5">
+            <div class="p-8 pt-20 text-center">
+                <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase tracking-tighter">Pendaftaran</h2>
+                <div class="space-y-4 mt-10 text-left">
                     <input id="r_name" type="text" placeholder="Buat Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
                     <input id="r_pass" type="password" placeholder="Buat Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
                     <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">DAFTAR SEKARANG</button>
-                    <button onclick="showLogin()" class="w-full py-2 text-gray-400 text-sm text-center block">Sudah punya akun? Login</button>
+                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm text-center block">Kembali ke Login</button>
                 </div>
             </div>`;
     }
@@ -92,16 +88,16 @@
                 <div class="px-5 -mt-10">
                     <div class="bg-white p-4 rounded-3xl shadow-xl flex justify-around items-center mb-8 border border-gray-50">
                         <button onclick="showTransfer()" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-1 text-xl shadow-inner">💸</div>
-                            <span class="text-[10px] font-bold text-gray-600 uppercase tracking-tighter">Transfer</span>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-1 text-xl shadow-inner font-bold italic">TF</div>
+                            <span class="text-[10px] font-black text-gray-600 uppercase tracking-tighter">Transfer</span>
                         </button>
-                        <button onclick="alert('Hubungi Admin WA 085881934739 untuk Top Up Saldo')" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl shadow-inner">➕</div>
-                            <span class="text-[10px] font-bold text-gray-600 uppercase tracking-tighter">Top Up</span>
+                        <button onclick="handleTopUp()" class="flex flex-col items-center">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl shadow-inner font-bold">+</div>
+                            <span class="text-[10px] font-black text-gray-600 uppercase tracking-tighter font-black">Top Up</span>
                         </button>
                     </div>
 
-                    <h3 class="font-black text-gray-800 mb-4 px-2 tracking-tighter text-sm uppercase">Pilih Operator</h3>
+                    <h3 class="font-black text-gray-800 mb-4 px-2 tracking-tighter text-sm uppercase text-center">PILIH OPERATOR</h3>
                     <div class="grid grid-cols-2 gap-4">
                         ${categoryCard("Telkomsel", "bg-red-50", "text-red-600", "🔴")}
                         ${categoryCard("Indosat", "bg-yellow-50", "text-yellow-600", "🟡")}
@@ -134,18 +130,17 @@
         prices.forEach(p => {
             const finalPrice = p + 1000;
             listHtml += `
-                <div onclick="beli('Pulsa ${provider} ${p.toLocaleString()}', ${finalPrice})" class="flex justify-between p-5 bg-gray-50 border border-gray-100 rounded-3xl items-center active:bg-blue-50 active:border-blue-200 transition-all">
+                <div onclick="beli('Pulsa ${provider} ${p.toLocaleString()}', ${finalPrice})" class="flex justify-between p-5 bg-gray-50 border border-gray-100 rounded-3xl items-center active:bg-blue-50 transition-all">
                     <div class="flex flex-col">
                         <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">${provider}</span>
                         <span class="text-lg font-black text-gray-800">${p/1000}K</span>
                     </div>
                     <div class="text-right font-black text-blue-700">
-                        <span class="text-[10px] block opacity-50 uppercase">Harga</span>
+                        <span class="text-[10px] block opacity-50">Harga</span>
                         Rp ${finalPrice.toLocaleString('id-ID')}
                     </div>
                 </div>`;
         });
-
         listHtml += `</div></div>`;
         app.innerHTML = listHtml;
     }
@@ -155,26 +150,40 @@
             <div class="p-6">
                 <div class="flex items-center mb-8">
                     <button onclick="showDashboard()" class="text-2xl mr-4 text-blue-600">←</button>
-                    <h2 class="text-xl font-black text-gray-800">TRANSFER SALDO</h2>
+                    <h2 class="text-xl font-black text-gray-800 uppercase">Transfer Saldo</h2>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-4 text-left border border-gray-100 shadow-inner">
+                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-4 border border-gray-100">
                     <label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Username Tujuan</label>
-                    <input id="tf_target" type="text" placeholder="Masukkan username" class="w-full bg-transparent text-lg font-bold outline-none border-b-2 border-gray-200">
+                    <input id="tf_target" type="text" placeholder="Masukkan username" class="w-full bg-transparent text-lg font-bold outline-none border-b-2 border-gray-200 pb-1">
                 </div>
-                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-8 text-left border border-gray-100 shadow-inner">
+                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-8 border border-gray-100">
                     <label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Nominal Kirim</label>
-                    <input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-3xl font-black text-blue-600 outline-none border-b-2 border-gray-200">
+                    <input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-3xl font-black text-blue-600 outline-none border-b-2 border-gray-200 pb-1">
                 </div>
-                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-3xl font-black shadow-lg active:scale-95 transition-all">KIRIM SALDO SEKARANG</button>
+                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-3xl font-black shadow-lg">KIRIM SALDO SEKARANG</button>
             </div>`;
     }
 
     // --- LOGIC FUNCTIONS ---
+    function handleTopUp() {
+        const msg = `Halo Admin RYD STORE,\n\nSaya ingin TOP UP SALDO.\n👤 Username: ${currentUser}\n\nMohon informasi nomor rekening/e-wallet untuk pembayaran.`;
+        window.open(`https://api.whatsapp.com/send?phone=${WA_ADMIN}&text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function beli(produk, harga) {
+        db.ref('users/' + currentUser).once('value', (s) => {
+            if(s.val().saldo >= harga) {
+                const msg = `HALO ADMIN RYD STORE\n\nSaya ingin membeli:\n📦 Produk: ${produk}\n💰 Harga: Rp ${harga.toLocaleString()}\n👤 User: ${currentUser}\n\nMohon segera diproses!`;
+                window.open(`https://api.whatsapp.com/send?phone=${WA_ADMIN}&text=${encodeURIComponent(msg)}`, '_blank');
+            } else { alert("Saldo tidak cukup!"); }
+        });
+    }
+
     function handleRegister() {
         const user = document.getElementById('r_name').value.toLowerCase().trim().replace(/\s/g, '');
         const pass = document.getElementById('r_pass').value;
-        if(user.length < 3 || !pass) return alert("Username minimal 3 huruf!");
-        db.ref('users/' + user).set({ password: pass, saldo: 0 }).then(() => { alert("Pendaftaran Berhasil! Silakan Login."); showLogin(); });
+        if(user.length < 3 || !pass) return alert("Lengkapi data!");
+        db.ref('users/' + user).set({ password: pass, saldo: 0 }).then(() => { alert("Daftar Berhasil! Silakan Login."); showLogin(); });
     }
 
     function handleLogin() {
@@ -183,7 +192,7 @@
         if(!user || !pass) return alert("Lengkapi data!");
         db.ref('users/' + user).once('value', (s) => {
             if(s.exists() && s.val().password === pass) { currentUser = user; showDashboard(); }
-            else { alert("Login Gagal! Akun tidak ditemukan."); }
+            else { alert("Login Gagal!"); }
         });
     }
 
@@ -191,31 +200,18 @@
         const target = document.getElementById('tf_target').value.toLowerCase().trim();
         const amount = parseInt(document.getElementById('tf_amount').value);
         if (!target || !amount || amount <= 0) return alert("Data tidak valid");
-        if (target === currentUser) return alert("Tidak bisa kirim ke diri sendiri");
+        if (target === currentUser) return alert("Gak bisa kirim ke sendiri!");
 
         db.ref('users/' + currentUser).once('value', (s) => {
             const mySaldo = s.val().saldo || 0;
             if (mySaldo < amount) return alert("Saldo kurang!");
             db.ref('users/' + target).once('value', (t) => {
-                if (!t.exists()) return alert("Username tujuan tidak terdaftar");
+                if (!t.exists()) return alert("User tujuan tidak ada!");
                 db.ref('users/' + currentUser).update({ saldo: mySaldo - amount });
                 db.ref('users/' + target).update({ saldo: (t.val().saldo || 0) + amount });
-                alert("Transfer Sukses ke @" + target);
+                alert("Transfer Berhasil!");
                 showDashboard();
             });
-        });
-    }
-
-    function beli(produk, harga) {
-        db.ref('users/' + currentUser).once('value', (s) => {
-            if(s.val().saldo >= harga) {
-                const msg = `HALO ADMIN RYD STORE\n\nSaya ingin membeli:\n📦 Produk: ${produk}\n💰 Harga: Rp ${harga.toLocaleString()}\n👤 Username: ${currentUser}\n\nMohon segera diproses, terima kasih!`;
-                // FORMAT KHUSUS SUPAYA CONNECT KE WA BUSINESS / BIASA
-                const url = `https://api.whatsapp.com/send?phone=${WA_ADMIN}&text=${encodeURIComponent(msg)}`;
-                window.open(url, '_blank');
-            } else { 
-                alert("Waduh, saldo kamu tidak cukup!"); 
-            }
         });
     }
 
