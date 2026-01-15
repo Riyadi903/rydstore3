@@ -3,22 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE</title>
+    <title>RYD STORE - Digital Payment</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
-        .blue-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
-        .btn-active:active { transform: scale(0.95); }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f9fafb; }
+        .bg-blue-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
     </style>
 </head>
 <body>
 
-<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl relative pb-10"></div>
+<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl relative overflow-hidden">
+    <div id="loader" class="flex flex-col items-center justify-center min-h-screen">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <p class="mt-4 text-sm font-bold text-gray-400 uppercase tracking-widest">Memuat RYD STORE...</p>
+    </div>
+</div>
 
 <script>
+    // 1. KONFIGURASI FIREBASE
     const firebaseConfig = {
         apiKey: "AIzaSyAgv7_Ysh6_Pz0q7VvF_Ew8A0p-6pM46eE",
         authDomain: "rydstore3.firebaseapp.com",
@@ -29,109 +35,125 @@
         appId: "1:338805214041:web:248106d91079366e60977e"
     };
 
+    // Inisialisasi
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
+    const auth = firebase.auth();
     const db = firebase.database();
-    const WA_ADMIN = "6285881934739"; 
-    let currentUser = null;
+    const WA_ADMIN = "6285881934739";
 
-    // FUNGSI WHATSAPP STABIL
-    function kirimKeWA(pesan) {
-        const link = "https://wa.me/" + WA_ADMIN + "?text=" + encodeURIComponent(pesan);
-        window.open(link, '_blank') || window.location.assign(link);
-    }
+    // 2. LOGIKA AUTH (LOGIN/LOGOUT)
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            handleUserData(user);
+        } else {
+            renderLogin();
+        }
+    });
 
-    function showLogin() {
-        document.getElementById('app').innerHTML = `
-            <div class="p-8 pt-20 text-center">
-                <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-black">R</div>
-                <h1 class="text-2xl font-black text-gray-800 tracking-tighter uppercase">RYD STORE</h1>
-                <p class="text-gray-400 text-[10px] mb-10 font-bold uppercase tracking-widest">Digital Payment</p>
-                <div class="space-y-4 text-left">
-                    <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-black shadow-lg btn-active uppercase">Masuk Panel</button>
-                    <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-bold text-center block uppercase">Daftar Akun Baru</button>
-                </div>
-            </div>`;
-    }
+    // Fungsi Pemicu Login
+    window.loginGoogle = function() {
+        const btn = document.getElementById('btnLogin');
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<span class="animate-pulse">Menghubungkan...</span>`;
+        }
+        const provider = new firebase.auth.GoogleAuthProvider();
+        // Menggunakan Redirect agar tidak diblokir Popup Chrome HP
+        auth.signInWithRedirect(provider);
+    };
 
-    function showRegister() {
-        document.getElementById('app').innerHTML = `
-            <div class="p-8 pt-20">
-                <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase text-center tracking-tighter">Daftar Akun</h2>
-                <div class="space-y-4 mt-10">
-                    <input id="r_name" type="text" placeholder="Buat Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
-                    <input id="r_pass" type="password" placeholder="Buat Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
-                    <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg btn-active uppercase">Daftar Sekarang</button>
-                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm font-bold text-center block uppercase tracking-widest">Kembali ke Login</button>
-                </div>
-            </div>`;
-    }
-
-    function showDashboard() {
-        db.ref('users/' + currentUser).on('value', (s) => {
-            const data = s.val();
-            if(!data) return;
-            document.getElementById('app').innerHTML = `
-                <div class="blue-gradient p-6 pb-28 text-white rounded-b-[40px] shadow-xl text-left">
-                    <div class="flex justify-between items-center mb-8">
-                        <div><p class="text-[10px] font-black opacity-60 uppercase tracking-widest">USER PANEL</p><p class="font-black text-xl uppercase">@${currentUser}</p></div>
-                        <button onclick="location.reload()" class="bg-white/20 p-2 rounded-xl text-[10px] font-bold px-4 uppercase border border-white/20">Keluar</button>
-                    </div>
-                    <div class="bg-white/10 p-5 rounded-3xl border border-white/10 shadow-inner">
-                        <p class="text-[10px] font-bold opacity-80 mb-1 uppercase tracking-widest text-left">Saldo Anda</p>
-                        <h2 class="text-4xl font-black tracking-tighter text-left">Rp ${Number(data.saldo || 0).toLocaleString('id-ID')}</h2>
-                    </div>
-                </div>
-                <div class="px-5 -mt-10">
-                    <div class="bg-white p-4 rounded-3xl shadow-2xl flex justify-around items-center mb-8 border border-gray-50">
-                        <button onclick="handleTopUp()" class="flex flex-col items-center btn-active">
-                            <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-1 text-2xl font-black shadow-sm border border-orange-100">+</div>
-                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Isi Saldo</span>
-                        </button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div onclick="kirimKeWA('Halo Admin, saya ingin order Telkomsel - User: ${currentUser}')" class="bg-red-50 p-6 rounded-[2rem] border border-gray-100 shadow-md flex flex-col items-center btn-active">
-                            <span class="text-3xl mb-1">📱</span>
-                            <span class="font-black text-red-600 text-[10px] uppercase">Telkomsel</span>
-                        </div>
-                        <div onclick="kirimKeWA('Halo Admin, saya ingin order Indosat - User: ${currentUser}')" class="bg-yellow-50 p-6 rounded-[2rem] border border-gray-100 shadow-md flex flex-col items-center btn-active">
-                            <span class="text-3xl mb-1">📱</span>
-                            <span class="font-black text-yellow-600 text-[10px] uppercase">Indosat</span>
-                        </div>
-                    </div>
-                </div>`;
-        });
-    }
-
-    function handleTopUp() {
-        kirimKeWA("Halo Admin RYD STORE,\nSaya mau ISI SALDO.\nUsername: " + currentUser);
-    }
-
-    function handleRegister() {
-        const u = document.getElementById('r_name').value.toLowerCase().trim().replace(/\s/g, '');
-        const p = document.getElementById('r_pass').value;
-        if(u.length < 3 || !p) return alert("Isi data dengan benar!");
-        db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => { 
-            alert("Berhasil! Silakan Login."); 
-            showLogin(); 
-        });
-    }
-
-    function handleLogin() {
-        const u = document.getElementById('u_name').value.toLowerCase().trim();
-        const p = document.getElementById('u_pass').value;
-        db.ref('users/' + u).once('value', (s) => {
-            if(s.exists() && s.val().password === p) { 
-                currentUser = u; 
-                showDashboard(); 
-            } else { 
-                alert("User/Password Salah!"); 
+    // Ambil/Buat Data User di Database
+    function handleUserData(user) {
+        const userRef = db.ref('users/' + user.uid);
+        userRef.on('value', (snapshot) => {
+            let data = snapshot.val();
+            if (!data) {
+                // Jika user baru, buat data awal
+                userRef.set({
+                    nama: user.displayName,
+                    email: user.email,
+                    saldo: 0
+                });
+            } else {
+                renderDashboard(user, data);
             }
         });
     }
 
-    showLogin();
+    // 3. TAMPILAN HALAMAN LOGIN
+    function renderLogin() {
+        document.getElementById('app').innerHTML = `
+            <div class="p-10 pt-32 text-center h-screen flex flex-col justify-center animate-fade-in">
+                <div class="w-24 h-24 bg-blue-600 rounded-[2rem] mx-auto mb-8 flex items-center justify-center text-white text-5xl font-black italic shadow-2xl transform rotate-3">RS</div>
+                <h1 class="text-4xl font-black text-gray-800 tracking-tighter mb-2">RYD STORE</h1>
+                <p class="text-gray-400 mb-12 uppercase tracking-widest text-[10px] font-bold">Aplikasi Pembayaran Digital</p>
+                
+                <button id="btnLogin" onclick="loginGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-100 p-4 rounded-2xl shadow-sm active:scale-95 transition-all">
+                    <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
+                    <span class="font-bold text-gray-700">Masuk dengan Google</span>
+                </button>
+                <p class="mt-8 text-[10px] text-gray-400 font-bold tracking-widest uppercase">Aman • Cepat • Otomatis</p>
+            </div>`;
+    }
+
+    // 4. TAMPILAN HALAMAN DASHBOARD
+    function renderDashboard(user, userData) {
+        document.getElementById('app').innerHTML = `
+            <div class="bg-blue-gradient p-6 pb-28 text-white rounded-b-[45px] shadow-lg">
+                <div class="flex justify-between items-center mb-8">
+                    <div class="text-left">
+                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest">Halo, Selamat Datang</p>
+                        <h2 class="font-bold truncate w-40 text-lg uppercase">${userData.nama}</h2>
+                    </div>
+                    <button onclick="auth.signOut()" class="bg-white/20 px-4 py-2 rounded-xl text-[10px] font-bold border border-white/20 backdrop-blur-md">LOGOUT</button>
+                </div>
+                <div class="bg-white/10 p-6 rounded-3xl border border-white/10 backdrop-blur-sm shadow-inner text-left">
+                    <p class="text-[10px] font-bold opacity-80 uppercase mb-1 tracking-widest">Saldo Akun Anda</p>
+                    <h2 class="text-4xl font-black tracking-tighter">Rp ${Number(userData.saldo || 0).toLocaleString('id-ID')}</h2>
+                </div>
+            </div>
+
+            <div class="px-5 -mt-10">
+                <div class="bg-white p-5 rounded-[2.5rem] shadow-xl flex justify-around mb-8 border border-gray-50">
+                    <button onclick="kontakAdmin('TOP UP SALDO')" class="flex flex-col items-center active:scale-90 transition-all">
+                        <div class="w-14 h-14 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 mb-2 text-2xl font-bold">+</div>
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Top Up</span>
+                    </button>
+                    <button onclick="copyUID('${user.uid}')" class="flex flex-col items-center active:scale-90 transition-all">
+                        <div class="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 mb-2 text-xl font-bold uppercase">ID</div>
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Salin ID</span>
+                    </button>
+                </div>
+
+                <div class="px-2">
+                    <h3 class="font-black text-gray-800 mb-4 text-xs uppercase tracking-widest text-center">Layanan Produk</h3>
+                    <div class="grid grid-cols-2 gap-4 pb-10">
+                        ${['Telkomsel', 'Indosat', 'XL Axiata', 'Tri'].map(op => `
+                            <div onclick="kontakAdmin('Beli Pulsa ${op}')" class="bg-gray-50 p-6 rounded-[2rem] border border-white shadow-md active:scale-95 transition-all cursor-pointer flex flex-col items-center">
+                                <div class="text-2xl mb-2">📱</div>
+                                <p class="font-black text-blue-700 text-[10px] uppercase">${op}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-[9px] text-gray-300 text-center pb-8 uppercase font-bold tracking-widest">UID: ${user.uid}</p>`;
+    }
+
+    // FUNGSI WHATSAPP
+    function kontakAdmin(pesan) {
+        const user = auth.currentUser;
+        const text = `Halo Admin RYD STORE,\n\nSaya ingin: *${pesan}*\nNama: ${user.displayName}\nID: ${user.uid}\n\nMohon diproses, terima kasih.`;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(text)}`;
+    }
+
+    // FUNGSI COPY ID
+    function copyUID(uid) {
+        navigator.clipboard.writeText(uid);
+        alert("ID Pelanggan berhasil disalin!");
+    }
 </script>
+
 </body>
 </html>
