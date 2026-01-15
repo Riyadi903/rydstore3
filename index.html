@@ -13,9 +13,8 @@
         .card-glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .btn-grad { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); transition: 0.2s; }
         .btn-grad:active { transform: scale(0.95); }
-        .banner-ref { background: linear-gradient(45deg, #f59e0b, #ef4444); animation: pulse-border 2s infinite; }
-        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
-        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .banner-ref { background: linear-gradient(45deg, #f59e0b, #ef4444); box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .modal-up { background: white; border-radius: 30px 30px 0 0; color: #0f172a; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.3s ease; }
         .modal-up.active { transform: translateY(0); }
         .section-title { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
@@ -41,7 +40,7 @@
 <script>
     const WA_ADMIN = "6285881934739";
     const PROFIT_PULSA = 1500;
-    const FEE_TOPUP = 500; // DIUBAH MENJADI 500 PERAK
+    const FEE_TOPUP = 500;
     const REWARD_UNDANG = 5000;
     const MIN_SALDO_REWARD = 50000;
     const MIN_DAYS = 7;
@@ -64,13 +63,13 @@
 
     function pageLogin() {
         view(`<div class="p-8 pt-24 text-center">
-            <div class="w-20 h-20 btn-grad rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic shadow-2xl">R</div>
-            <h1 class="text-3xl font-black mb-12 uppercase italic">RYD STORE</h1>
+            <div class="w-16 h-16 btn-grad rounded-[1.5rem] mx-auto mb-6 flex items-center justify-center text-3xl font-black italic shadow-2xl">R</div>
+            <h1 class="text-2xl font-black mb-12 uppercase italic tracking-tighter">RYD STORE</h1>
             <div class="space-y-4">
                 <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white text-center">
                 <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white text-center">
-                <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Masuk Akun</button>
-                <button onclick="pageRegister()" class="w-full text-slate-500 text-xs font-bold uppercase">Daftar Sekarang</button>
+                <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Masuk</button>
+                <button onclick="pageRegister()" class="w-full text-slate-500 text-[10px] font-bold uppercase">Daftar Akun Baru</button>
             </div>
         </div>`);
     }
@@ -79,15 +78,15 @@
         const urlParams = new URLSearchParams(window.location.search);
         const pengundang = urlParams.get('ref') || "";
         view(`<div class="p-8 pt-20">
-            <h2 class="text-3xl font-black mb-8 italic uppercase text-blue-500">Registrasi</h2>
+            <h2 class="text-2xl font-black mb-8 italic uppercase text-blue-500">Registrasi</h2>
             <div class="space-y-4">
                 <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white">
                 <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white">
                 <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl">
-                    <p class="text-[9px] font-bold text-blue-400 mb-1 uppercase">Pengundang (Opsional)</p>
-                    <input id="r_ref" type="text" value="${pengundang}" class="w-full bg-transparent outline-none text-white font-bold uppercase">
+                    <p class="text-[9px] font-bold text-blue-400 mb-1 uppercase text-center">Referral: ${pengundang || '-'}</p>
+                    <input id="r_ref" type="hidden" value="${pengundang}">
                 </div>
-                <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar</button>
+                <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar Sekarang</button>
                 <button onclick="pageLogin()" class="w-full text-slate-500 text-xs font-bold uppercase mt-4 text-center block">Kembali</button>
             </div>
         </div>`);
@@ -99,56 +98,69 @@
             if(!data) return pageLogin();
             const saldo = parseInt(data.saldo || 0);
 
-            // Logika Bonus Referral Otomatis
             if (data.invitedBy && !data.rewardClaimed && saldo >= MIN_SALDO_REWARD && data.totalTransaksi > 0) {
                 const tglDaftar = new Date(data.createdAt);
-                const selisihHari = Math.floor((new Date() - tglDaftar) / (1000 * 60 * 60 * 24));
-                if (selisihHari >= MIN_DAYS) prosesReward(data.invitedBy);
+                if (Math.floor((new Date() - tglDaftar) / (1000 * 60 * 60 * 24)) >= MIN_DAYS) prosesReward(data.invitedBy);
             }
 
             view(`
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
-                        <div><p class="text-[9px] text-slate-500 font-bold uppercase">Member ID</p><h2 class="text-xl font-black text-blue-400 italic">@${userAktif.toUpperCase()}</h2></div>
-                        <button onclick="logout()" class="bg-red-500/10 text-red-500 p-2 px-4 rounded-xl text-[10px] font-bold border border-red-500/20">LOGOUT</button>
+                        <div><p class="text-[9px] text-slate-500 font-bold uppercase">Welcome</p><h2 class="text-lg font-black text-blue-400 italic uppercase">@${userAktif}</h2></div>
+                        <button onclick="logout()" class="text-red-500 text-[10px] font-bold uppercase">Logout</button>
                     </div>
 
                     <div onclick="menuReferral()" class="banner-ref p-4 rounded-2xl mb-6 flex items-center justify-between cursor-pointer">
-                        <div class="text-white">
-                            <h4 class="text-sm font-black uppercase italic">Dapatkan Rp 5.000 Gratis!</h4>
-                            <p class="text-[9px] font-bold opacity-90">Undang temanmu belanja di RYD STORE</p>
+                        <div>
+                            <h4 class="text-xs font-black uppercase italic text-white">Reward Rp 5.000</h4>
+                            <p class="text-[8px] font-bold text-white/80">Klik untuk undang teman belanja</p>
                         </div>
-                        <div class="bg-white/20 p-2 rounded-lg font-black text-xs">AMBIL ></div>
+                        <div class="bg-white/20 px-3 py-1 rounded-full text-[9px] font-bold text-white uppercase tracking-tighter">Cek Link</div>
                     </div>
 
-                    <div class="btn-grad p-8 rounded-[2.5rem] shadow-2xl mb-6 relative overflow-hidden border border-white/10">
-                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Saldo Tersedia</p>
-                        <h2 class="text-4xl font-black italic">Rp ${saldo.toLocaleString('id-ID')}</h2>
+                    <div class="card-glass p-6 rounded-3xl mb-6 flex items-center justify-between border-blue-500/20">
+                        <div>
+                            <p class="text-[9px] font-bold text-slate-400 uppercase">Saldo Akun</p>
+                            <h2 class="text-2xl font-black italic tracking-tighter text-white">Rp ${saldo.toLocaleString('id-ID')}</h2>
+                        </div>
+                        <button onclick="topUpSaldo()" class="btn-grad px-4 py-2 rounded-xl text-[10px] font-black uppercase">Top Up</button>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-2 mb-8">
-                        <button onclick="topUpSaldo()" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>+</span> ISI SALDO</button>
-                        <button onclick="menuTransfer(${saldo})" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>⇄</span> TRANSFER</button>
-                        <button onclick="menuReferral()" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>👥</span> REFERRAL</button>
+                    <div class="grid grid-cols-2 gap-3 mb-8">
+                        <button onclick="menuTransfer(${saldo})" class="card-glass p-3 rounded-2xl font-bold text-[9px] uppercase border border-white/5">⇄ Transfer Saldo</button>
+                        <button onclick="menuReferral()" class="card-glass p-3 rounded-2xl font-bold text-[9px] uppercase border border-white/5">👥 Info Referral</button>
                     </div>
 
                     <div class="bg-white rounded-[2.5rem] p-6 text-slate-900 shadow-2xl space-y-10">
                         <div>
-                            <h3 class="section-title">Produk Pulsa</h3>
-                            <div class="grid grid-cols-4 gap-4">
-                                <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white">T-SEL</div><span class="text-[9px] font-bold">Telkom</span></div>
-                                <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black">ISAT</div><span class="text-[9px] font-bold">Indosat</span></div>
-                                <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white">XL</div><span class="text-[9px] font-bold">XL</span></div>
-                                <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white">TRI</div><span class="text-[9px] font-bold">Three</span></div>
+                            <h3 class="section-title">Pulsa Seluler</h3>
+                            <div class="grid grid-cols-4 gap-4 text-center">
+                                <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white">T-SEL</div><span class="text-[8px] font-black">Telkom</span></div>
+                                <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black">ISAT</div><span class="text-[8px] font-black">Indosat</span></div>
+                                <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white">XL</div><span class="text-[8px] font-black">XL</span></div>
+                                <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white">TRI</div><span class="text-[8px] font-black">Three</span></div>
                             </div>
                         </div>
+
                         <div>
-                            <h3 class="section-title">Topup E-Wallet</h3>
-                            <div class="grid grid-cols-4 gap-4">
-                                <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic">DANA</div><span class="text-[9px] font-bold text-center leading-tight">DANA</span></div>
-                                <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic">GOPAY</div><span class="text-[9px] font-bold text-center leading-tight">GoPay</span></div>
-                                <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic">OVO</div><span class="text-[9px] font-bold text-center leading-tight">OVO</span></div>
-                                <div onclick="bukaModal('ShopeePay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 text-white italic text-[8px]">SHOPEE</div><span class="text-[9px] font-bold text-center leading-tight">Shopee</span></div>
+                            <h3 class="section-title">E-Wallet Topup</h3>
+                            <div class="grid grid-cols-4 gap-4 text-center">
+                                <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic">DANA</div><span class="text-[8px] font-black">DANA</span></div>
+                                <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic">GOPAY</div><span class="text-[8px] font-black">GoPay</span></div>
+                                <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic">OVO</div><span class="text-[8px] font-black text-center">OVO</span></div>
+                                <div onclick="bukaModal('ShopeePay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 text-white italic text-[8px]">SPAY</div><span class="text-[8px] font-black">Shopee</span></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="section-title">Game Topup</h3>
+                            <div class="grid grid-cols-3 gap-4 text-center">
+                                <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-purple-700 text-white italic">RD</div><span class="text-[8px] font-black leading-tight">Royal Dream</span></div>
+                                <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 text-white italic">FF</div><span class="text-[8px] font-black leading-tight">Free Fire</span></div>
+                                <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-800 text-white italic">ML</div><span class="text-[8px] font-black leading-tight">M-Legends</span></div>
+                                <div onclick="bukaModal('PUBG Mobile', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-green-700 text-white italic text-[8px]">PUBG</div><span class="text-[8px] font-black leading-tight text-center">PUBG M</span></div>
+                                <div onclick="bukaModal('Higgs Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-indigo-600 text-white italic text-[8px]">HIGGS</div><span class="text-[8px] font-black leading-tight text-center">Domino</span></div>
+                                <div onclick="bukaModal('Boss Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-red-800 text-white italic text-[8px]">BOSS</div><span class="text-[8px] font-black leading-tight text-center">Boss Dom</span></div>
                             </div>
                         </div>
                     </div>
@@ -158,49 +170,39 @@
     }
 
     function topUpSaldo() {
-        const nominal = prompt("Masukkan jumlah isi saldo:");
-        if(!nominal || nominal < 10000) return alert("Minimal isi saldo Rp 10.000");
-        const totalBayar = parseInt(nominal) + FEE_TOPUP;
-        const pesan = `*ISI SALDO RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A💰 Nominal: *Rp ${parseInt(nominal).toLocaleString()}*%0A🎟️ Admin: *Rp ${FEE_TOPUP}*%0A💳 *TOTAL BAYAR: Rp ${totalBayar.toLocaleString()}*%0A_Kirim instruksi pembayaran admin!_`;
-        window.location.href = `https://wa.me/${WA_ADMIN}?text=${pesan}`;
+        const nominal = prompt("Nominal isi saldo:");
+        if(!nominal || nominal < 10000) return alert("Minimal Rp 10.000");
+        const total = parseInt(nominal) + FEE_TOPUP;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=*ISI SALDO*%0A👤 User: *${userAktif.toUpperCase()}*%0A💰 Nominal: *Rp ${parseInt(nominal).toLocaleString()}*%0A🎟️ Admin: *Rp ${FEE_TOPUP}*%0A💳 *TOTAL BAYAR: Rp ${total.toLocaleString()}*`;
     }
 
     function menuReferral() {
         const link = window.location.origin + window.location.pathname + "?ref=" + userAktif;
-        alert(`🎁 BONUS REFERRAL RYD STORE 🎁\n\nDapatkan Rp 5.000 saldo gratis untuk setiap teman yang diundang!\n\nSyarat:\n- Teman bergabung 7 hari\n- Saldo teman min Rp 50.000\n- Teman minimal 1x transaksi\n\nLink Anda:\n${link}`);
-    }
-
-    function prosesReward(pengundang) {
-        const p = 'users/' + pengundang.toLowerCase();
-        db.ref(p).once('value', s => {
-            if(s.exists()){
-                const sLama = parseInt(s.val().saldo || 0);
-                db.ref(p).update({ saldo: sLama + REWARD_UNDANG });
-                db.ref('users/' + userAktif.toLowerCase()).update({ rewardClaimed: true });
-            }
-        });
+        alert(`Undang teman & dapat Rp 5.000!\n\nLink:\n${link}`);
     }
 
     function bukaModal(name, tipe) {
         document.getElementById('modalTitle').innerText = name;
         document.getElementById('inputTujuan').value = "";
-        const label = document.getElementById('labelTujuan');
-        label.innerText = (tipe === 'game') ? "Masukkan ID Game" : "Masukkan Nomor " + name;
-
+        document.getElementById('labelTujuan').innerText = (tipe === 'game') ? "Masukkan ID/User" : "Masukkan Nomor " + name;
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
+        
         let noms = [];
         if (tipe === 'pulsa') {
-            noms = [{lab:'5rb', p:5000+PROFIT_PULSA},{lab:'10rb', p:10000+PROFIT_PULSA},{lab:'20rb', p:20000+PROFIT_PULSA},{lab:'50rb', p:50000+PROFIT_PULSA},{lab:'100rb', p:100000+PROFIT_PULSA}];
-        } else {
+            noms = [{lab:'5rb', p:5000+PROFIT_PULSA},{lab:'10rb', p:10000+PROFIT_PULSA},{lab:'20rb', p:20000+PROFIT_PULSA},{lab:'50rb', p:50000+PROFIT_PULSA}];
+        } else if (name === 'Royal Dream') {
+            noms = [{lab:'1B Emas', p:65000},{lab:'2B Emas', p:130000},{lab:'5B Emas', p:320000}];
+        } else if (tipe === 'ewallet') {
             noms = [{lab:'10rb', p:12000},{lab:'20rb', p:22000},{lab:'50rb', p:52000}];
+        } else {
+            noms = [{lab:'Kecil', p:15000},{lab:'Sedang', p:45000},{lab:'Besar', p:95000}];
         }
 
         noms.forEach(i => {
-            list.innerHTML += `<div onclick="beli('${name}', '${i.lab}', ${i.p})" class="bg-slate-50 p-5 rounded-2xl border text-center shadow-sm active:bg-slate-200">
-                <p class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">${name}</p>
-                <p class="text-lg font-black text-slate-800 italic">${i.lab}</p>
-                <p class="text-[10px] font-black text-blue-600 mt-1 border-t pt-1">Rp ${i.p.toLocaleString()}</p>
+            list.innerHTML += `<div onclick="beli('${name}', '${i.lab}', ${i.p})" class="bg-slate-50 p-4 rounded-2xl border text-center active:bg-slate-100">
+                <p class="text-[10px] font-black text-slate-800">${i.lab}</p>
+                <p class="text-[9px] font-bold text-blue-600 mt-1">Rp ${i.p.toLocaleString()}</p>
             </div>`;
         });
         document.getElementById('modalProduk').classList.remove('hidden');
@@ -214,29 +216,24 @@
 
     function beli(p, n, h) {
         const no = document.getElementById('inputTujuan').value;
-        if(!no || no.length < 5) return alert("Harap isi Nomor/ID!");
-        
+        if(!no || no.length < 5) return alert("Isi Nomor/ID!");
         db.ref('users/' + userAktif.toLowerCase()).once('value', s => {
             const total = (s.val().totalTransaksi || 0) + 1;
             db.ref('users/' + userAktif.toLowerCase()).update({ totalTransaksi: total });
         });
-
-        const pesan = `*ORDER RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Produk: *${p}*%0A💎 Nom: *${n}*%0A💰 Harga: *Rp ${h.toLocaleString()}*%0A📱 Tujuan: *${no}*%0A_Mohon diproses segera admin!_`;
-        window.location.href = `https://wa.me/${WA_ADMIN}?text=${pesan}`;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=*ORDER*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Item: *${p} ${n}*%0A💰 Harga: *Rp ${h.toLocaleString()}*%0A📱 Tujuan: *${no}*`;
     }
 
     function menuTransfer(sU) {
         const t = prompt("Username Tujuan:");
         if (!t) return;
-        const j = parseInt(prompt("Jumlah Transfer:"));
-        if (!j || j < 1000) return alert("Minimal Rp 1.000");
-        if (sU < j) return alert("Saldo Anda Kurang!");
-        const pT = 'users/' + t.toLowerCase();
-        db.ref(pT).once('value', s => {
-            if (!s.exists()) return alert("Username tujuan tidak ditemukan!");
-            const sT = parseInt(s.val().saldo || 0);
+        const j = parseInt(prompt("Jumlah:"));
+        if (!j || j < 1000) return alert("Min Rp 1.000");
+        if (sU < j) return alert("Saldo Kurang!");
+        db.ref('users/' + t.toLowerCase()).once('value', s => {
+            if (!s.exists()) return alert("User tidak ditemukan!");
             db.ref('users/' + userAktif.toLowerCase()).update({ saldo: sU - j });
-            db.ref(pT).update({ saldo: sT + j });
+            db.ref('users/' + t.toLowerCase()).update({ saldo: (s.val().saldo || 0) + j });
             alert("Transfer Berhasil!");
         });
     }
@@ -244,26 +241,22 @@
     function doLogin() {
         const u = document.getElementById('l_u').value.toLowerCase().trim();
         const p = document.getElementById('l_p').value;
-        if(!u || !p) return alert("Isi data lengkap!");
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else alert("Login Gagal! Periksa Username/Password.");
+            } else alert("Gagal Login!");
         });
     }
 
     function doRegister() {
         const u = document.getElementById('r_u').value.toLowerCase().trim();
         const p = document.getElementById('r_p').value;
-        const ref = document.getElementById('r_ref').value.toLowerCase().trim();
-        if(u.length < 3) return alert("Username minimal 3 karakter!");
-        db.ref('users/' + u).once('value', s => {
-            if(s.exists()) return alert("Username sudah digunakan!");
-            db.ref('users/' + u).set({ 
-                password: p, saldo: 0, invitedBy: ref || null, 
-                rewardClaimed: false, createdAt: new Date().toISOString(), totalTransaksi: 0 
-            }).then(() => { alert("Daftar Berhasil! Silakan Login."); pageLogin(); });
-        });
+        const ref = document.getElementById('r_ref').value;
+        if(u.length < 3) return alert("Minimal 3 karakter!");
+        db.ref('users/' + u).set({ 
+            password: p, saldo: 0, invitedBy: ref || null, 
+            rewardClaimed: false, createdAt: new Date().toISOString(), totalTransaksi: 0 
+        }).then(() => { alert("Berhasil!"); pageLogin(); });
     }
 
     function logout() { localStorage.removeItem('ryd_user'); location.reload(); }
