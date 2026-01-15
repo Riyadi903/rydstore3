@@ -13,15 +13,17 @@
         .card-glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .btn-grad { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); transition: 0.2s; }
         .btn-grad:active { transform: scale(0.95); }
-        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; items-center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
         .modal-up { background: white; border-radius: 30px 30px 0 0; color: #0f172a; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.3s ease; }
         .modal-up.active { transform: translateY(0); }
+        .section-title { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
     </style>
 </head>
 <body>
 
 <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col relative pb-20">
-    </div>
+    <div class="p-20 text-center animate-pulse">Menyiapkan Layanan...</div>
+</div>
 
 <div id="modalProduk" class="fixed inset-0 bg-black/80 z-[90] hidden" onclick="tutupModal()">
     <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
@@ -54,12 +56,12 @@
     function pageLogin() {
         view(`
             <div class="p-8 pt-24 text-center">
-                <div class="w-20 h-20 btn-grad rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic shadow-2xl shadow-blue-500/20">R</div>
+                <div class="w-20 h-20 btn-grad rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic shadow-2xl">R</div>
                 <h1 class="text-3xl font-black mb-12 tracking-tighter uppercase italic">RYD STORE</h1>
                 <div class="space-y-4">
-                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500">
-                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500">
-                    <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase tracking-widest shadow-lg">Login</button>
+                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white">
+                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white">
+                    <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase tracking-widest">Login</button>
                     <button onclick="pageRegister()" class="w-full text-slate-500 text-xs font-bold uppercase">Daftar Akun Baru</button>
                 </div>
             </div>
@@ -73,8 +75,8 @@
                 <div class="space-y-4">
                     <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none">
                     <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none">
-                    <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar</button>
-                    <button onclick="pageLogin()" class="w-full text-slate-500 text-xs font-bold uppercase mt-4 text-center block">Kembali</button>
+                    <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar Sekarang</button>
+                    <button onclick="pageLogin()" class="w-full text-slate-500 text-xs font-bold uppercase mt-4 text-center block">Kembali ke Login</button>
                 </div>
             </div>
         `);
@@ -90,44 +92,53 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-8">
                         <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-black">Member Aktif</p>
-                            <h2 class="text-xl font-black text-blue-400 italic">@${userAktif.toUpperCase()}</h2>
+                            <p class="text-[10px] text-slate-500 uppercase font-black">User Member</p>
+                            <h2 class="text-xl font-black text-blue-400 italic uppercase">@${userAktif}</h2>
                         </div>
                         <button onclick="logout()" class="bg-red-500/20 text-red-500 p-2 px-4 rounded-xl text-[10px] font-bold">LOGOUT</button>
                     </div>
 
-                    <div class="btn-grad p-8 rounded-[2.5rem] shadow-2xl mb-8 border border-white/10 relative overflow-hidden">
-                        <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest mb-1">Saldo Anda</p>
+                    <div class="btn-grad p-8 rounded-[2.5rem] shadow-2xl mb-8 relative overflow-hidden border border-white/10">
+                        <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Saldo Tersedia</p>
                         <h2 class="text-4xl font-black italic tracking-tighter">Rp ${saldo.toLocaleString('id-ID')}</h2>
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/5 rounded-full"></div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 mb-8">
-                        <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Isi Saldo @${userAktif}'" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-xs uppercase"><span class="text-blue-500 text-lg">+</span> Isi Saldo</button>
-                        <button onclick="menuTransfer(${saldo})" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-xs uppercase"><span class="text-emerald-500 text-lg">⇄</span> Transfer</button>
+                        <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Isi Saldo @${userAktif}'" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-[10px] uppercase"> Isi Saldo</button>
+                        <button onclick="menuTransfer(${saldo})" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-[10px] uppercase">Transfer Saldo</button>
                     </div>
 
-                    <div class="bg-white rounded-[2.5rem] p-6 text-slate-900 shadow-2xl">
-                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Kategori Pulsa</h3>
-                        <div class="grid grid-cols-4 gap-4 mb-8">
-                            <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white">T-SEL</div><span class="text-[9px] font-black uppercase text-slate-600">Telkom</span></div>
-                            <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black">ISAT</div><span class="text-[9px] font-black uppercase text-slate-600">Indosat</span></div>
-                            <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white">XL</div><span class="text-[9px] font-black uppercase text-slate-600">XL Axiata</span></div>
-                            <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white">TRI</div><span class="text-[9px] font-black uppercase text-slate-600">Tri</span></div>
+                    <div class="bg-white rounded-[2.5rem] p-6 text-slate-900 shadow-2xl space-y-10">
+                        <div>
+                            <h3 class="section-title text-slate-400">Operator Pulsa</h3>
+                            <div class="grid grid-cols-4 gap-4">
+                                <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white shadow-red-500/40 shadow-lg">T-SEL</div><span class="text-[9px] font-bold">Telkom</span></div>
+                                <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black shadow-yellow-500/40 shadow-lg">ISAT</div><span class="text-[9px] font-bold">Indosat</span></div>
+                                <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white shadow-blue-500/40 shadow-lg">XL</div><span class="text-[9px] font-bold">XL Axiata</span></div>
+                                <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white shadow-pink-500/40 shadow-lg">TRI</div><span class="text-[9px] font-bold">Three</span></div>
+                            </div>
                         </div>
 
-                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">Top Up Game</h3>
-                        <div class="grid grid-cols-3 gap-4 mb-8">
-                            <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-purple-700 text-white italic">RD</div><span class="text-[9px] font-black uppercase text-slate-600">Royal Dream</span></div>
-                            <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 text-white italic">FF</div><span class="text-[9px] font-black uppercase text-slate-600">Free Fire</span></div>
-                            <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-800 text-white italic">ML</div><span class="text-[9px] font-black uppercase text-slate-600">M-Legends</span></div>
+                        <div>
+                            <h3 class="section-title text-slate-400">E-Wallet Top Up</h3>
+                            <div class="grid grid-cols-4 gap-4">
+                                <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic shadow-lg">DANA</div><span class="text-[9px] font-bold">DANA</span></div>
+                                <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic shadow-lg">GOPAY</div><span class="text-[9px] font-bold">GoPay</span></div>
+                                <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic shadow-lg">OVO</div><span class="text-[9px] font-bold">OVO</span></div>
+                                <div onclick="bukaModal('Shopee', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 text-white italic shadow-lg">SPay</div><span class="text-[9px] font-bold">Shopee</span></div>
+                            </div>
                         </div>
 
-                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b pb-2">E-Wallet</h3>
-                        <div class="grid grid-cols-3 gap-4">
-                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic">DANA</div><span class="text-[9px] font-black uppercase text-slate-600">DANA</span></div>
-                            <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic">GOPAY</div><span class="text-[9px] font-black uppercase text-slate-600">GoPay</span></div>
-                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic">OVO</div><span class="text-[9px] font-black uppercase text-slate-600">OVO</span></div>
+                        <div>
+                            <h3 class="section-title text-slate-400">Game Top Up</h3>
+                            <div class="grid grid-cols-3 gap-4">
+                                <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-purple-700 text-white italic shadow-lg">RD</div><span class="text-[9px] font-bold">Royal Dream</span></div>
+                                <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 text-white italic shadow-lg">FF</div><span class="text-[9px] font-bold">Free Fire</span></div>
+                                <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-800 text-white italic shadow-lg">ML</div><span class="text-[9px] font-bold">M-Legends</span></div>
+                                <div onclick="bukaModal('PUBG Mobile', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-green-700 text-white italic shadow-lg">PUBG</div><span class="text-[9px] font-bold">PUBG M</span></div>
+                                <div onclick="bukaModal('Higgs Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-indigo-600 text-white italic shadow-lg">HD</div><span class="text-[9px] font-bold">Higgs Dom</span></div>
+                                <div onclick="bukaModal('Boss Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-red-800 text-white italic shadow-lg">BOSS</div><span class="text-[9px] font-bold">Boss Dom</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -135,25 +146,20 @@
         });
     }
 
-    // --- LOGIKA TRANSFER SALDO ---
     function menuTransfer(saldoUser) {
         const target = prompt("Masukkan Username Tujuan:");
         if (!target) return;
         const jumlah = parseInt(prompt("Masukkan Jumlah Transfer:"));
-        if (!jumlah || jumlah < 1000) return alert("Minimal transfer Rp 1.000");
-
-        if (saldoUser < jumlah) return alert("Saldo Anda tidak cukup!");
+        if (!jumlah || jumlah < 1000) return alert("Minimal Rp 1.000");
+        if (saldoUser < jumlah) return alert("Saldo Kurang!");
 
         const pathTujuan = 'users/' + target.toLowerCase();
         db.ref(pathTujuan).once('value', s => {
-            if (!s.exists()) return alert("Username tujuan tidak ditemukan!");
-            
-            // Proses Transfer
+            if (!s.exists()) return alert("Username tidak ditemukan!");
             const saldoTujuan = parseInt(s.val().saldo || 0);
             db.ref('users/' + userAktif.toLowerCase()).update({ saldo: saldoUser - jumlah });
             db.ref(pathTujuan).update({ saldo: saldoTujuan + jumlah });
-            
-            alert(`Berhasil Transfer Rp ${jumlah.toLocaleString()} ke ${target}`);
+            alert("Berhasil Transfer!");
         });
     }
 
@@ -172,27 +178,16 @@
                 { lab: '100.000', price: 100000 + PROFIT_PULSA }
             ];
         } else if (name === 'Royal Dream') {
-            nominals = [
-                { lab: '1B (Koin Emas)', price: 65000 },
-                { lab: '2B (Koin Emas)', price: 130000 },
-                { lab: '5B (Koin Emas)', price: 320000 }
-            ];
+            nominals = [{ lab: '1B (Koin Emas)', price: 65000 }, { lab: '2B', price: 130000 }, { lab: '5B', price: 320000 }];
         } else if (tipe === 'ewallet') {
-            nominals = [
-                { lab: '10.000', price: 12000 },
-                { lab: '20.000', price: 22000 },
-                { lab: '50.000', price: 52000 }
-            ];
+            nominals = [{ lab: '10.000', price: 11500 }, { lab: '20.000', price: 21500 }, { lab: '50.000', price: 51500 }, { lab: '100.000', price: 101500 }];
         } else {
-            nominals = [
-                { lab: '86 Diamonds', price: 20000 },
-                { lab: '172 Diamonds', price: 40000 }
-            ];
+            nominals = [{ lab: 'Kecil/86 Gems', price: 15000 }, { lab: 'Besar/Large', price: 50000 }, { lab: 'VIP Pack', price: 100000 }];
         }
 
         nominals.forEach(item => {
             list.innerHTML += `
-                <div onclick="beli('${name}', '${item.lab}', ${item.price})" class="bg-slate-50 p-5 rounded-2xl border border-slate-100 active:bg-slate-200 text-center">
+                <div onclick="beli('${name}', '${item.lab}', ${item.price})" class="bg-slate-50 p-5 rounded-2xl border border-slate-100 active:bg-slate-200 text-center shadow-sm">
                     <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">${name}</p>
                     <p class="text-lg font-black text-slate-800 italic">${item.lab}</p>
                     <p class="text-[10px] font-black text-blue-600 mt-1 border-t pt-1 italic uppercase">Rp ${item.price.toLocaleString('id-ID')}</p>
@@ -210,32 +205,31 @@
     }
 
     function beli(p, n, h) {
-        const pesan = `*ORDER RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Item: *${p}*%0A💎 Nom: *${n}*%0A💰 Bayar: *Rp ${h.toLocaleString('id-ID')}*%0A_Mohon diproses Admin._`;
+        const pesan = `*ORDER RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Item: *${p}*%0A💎 Nom: *${n}*%0A💰 Bayar: *Rp ${h.toLocaleString('id-ID')}*%0A_Mohon segera diproses admin!_`;
         window.location.href = `https://wa.me/${WA_ADMIN}?text=${pesan}`;
     }
 
     function doLogin() {
         const u = document.getElementById('l_u').value.toLowerCase().trim();
         const p = document.getElementById('l_p').value;
-        if(!u || !p) return alert("Isi Username & Password!");
+        if(!u || !p) return alert("Username & Password wajib diisi!");
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else { alert("User atau Password Salah!"); }
+            } else { alert("Data Login Salah!"); }
         });
     }
 
     function doRegister() {
         const u = document.getElementById('r_u').value.toLowerCase().trim();
         const p = document.getElementById('r_p').value;
-        if(u.length < 3) return alert("Minimal 3 Huruf!");
+        if(u.length < 3) return alert("Minimal 3 karakter!");
         db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
-            alert("Berhasil Daftar!"); pageLogin();
+            alert("Pendaftaran Berhasil!"); pageLogin();
         });
     }
 
     function logout() { localStorage.removeItem('ryd_user'); location.reload(); }
-
     if(userAktif) pageDashboard(); else pageLogin();
 </script>
 </body>
