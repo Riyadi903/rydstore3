@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE - Login</title>
+    <title>RYD STORE - Login Google</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -31,7 +31,7 @@
     const db = firebase.database();
     const WA_ADMIN = "6285881934739";
 
-    // Cek Status Login
+    // Mengecek Status Login saat halaman dibuka
     auth.onAuthStateChanged((user) => {
         if (user) {
             renderDashboard(user);
@@ -40,12 +40,25 @@
         }
     });
 
+    // Menangkap hasil login setelah redirect dari Google
+    auth.getRedirectResult().catch((error) => {
+        if (error.code !== "auth/redirect-cancelled-by-user") {
+            alert("Gagal Login: " + error.message);
+        }
+    });
+
+    function loginGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        // Menggunakan Redirect agar tidak bentrok dengan pop-up browser HP
+        auth.signInWithRedirect(provider);
+    }
+
     function renderLogin() {
         document.getElementById('app').innerHTML = `
             <div class="p-10 pt-32 text-center">
                 <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center text-white text-4xl font-black italic shadow-lg">RS</div>
-                <h1 class="text-3xl font-bold text-gray-800">RYD STORE</h1>
-                <p class="text-gray-500 mb-12 uppercase tracking-widest text-xs">Digital Payment Solution</p>
+                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">RYD STORE</h1>
+                <p class="text-gray-500 mb-12 uppercase tracking-widest text-[10px] font-bold">Digital Payment Solution</p>
                 <button onclick="loginGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 p-4 rounded-2xl shadow-sm active:scale-95 transition-all">
                     <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
                     <span class="font-bold text-gray-700">Masuk dengan Google</span>
@@ -53,16 +66,11 @@
             </div>`;
     }
 
-    function loginGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).catch(err => alert("Gagal Login: " + err.message));
-    }
-
     function renderDashboard(user) {
         db.ref('users/' + user.uid).on('value', (s) => {
             let data = s.val();
-            // Buat data baru jika user baru pertama kali login
             if (!data) {
+                // Mendaftarkan user baru ke database jika belum ada
                 db.ref('users/' + user.uid).set({ nama: user.displayName, saldo: 0 });
                 return;
             }
@@ -71,10 +79,10 @@
                 <div class="bg-blue-700 p-6 pb-24 text-white rounded-b-[40px] shadow-lg">
                     <div class="flex justify-between items-center mb-6">
                         <div class="text-left">
-                            <p class="text-xs opacity-70 italic">Selamat Datang,</p>
-                            <p class="font-bold truncate w-40">${data.nama}</p>
+                            <p class="text-[10px] opacity-70 italic font-bold">SELAMAT DATANG,</p>
+                            <p class="font-bold truncate w-40 text-sm">${data.nama.toUpperCase()}</p>
                         </div>
-                        <button onclick="auth.signOut()" class="bg-white/20 px-4 py-2 rounded-xl text-xs font-bold border border-white/20">Logout</button>
+                        <button onclick="auth.signOut()" class="bg-white/20 px-3 py-1 rounded-xl text-[10px] font-bold border border-white/20 uppercase">Logout</button>
                     </div>
                     <div class="bg-white/10 p-5 rounded-3xl border border-white/10 text-left">
                         <p class="text-[10px] font-bold opacity-80 uppercase mb-1">Total Saldo</p>
@@ -83,16 +91,16 @@
                 </div>
                 <div class="px-5 -mt-10 text-center">
                     <div class="bg-white p-4 rounded-3xl shadow-xl flex justify-around mb-8 border border-gray-50">
-                        <button onclick="alert('Klik Produk untuk Beli atau WA Admin untuk Top Up')" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl font-bold">+</div>
-                            <span class="text-[10px] font-black text-gray-500 uppercase">Top Up</span>
+                        <button onclick="topUpWA()" class="flex flex-col items-center active:scale-90 transition-all">
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl font-bold shadow-inner">+</div>
+                            <span class="text-[10px] font-black text-gray-500 uppercase">Isi Saldo</span>
                         </button>
                     </div>
-                    <h3 class="font-black text-gray-800 mb-4 text-sm uppercase">Menu Pulsa</h3>
+                    <h3 class="font-black text-gray-800 mb-4 text-xs uppercase tracking-widest">PILIH OPERATOR</h3>
                     <div class="grid grid-cols-2 gap-4">
                         ${['Telkomsel', 'Indosat', 'XL Axiata', 'Tri'].map(op => `
-                            <div onclick="kirimWA('${op}')" class="bg-gray-50 p-6 rounded-[2rem] border border-white shadow-md active:scale-95 transition-all cursor-pointer">
-                                <p class="font-black text-blue-600 text-xs uppercase">${op}</p>
+                            <div onclick="beliWA('${op}')" class="bg-gray-50 p-6 rounded-[2rem] border border-white shadow-md active:scale-95 transition-all cursor-pointer">
+                                <p class="font-black text-blue-600 text-[10px] uppercase">${op}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -100,8 +108,13 @@
         });
     }
 
-    function kirimWA(op) {
-        const msg = `Halo Admin, saya mau beli Pulsa ${op}.\nUser: ${auth.currentUser.displayName}`;
+    function topUpWA() {
+        const msg = `Halo Admin RYD STORE,\nSaya mau TOP UP SALDO.\nNama: ${auth.currentUser.displayName}\nID: ${auth.currentUser.uid}`;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`;
+    }
+
+    function beliWA(op) {
+        const msg = `Halo Admin,\nSaya ingin membeli produk ${op}.\nUser: ${auth.currentUser.displayName}\nID: ${auth.currentUser.uid}`;
         window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`;
     }
 </script>
