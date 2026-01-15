@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE - Digital Payment</title>
+    <title>RYD STORE</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -11,17 +11,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; -webkit-tap-highlight-color: transparent; }
         .blue-gradient { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
-        .category-card { transition: all 0.2s; cursor: pointer; }
-        .category-card:active { transform: scale(0.95); }
+        .btn-active:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
 
-<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl relative pb-10">
-    </div>
+<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl relative pb-10"></div>
 
 <script>
-    // --- CONFIG FIREBASE ASLI ---
     const firebaseConfig = {
         apiKey: "AIzaSyAgv7_Ysh6_Pz0q7VvF_Ew8A0p-6pM46eE",
         authDomain: "rydstore3.firebaseapp.com",
@@ -34,36 +31,49 @@
 
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const db = firebase.database();
-    
-    // --- KONFIGURASI ADMIN ---
     const WA_ADMIN = "6285881934739"; 
     let currentUser = null;
-    const app = document.getElementById('app');
+
+    // FUNGSI PENYAMBUNG WHATSAPP TERKUAT
+    function kirimKeWA(pesan) {
+        const text = encodeURIComponent(pesan);
+        // Link format whatsapp:// (lebih kuat memicu aplikasi di HP)
+        const waLink = "whatsapp://send?phone=" + WA_ADMIN + "&text=" + text;
+        const webLink = "https://api.whatsapp.com/send?phone=" + WA_ADMIN + "&text=" + text;
+
+        // Coba buka aplikasi langsung
+        window.location.href = waLink;
+
+        // Jika dalam 500ms tidak pindah (biasanya di PC), buka link web
+        setTimeout(() => {
+            window.open(webLink, '_blank');
+        }, 500);
+    }
 
     function showLogin() {
-        app.innerHTML = `
+        document.getElementById('app').innerHTML = `
             <div class="p-8 pt-20 text-center">
                 <div class="w-20 h-20 blue-gradient rounded-3xl mx-auto mb-4 flex items-center justify-center shadow-lg text-white text-4xl font-black">R</div>
-                <h1 class="text-2xl font-black text-gray-800 tracking-tighter">RYD STORE</h1>
-                <p class="text-gray-500 text-sm mb-10">Solusi Pulsa & Top Up 24 Jam</p>
+                <h1 class="text-2xl font-black text-gray-800 tracking-tighter uppercase">RYD STORE</h1>
+                <p class="text-gray-400 text-sm mb-10 font-bold uppercase tracking-widest text-[10px]">Digital Payment</p>
                 <div class="space-y-4 text-left">
-                    <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all mt-4">MASUK</button>
-                    <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-semibold text-center block">Daftar Akun Baru</button>
+                    <input id="u_name" type="text" placeholder="Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <input id="u_pass" type="password" placeholder="Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
+                    <button onclick="handleLogin()" class="w-full blue-gradient text-white p-4 rounded-2xl font-black shadow-lg btn-active">MASUK PANEL</button>
+                    <button onclick="showRegister()" class="w-full py-2 text-blue-600 text-sm font-bold text-center block">DAFTAR BARU</button>
                 </div>
             </div>`;
     }
 
     function showRegister() {
-        app.innerHTML = `
-            <div class="p-8 pt-20 text-center">
-                <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase tracking-tighter">Pendaftaran</h2>
-                <div class="space-y-4 mt-10 text-left">
-                    <input id="r_name" type="text" placeholder="Buat Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <input id="r_pass" type="password" placeholder="Buat Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none focus:ring-2 focus:ring-blue-500">
-                    <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-bold shadow-lg active:scale-95 transition-all">DAFTAR SEKARANG</button>
-                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm text-center block">Kembali ke Login</button>
+        document.getElementById('app').innerHTML = `
+            <div class="p-8 pt-20">
+                <h2 class="text-2xl font-black text-gray-800 mb-2 uppercase text-center tracking-tighter">Daftar Akun</h2>
+                <div class="space-y-4 mt-10">
+                    <input id="r_name" type="text" placeholder="Buat Username" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
+                    <input id="r_pass" type="password" placeholder="Buat Password" class="w-full p-4 bg-gray-50 border rounded-2xl outline-none">
+                    <button onclick="handleRegister()" class="w-full bg-green-600 text-white p-4 rounded-2xl font-black shadow-lg btn-active">DAFTAR SEKARANG</button>
+                    <button onclick="showLogin()" class="w-full py-2 text-gray-500 text-sm font-bold text-center block uppercase tracking-widest">Kembali ke Login</button>
                 </div>
             </div>`;
     }
@@ -72,145 +82,117 @@
         db.ref('users/' + currentUser).on('value', (s) => {
             const data = s.val();
             if(!data) return;
-            
-            app.innerHTML = `
+            document.getElementById('app').innerHTML = `
                 <div class="blue-gradient p-6 pb-28 text-white rounded-b-[40px] shadow-xl">
                     <div class="flex justify-between items-center mb-8">
-                        <div><p class="text-xs opacity-70">Selamat datang,</p><p class="font-bold text-lg">@${currentUser}</p></div>
-                        <button onclick="location.reload()" class="bg-white/20 p-2 rounded-xl text-xs backdrop-blur-md px-4 border border-white/20">Logout</button>
+                        <div><p class="text-[10px] font-black opacity-60 uppercase tracking-widest">USER PANEL</p><p class="font-black text-xl uppercase tracking-tighter">@${currentUser}</p></div>
+                        <button onclick="location.reload()" class="bg-white/20 p-2 rounded-xl text-[10px] font-bold backdrop-blur-md px-4 uppercase border border-white/20">Keluar</button>
                     </div>
-                    <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-sm border border-white/10">
-                        <p class="text-xs opacity-80 mb-1">Total Saldo Kamu</p>
-                        <h2 class="text-4xl font-black tracking-tight">Rp ${Number(data.saldo || 0).toLocaleString('id-ID')}</h2>
+                    <div class="bg-white/10 p-5 rounded-3xl border border-white/10 shadow-inner">
+                        <p class="text-[10px] font-bold opacity-80 mb-1 uppercase tracking-widest">Saldo Anda</p>
+                        <h2 class="text-4xl font-black tracking-tighter">Rp ${Number(data.saldo || 0).toLocaleString('id-ID')}</h2>
                     </div>
                 </div>
 
                 <div class="px-5 -mt-10">
-                    <div class="bg-white p-4 rounded-3xl shadow-xl flex justify-around items-center mb-8 border border-gray-50">
-                        <button onclick="showTransfer()" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 mb-1 text-xl shadow-inner font-bold italic">TF</div>
-                            <span class="text-[10px] font-black text-gray-600 uppercase tracking-tighter">Transfer</span>
+                    <div class="bg-white p-4 rounded-3xl shadow-2xl flex justify-around items-center mb-8 border border-gray-50">
+                        <button onclick="showTransfer()" class="flex flex-col items-center btn-active">
+                            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-1 text-xl font-black italic shadow-sm border border-blue-100">TF</div>
+                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Transfer</span>
                         </button>
-                        <button onclick="handleTopUp()" class="flex flex-col items-center">
-                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl shadow-inner font-bold">+</div>
-                            <span class="text-[10px] font-black text-gray-600 uppercase tracking-tighter font-black">Top Up</span>
+                        <button onclick="handleTopUp()" class="flex flex-col items-center btn-active">
+                            <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-1 text-2xl font-black shadow-sm border border-orange-100">+</div>
+                            <span class="text-[10px] font-black text-gray-400 uppercase tracking-tighter">Isi Saldo</span>
                         </button>
                     </div>
 
-                    <h3 class="font-black text-gray-800 mb-4 px-2 tracking-tighter text-sm uppercase text-center">PILIH OPERATOR</h3>
+                    <h3 class="font-black text-gray-800 mb-4 px-2 tracking-tighter text-sm uppercase text-center">Produk Pulsa</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        ${categoryCard("Telkomsel", "bg-red-50", "text-red-600", "🔴")}
-                        ${categoryCard("Indosat", "bg-yellow-50", "text-yellow-600", "🟡")}
-                        ${categoryCard("XL Axiata", "bg-blue-50", "text-blue-600", "🔵")}
-                        ${categoryCard("Tri (3)", "bg-pink-50", "text-pink-600", "🟣")}
+                        ${catBtn("Telkomsel", "bg-red-50", "text-red-600", "🔴")}
+                        ${catBtn("Indosat", "bg-yellow-50", "text-yellow-600", "🟡")}
+                        ${catBtn("XL Axiata", "bg-blue-50", "text-blue-600", "🔵")}
+                        ${catBtn("Tri (3)", "bg-pink-50", "text-pink-600", "🟣")}
                     </div>
                 </div>`;
         });
     }
 
-    function categoryCard(name, bg, text, icon) {
-        return `
-            <div onclick="showProducts('${name}')" class="${bg} p-6 rounded-[2rem] border border-white shadow-sm flex flex-col items-center category-card">
-                <span class="text-3xl mb-2">${icon}</span>
-                <span class="font-black ${text} text-[12px] uppercase tracking-tighter">${name}</span>
-            </div>`;
+    function catBtn(name, bg, text, icon) {
+        return `<div onclick="showProducts('${name}')" class="${bg} p-6 rounded-[2rem] border border-white shadow-md flex flex-col items-center btn-active border border-gray-100">
+            <span class="text-3xl mb-1">${icon}</span>
+            <span class="font-black ${text} text-[10px] uppercase tracking-tighter">${name}</span>
+        </div>`;
     }
 
     function showProducts(provider) {
         const prices = [5000, 10000, 20000, 25000, 50000, 100000];
-        let listHtml = `
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-8">
-                    <button onclick="showDashboard()" class="text-2xl text-blue-600">←</button>
-                    <h2 class="text-xl font-black text-gray-800 uppercase tracking-tighter">PULSA ${provider}</h2>
-                    <div class="w-8"></div>
-                </div>
-                <div class="space-y-3">`;
-
+        let html = `<div class="p-6 text-center">
+            <div class="flex items-center justify-between mb-8">
+                <button onclick="showDashboard()" class="text-3xl text-blue-600">←</button>
+                <h2 class="text-xl font-black text-gray-800 uppercase tracking-tighter italic">PULSA ${provider}</h2>
+                <div class="w-8"></div>
+            </div>
+            <div class="space-y-3">`;
         prices.forEach(p => {
-            const finalPrice = p + 1000;
-            listHtml += `
-                <div onclick="beli('Pulsa ${provider} ${p.toLocaleString()}', ${finalPrice})" class="flex justify-between p-5 bg-gray-50 border border-gray-100 rounded-3xl items-center active:bg-blue-50 transition-all">
-                    <div class="flex flex-col">
-                        <span class="text-xs text-gray-400 font-bold uppercase tracking-widest">${provider}</span>
-                        <span class="text-lg font-black text-gray-800">${p/1000}K</span>
-                    </div>
-                    <div class="text-right font-black text-blue-700">
-                        <span class="text-[10px] block opacity-50">Harga</span>
-                        Rp ${finalPrice.toLocaleString('id-ID')}
-                    </div>
-                </div>`;
+            const hrg = p + 1000;
+            html += `<div onclick="beli('${provider}', ${p}, ${hrg})" class="flex justify-between p-5 bg-gray-50 border border-gray-100 rounded-3xl items-center btn-active text-left">
+                <div><p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">${provider}</p><p class="text-xl font-black text-gray-800 tracking-tighter">${p/1000}K</p></div>
+                <div class="text-right font-black text-blue-700 font-black"><p class="text-[8px] opacity-50 uppercase tracking-widest">Harga</p>Rp ${hrg.toLocaleString()}</div>
+            </div>`;
         });
-        listHtml += `</div></div>`;
-        app.innerHTML = listHtml;
+        document.getElementById('app').innerHTML = html + `</div></div>`;
     }
 
     function showTransfer() {
-        app.innerHTML = `
+        document.getElementById('app').innerHTML = `
             <div class="p-6">
-                <div class="flex items-center mb-8">
-                    <button onclick="showDashboard()" class="text-2xl mr-4 text-blue-600">←</button>
-                    <h2 class="text-xl font-black text-gray-800 uppercase">Transfer Saldo</h2>
-                </div>
-                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-4 border border-gray-100">
-                    <label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Username Tujuan</label>
-                    <input id="tf_target" type="text" placeholder="Masukkan username" class="w-full bg-transparent text-lg font-bold outline-none border-b-2 border-gray-200 pb-1">
-                </div>
-                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-8 border border-gray-100">
-                    <label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Nominal Kirim</label>
-                    <input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-3xl font-black text-blue-600 outline-none border-b-2 border-gray-200 pb-1">
-                </div>
-                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-3xl font-black shadow-lg">KIRIM SALDO SEKARANG</button>
+                <div class="flex items-center mb-8"><button onclick="showDashboard()" class="text-3xl mr-4 text-blue-600">←</button><h2 class="text-xl font-black text-gray-800 uppercase">Transfer Saldo</h2></div>
+                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-4 border border-gray-100 shadow-inner"><label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Username Tujuan</label><input id="tf_target" type="text" placeholder="Ketik username" class="w-full bg-transparent text-lg font-bold outline-none border-b-2 border-gray-200"></div>
+                <div class="bg-gray-50 p-6 rounded-[2.5rem] mb-8 border border-gray-100 shadow-inner"><label class="block text-[10px] font-black text-gray-400 mb-2 uppercase tracking-widest">Nominal</label><input id="tf_amount" type="number" placeholder="0" class="w-full bg-transparent text-3xl font-black text-blue-600 outline-none border-b-2 border-gray-200"></div>
+                <button onclick="handleTransfer()" class="w-full blue-gradient text-white p-5 rounded-3xl font-black shadow-lg btn-active uppercase">Kirim Sekarang</button>
             </div>`;
     }
 
-    // --- LOGIC FUNCTIONS ---
     function handleTopUp() {
-        const msg = `Halo Admin RYD STORE,\n\nSaya ingin TOP UP SALDO.\n👤 Username: ${currentUser}\n\nMohon informasi nomor rekening/e-wallet untuk pembayaran.`;
-        window.open(`https://api.whatsapp.com/send?phone=${WA_ADMIN}&text=${encodeURIComponent(msg)}`, '_blank');
+        kirimKeWA("Halo Admin RYD STORE,\nSaya mau ISI SALDO.\nUsername: " + currentUser);
     }
 
-    function beli(produk, harga) {
+    function beli(prov, nom, hrg) {
         db.ref('users/' + currentUser).once('value', (s) => {
-            if(s.val().saldo >= harga) {
-                const msg = `HALO ADMIN RYD STORE\n\nSaya ingin membeli:\n📦 Produk: ${produk}\n💰 Harga: Rp ${harga.toLocaleString()}\n👤 User: ${currentUser}\n\nMohon segera diproses!`;
-                window.open(`https://api.whatsapp.com/send?phone=${WA_ADMIN}&text=${encodeURIComponent(msg)}`, '_blank');
+            if(s.val().saldo >= hrg) {
+                kirimKeWA("PESANAN BARU\nProduk: Pulsa " + prov + " " + nom + "\nHarga: Rp " + hrg.toLocaleString() + "\nUser: " + currentUser);
             } else { alert("Saldo tidak cukup!"); }
         });
     }
 
     function handleRegister() {
-        const user = document.getElementById('r_name').value.toLowerCase().trim().replace(/\s/g, '');
-        const pass = document.getElementById('r_pass').value;
-        if(user.length < 3 || !pass) return alert("Lengkapi data!");
-        db.ref('users/' + user).set({ password: pass, saldo: 0 }).then(() => { alert("Daftar Berhasil! Silakan Login."); showLogin(); });
+        const u = document.getElementById('r_name').value.toLowerCase().trim().replace(/\s/g, '');
+        const p = document.getElementById('r_pass').value;
+        if(u.length < 3 || !p) return alert("Isi data dengan benar!");
+        db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => { alert("Berhasil! Silakan Login."); showLogin(); });
     }
 
     function handleLogin() {
-        const user = document.getElementById('u_name').value.toLowerCase().trim();
-        const pass = document.getElementById('u_pass').value;
-        if(!user || !pass) return alert("Lengkapi data!");
-        db.ref('users/' + user).once('value', (s) => {
-            if(s.exists() && s.val().password === pass) { currentUser = user; showDashboard(); }
-            else { alert("Login Gagal!"); }
+        const u = document.getElementById('u_name').value.toLowerCase().trim();
+        const p = document.getElementById('u_pass').value;
+        db.ref('users/' + u).once('value', (s) => {
+            if(s.exists() && s.val().password === p) { currentUser = u; showDashboard(); }
+            else { alert("User/Password Salah!"); }
         });
     }
 
     function handleTransfer() {
-        const target = document.getElementById('tf_target').value.toLowerCase().trim();
-        const amount = parseInt(document.getElementById('tf_amount').value);
-        if (!target || !amount || amount <= 0) return alert("Data tidak valid");
-        if (target === currentUser) return alert("Gak bisa kirim ke sendiri!");
-
+        const t = document.getElementById('tf_target').value.toLowerCase().trim();
+        const a = parseInt(document.getElementById('tf_amount').value);
+        if (!t || !a || a <= 0) return alert("Data tidak valid");
         db.ref('users/' + currentUser).once('value', (s) => {
-            const mySaldo = s.val().saldo || 0;
-            if (mySaldo < amount) return alert("Saldo kurang!");
-            db.ref('users/' + target).once('value', (t) => {
-                if (!t.exists()) return alert("User tujuan tidak ada!");
-                db.ref('users/' + currentUser).update({ saldo: mySaldo - amount });
-                db.ref('users/' + target).update({ saldo: (t.val().saldo || 0) + amount });
-                alert("Transfer Berhasil!");
-                showDashboard();
+            const my = s.val().saldo || 0;
+            if (my < a) return alert("Saldo kurang!");
+            db.ref('users/' + t).once('value', (tr) => {
+                if (!tr.exists()) return alert("Tujuan tidak ada!");
+                db.ref('users/' + currentUser).update({ saldo: my - a });
+                db.ref('users/' + t).update({ saldo: (tr.val().saldo || 0) + a });
+                alert("Berhasil Transfer!"); showDashboard();
             });
         });
     }
