@@ -2,250 +2,327 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE OFFICIAL - Secure Digital Exchange</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RYD STORE OFFICIAL - Secure Digital Hub</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-database-compat.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600;800&display=swap');
-        body { background: #f0f9f4; font-family: 'Urbanist', sans-serif; }
-        .glass-ui { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(12px); border: 1px solid #ffffff; }
-        .btn-gradient { background: linear-gradient(135deg, #10b981 0%, #059669 100%); transition: 0.3s; }
-        .btn-gradient:active { transform: scale(0.96); }
-        .card-product { background: white; border: 1px solid #e2e8f0; transition: 0.3s; }
-        .card-product:hover { border-color: #10b981; transform: translateY(-2px); }
-        .fade-in { animation: fadeIn 0.6s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdf4; color: #1e293b; overflow-x: hidden; }
+        .bg-emerald-main { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+        .card-white { background: white; border-radius: 28px; box-shadow: 0 10px 30px -5px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f0fdf4; z-index: 80; transform: translateX(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
+        .sub-page.active { transform: translateX(0); }
+        .modal-up { background: white; border-radius: 40px 40px 0 0; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -20px 40px rgba(0,0,0,0.1); }
+        .modal-up.active { transform: translateY(0); }
+        .btn-action { transition: 0.2s; cursor: pointer; }
+        .btn-action:active { transform: scale(0.92); }
+        .status-badge { font-size: 8px; font-weight: 800; padding: 2px 8px; border-radius: 6px; text-transform: uppercase; }
+        .history-item { border-left: 4px solid #10b981; padding: 12px; margin-bottom: 10px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
     </style>
 </head>
-<body class="p-4 flex justify-center items-start min-h-screen">
+<body>
 
-    <div id="auth-panel" class="w-full max-w-md mt-6 fade-in">
-        <div class="glass-ui p-8 rounded-[2.5rem] shadow-2xl border-b-8 border-emerald-600">
-            <div class="text-center mb-8">
-                <div class="w-24 h-24 bg-emerald-600 rounded-[2rem] flex items-center justify-center mx-auto mb-4 shadow-xl rotate-3">
-                    <i class="fa-solid fa-bolt-lightning text-white text-4xl"></i>
-                </div>
-                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">RYD STORE</h1>
-                <p class="text-[10px] text-emerald-600 font-bold uppercase tracking-[0.3em] mt-1">Keamanan Transaksi Manusia</p>
-            </div>
+<div id="app" class="max-w-md mx-auto min-h-screen relative pb-10"></div>
 
-            <div class="space-y-4">
-                <div class="relative">
-                    <i class="fa-solid fa-id-badge absolute left-4 top-4 text-emerald-400"></i>
-                    <input type="text" id="id-user" placeholder="Username" class="w-full pl-12 p-4 rounded-2xl border border-slate-200 outline-none focus:border-emerald-500 bg-white/50 font-semibold">
-                </div>
-                <div class="relative">
-                    <i class="fa-solid fa-shield-keyhole absolute left-4 top-4 text-emerald-400"></i>
-                    <input type="password" id="id-pass" placeholder="Password" class="w-full pl-12 p-4 rounded-2xl border border-slate-200 outline-none focus:border-emerald-500 bg-white/50 font-semibold">
-                </div>
+<div id="modalProduk" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] hidden" onclick="tutupModal()">
+    <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
+        <div class="w-16 h-1.5 bg-slate-200 rounded-full mx-auto mb-8"></div>
+        <div class="mb-6">
+            <label class="text-[10px] font-extrabold uppercase text-slate-400 mb-3 block tracking-widest text-center">Nomor HP / ID Tujuan</label>
+            <input id="inputTujuan" type="number" placeholder="ID Player / No HP" class="w-full p-5 bg-slate-50 rounded-3xl outline-none border-2 border-slate-100 font-bold text-center text-xl focus:border-emerald-500 transition-all">
+        </div>
+        <h3 id="modalTitle" class="text-2xl font-black text-emerald-600 mb-6 text-center italic">PILIH NOMINAL</h3>
+        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[50vh] overflow-y-auto pb-10 px-1"></div>
+    </div>
+</div>
 
-                <div id="reg-ext" class="hidden space-y-4 fade-in">
-                    <input type="text" id="id-ref" placeholder="ID Teman Pengajak (Opsional)" class="w-full p-4 rounded-2xl border border-emerald-100 outline-none bg-emerald-50/50">
-                    <div class="p-4 bg-amber-50 border-2 border-dashed border-amber-300 rounded-2xl">
-                        <p class="text-[10px] text-amber-700 font-black text-center uppercase">📸 Ambil Screenshot SEKARANG<br>Setelah klik tombol daftar!</p>
-                    </div>
-                </div>
+<div id="pagePulsa" class="sub-page max-w-md mx-auto p-6">
+    <div class="flex items-center gap-4 mb-8">
+        <button onclick="closeSubPage('pagePulsa')" class="w-12 h-12 card-white flex items-center justify-center text-xl font-bold">←</button>
+        <h2 class="text-2xl font-black italic uppercase">Pulsa & Data</h2>
+    </div>
+    <div class="grid grid-cols-3 gap-6 text-center">
+        <div onclick="bukaModal('Telkomsel', 'pulsa')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-red-600 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs">T-SEL</div><span class="text-[10px] font-bold mt-2 uppercase">Telkomsel</span></div>
+        <div onclick="bukaModal('Indosat', 'pulsa')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-yellow-400 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs">ISAT</div><span class="text-[10px] font-bold mt-2 uppercase">Indosat</span></div>
+        <div onclick="bukaModal('XL', 'pulsa')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-blue-600 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs">XL</div><span class="text-[10px] font-bold mt-2 uppercase">XL Axiata</span></div>
+    </div>
+</div>
 
-                <button onclick="handleAuth()" id="btn-main" class="w-full btn-gradient text-white p-5 rounded-2xl font-extrabold shadow-lg shadow-emerald-100 uppercase tracking-widest mt-2">Masuk Akun</button>
-                
-                <div class="text-center pt-4">
-                    <p class="text-sm font-semibold text-slate-400">
-                        <span id="label-mode">Belum punya akun?</span>
-                        <button onclick="toggleMode()" class="text-emerald-600 font-black ml-1 uppercase underline underline-offset-4">Klik Disini</button>
-                    </p>
-                </div>
-            </div>
+<div id="pageGame" class="sub-page max-w-md mx-auto p-6">
+    <div class="flex items-center gap-4 mb-8">
+        <button onclick="closeSubPage('pageGame')" class="w-12 h-12 card-white flex items-center justify-center text-xl font-bold">←</button>
+        <h2 class="text-2xl font-black italic uppercase">Top Up Game</h2>
+    </div>
+    <div class="grid grid-cols-3 gap-6 text-center">
+        <div onclick="bukaModal('Royal Dream', 'game')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-emerald-600 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs italic">RD</div><span class="text-[10px] font-bold mt-2 uppercase">Royal Dream</span></div>
+        <div onclick="bukaModal('Free Fire', 'game')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-orange-500 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs italic">FF</div><span class="text-[10px] font-bold mt-2 uppercase">Free Fire</span></div>
+        <div onclick="bukaModal('Mobile Legends', 'game')" class="btn-action flex flex-col items-center"><div class="w-16 h-16 bg-blue-800 rounded-3xl shadow-lg flex items-center justify-center text-white font-black text-xs italic">ML</div><span class="text-[10px] font-bold mt-2 uppercase">M-Legends</span></div>
+    </div>
+</div>
+
+<div id="pageReferral" class="sub-page max-w-md mx-auto p-6">
+    <div class="flex items-center gap-4 mb-8">
+        <button onclick="closeSubPage('pageReferral')" class="w-12 h-12 card-white flex items-center justify-center text-xl font-bold">←</button>
+        <h2 class="text-2xl font-black italic uppercase text-emerald-600">Undang Teman</h2>
+    </div>
+    <div class="card-white p-10 text-center bg-emerald-main text-white border-none mb-8">
+        <h3 class="text-4xl font-black mb-2 italic">HADIAH SALDO</h3>
+        <p class="text-[10px] font-bold opacity-90 uppercase">Screenshot & Bagikan Kode Anda!</p>
+    </div>
+    <div class="card-white p-8 text-center">
+        <p class="text-[10px] font-extrabold text-slate-400 mb-4 uppercase">KODE REFERRAL ANDA</p>
+        <div onclick="copyReferral()" class="bg-emerald-50 p-6 rounded-3xl border-2 border-dashed border-emerald-200 cursor-pointer btn-action">
+            <h4 id="refCodeDisplay" class="text-4xl font-black text-emerald-600 tracking-widest italic">...</h4>
+            <p class="text-[9px] text-emerald-500 font-black mt-3 uppercase">KLIK UNTUK SALIN</p>
         </div>
     </div>
+</div>
 
-    <div id="app-panel" class="w-full max-w-md hidden fade-in">
-        <div class="glass-ui p-6 rounded-[2.5rem] mb-6 shadow-xl border-b-8 border-emerald-600 relative overflow-hidden">
-            <div class="relative z-10 flex justify-between items-start">
-                <div>
-                    <p class="text-[10px] font-black text-emerald-500 uppercase tracking-widest mb-1">Total Saldo</p>
-                    <h2 class="text-4xl font-extrabold text-slate-900 tracking-tighter">Rp <span id="val-saldo">0</span></h2>
-                    <div class="mt-2 inline-flex items-center px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-[10px] font-black uppercase">
-                        ID: <span id="val-user" class="ml-1"></span>
-                    </div>
-                </div>
-                <button onclick="location.reload()" class="w-12 h-12 bg-red-50 text-red-500 rounded-2xl flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm">
-                    <i class="fa-solid fa-power-off"></i>
-                </button>
+<script>
+    const WA_ADMIN = "6285881934739";
+    const firebaseConfig = {
+        apiKey: "AIzaSyCEeF0D3RB5uthkMKx5rkSTEYii-7Pp0KM",
+        authDomain: "riyadistore3.firebaseapp.com",
+        databaseURL: "https://riyadistore3-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "riyadistore3",
+        storageBucket: "riyadistore3.firebasestorage.app",
+        messagingSenderId: "28764528472",
+        appId: "1:28764528472:web:941e615ef35d62b4724f2d"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    
+    let userAktif = null; 
+    let passAktif = null;
+    let saldoAktif = 0;
+
+    function pageLogin() {
+        document.getElementById('app').innerHTML = `<div class="p-10 pt-24 text-center">
+            <div class="w-24 h-24 bg-emerald-main rounded-[2.8rem] mx-auto mb-8 flex items-center justify-center text-5xl font-black italic text-white shadow-2xl">R</div>
+            <h1 class="text-4xl font-black italic mb-2 text-emerald-600">RYD STORE</h1>
+            <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-12">Security Transaction System</p>
+            <div class="space-y-4 max-w-xs mx-auto">
+                <input id="l_u" type="text" placeholder="Username" class="w-full p-5 bg-white border border-slate-200 rounded-[20px] outline-none text-center font-bold">
+                <input id="l_p" type="password" placeholder="Password" class="w-full p-5 bg-white border border-slate-200 rounded-[20px] outline-none text-center font-bold">
+                <button onclick="doLogin()" class="w-full bg-emerald-main p-5 rounded-[20px] text-white font-black uppercase shadow-xl btn-action">Masuk Akun</button>
+                <button onclick="pageRegister()" class="text-emerald-600 text-[10px] font-black uppercase mt-4 underline">Daftar Akun Baru</button>
             </div>
-        </div>
+        </div>`;
+    }
 
-        <div class="grid grid-cols-2 gap-4 mb-8">
-            <button onclick="topupWA()" class="bg-white p-5 rounded-[2rem] shadow-md flex flex-col items-center gap-2 border-b-4 border-emerald-100">
-                <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-wallet"></i></div>
-                <span class="font-black text-[10px] text-slate-600 uppercase">Isi Saldo</span>
-            </button>
-            <button onclick="transferUI()" class="bg-white p-5 rounded-[2rem] shadow-md flex flex-col items-center gap-2 border-b-4 border-teal-100">
-                <div class="w-12 h-12 bg-teal-500 text-white rounded-2xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-paper-plane"></i></div>
-                <span class="font-black text-[10px] text-slate-600 uppercase">Transfer</span>
-            </button>
-        </div>
+    function pageRegister() {
+        document.getElementById('app').innerHTML = `<div class="p-10 pt-20">
+            <h2 class="text-3xl font-black italic text-emerald-600 mb-2 uppercase text-center">PENDAFTARAN</h2>
+            <p class="text-[10px] font-bold text-slate-400 uppercase text-center mb-10 tracking-widest">Screenshot setelah mendaftar</p>
+            <div class="space-y-4 max-w-xs mx-auto">
+                <input id="r_u" type="text" placeholder="Username" class="w-full p-5 bg-white border border-slate-200 rounded-[20px] outline-none font-bold">
+                <input id="r_p" type="password" placeholder="Password" class="w-full p-5 bg-white border border-slate-200 rounded-[20px] outline-none font-bold">
+                <input id="r_ref" type="text" placeholder="Referral (Opsional)" class="w-full p-5 bg-white border border-slate-200 rounded-[20px] outline-none font-bold">
+                <button onclick="doRegister()" class="w-full bg-emerald-main p-5 rounded-[20px] text-white font-black uppercase shadow-xl btn-action">Mendaftar</button>
+                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-black uppercase mt-6 text-center">← Kembali</button>
+            </div>
+        </div>`;
+    }
 
-        <h3 class="font-black text-xs text-slate-800 uppercase tracking-widest mb-4 px-2">🛒 Katalog Digital</h3>
-        <div id="catalog-grid" class="grid grid-cols-2 gap-3 mb-10"></div>
+    function doLogin() {
+        const u = document.getElementById('l_u').value.toLowerCase().trim();
+        const p = document.getElementById('l_p').value;
+        db.ref('users/' + u).once('value', (s) => {
+            if(s.exists() && s.val().password === p) {
+                userAktif = u; passAktif = p; pageDashboard();
+            } else { Swal.fire('Gagal', 'Username/Password Salah!', 'error'); }
+        });
+    }
 
-        <div class="bg-slate-900 p-8 rounded-[2.5rem] text-center border-t-4 border-emerald-500 shadow-2xl">
-            <h4 class="text-white font-extrabold text-sm uppercase mb-1">Undang Teman Sekarang</h4>
-            <p class="text-emerald-400 text-[10px] font-bold mb-5 tracking-widest">Dapatkan Bonus Rp 5.000 Per User</p>
-            <button onclick="shareLink()" class="w-full bg-emerald-500 text-white py-4 rounded-2xl font-black text-xs uppercase shadow-lg">
-                <i class="fa-solid fa-share-nodes mr-2"></i> Bagikan Kode Referral
-            </button>
-        </div>
-    </div>
+    function doRegister() {
+        const u = document.getElementById('r_u').value.toLowerCase().trim();
+        const p = document.getElementById('r_p').value;
+        const ref = document.getElementById('r_ref').value.toLowerCase().trim();
+        if(!u || !p) return Swal.fire('Error', 'Lengkapi data!', 'warning');
+        db.ref('users/' + u).set({ password: p, saldo: 0, invitedBy: ref || "Sistem" }).then(() => {
+            Swal.fire('Berhasil!', 'Silahkan screenshot & login!', 'success').then(() => pageLogin());
+        });
+    }
 
-    <script>
-        // 1. DATABASE CONFIG (Pastikan URL ini sudah benar)
-        const firebaseConfig = { databaseURL: "https://riyadistore3-default-rtdb.firebaseio.com/" };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-
-        let currentUser = null;
-        let isReg = false;
-
-        // 2. DATA PRODUK (KEUNTUNGAN 1.500 & 500)
-        const products = [
-            { n: "Royal Dream 1B", p: 66500, i: "fa-gem" },
-            { n: "Royal Dream 2B", p: 132000, i: "fa-gem" },
-            { n: "Pulsa 5.000", p: 7000, i: "fa-mobile" },
-            { n: "Pulsa 10.000", p: 12500, i: "fa-mobile" },
-            { n: "Pulsa 50.000", p: 51500, i: "fa-mobile" },
-            { n: "Saldo 100k", p: 101500, i: "fa-wallet" },
-            { n: "Saldo 500k", p: 501500, i: "fa-coins" },
-            { n: "Saldo 1 Juta", p: 1001500, i: "fa-crown" }
-        ];
-
-        // 3. AUTH LOGIC (DIPERKUAT)
-        function toggleMode() {
-            isReg = !isReg;
-            document.getElementById('reg-ext').classList.toggle('hidden');
-            document.getElementById('label-mode').innerText = isReg ? 'Sudah punya akun?' : 'Belum punya akun?';
-            document.getElementById('btn-main').innerText = isReg ? 'Daftar & Simpan Akun' : 'Masuk Akun';
-        }
-
-        async function handleAuth() {
-            const user = document.getElementById('id-user').value.toLowerCase().trim();
-            const pass = document.getElementById('id-pass').value;
-            const ref = document.getElementById('id-ref').value.trim();
-
-            if (!user || !pass) return Swal.fire('Gagal', 'Username/Password kosong!', 'error');
-
-            const dbRef = db.ref('users/' + user);
+    function pageDashboard() {
+        db.ref('users/' + userAktif).on('value', (snapshot) => {
+            const data = snapshot.val();
+            saldoAktif = parseInt(data.saldo || 0);
+            if(document.getElementById('refCodeDisplay')) document.getElementById('refCodeDisplay').innerText = userAktif.toUpperCase();
             
-            try {
-                const snap = await dbRef.once('value');
-                
-                if (isReg) {
-                    if (snap.exists()) return Swal.fire('Gagal', 'Username sudah terpakai!', 'warning');
-                    
-                    await dbRef.set({ username: user, password: pass, saldo: 0, upline: ref || "Sistem" });
-                    
-                    await Swal.fire({
-                        title: 'AKUN DIBUAT!',
-                        html: `<div style="text-align:left; background:#fff9c4; p:20px; border-radius:15px; border:2px dashed #fbc02d">
-                                <p style="color:red; font-weight:900; text-align:center">📸 SCREENSHOT SEKARANG!</p><hr>
-                                <p><b>ID:</b> ${user}</p><p><b>Sandi:</b> ${pass}</p>
-                               </div>`,
-                        icon: 'success'
-                    });
-                    location.reload();
-                } else {
-                    const data = snap.val();
-                    if (data && data.password === pass) {
-                        startApp(data);
-                    } else {
-                        Swal.fire('Gagal Login', 'Data tidak cocok atau Rules Database terkunci!', 'error');
+            document.getElementById('app').innerHTML = `
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-8">
+                        <h2 class="text-xl font-black text-slate-800 italic uppercase">HI, @${userAktif}</h2>
+                        <button onclick="location.reload()" class="bg-red-50 text-red-600 px-4 py-2 rounded-2xl text-[10px] font-black btn-action">LOGOUT</button>
+                    </div>
+
+                    <div class="card-white p-8 mb-8 bg-emerald-main text-white relative overflow-hidden">
+                        <div class="relative z-10 flex flex-col items-center">
+                            <p class="text-[10px] font-black uppercase opacity-80 mb-2">Saldo Aktif</p>
+                            <h2 class="text-4xl font-black italic tracking-tighter">Rp ${saldoAktif.toLocaleString('id-ID')}</h2>
+                            <div class="flex gap-3 mt-6 w-full">
+                                <button onclick="topUpWA()" class="flex-1 bg-white text-emerald-600 py-3 rounded-2xl text-[10px] font-black uppercase btn-action">Top Up</button>
+                                <button onclick="fiturTransfer()" class="flex-1 bg-slate-900 text-white py-3 rounded-2xl text-[10px] font-black uppercase btn-action">Transfer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 mb-10">
+                        <div onclick="openSubPage('pagePulsa')" class="card-white p-5 flex flex-col items-center btn-action">
+                            <i class="fa-solid fa-mobile-screen text-2xl mb-2 text-emerald-600"></i>
+                            <p class="font-black text-[9px] uppercase">PULSA</p>
+                        </div>
+                        <div onclick="openSubPage('pageGame')" class="card-white p-5 flex flex-col items-center btn-action">
+                            <i class="fa-solid fa-gamepad text-2xl mb-2 text-emerald-600"></i>
+                            <p class="font-black text-[9px] uppercase">GAME</p>
+                        </div>
+                        <div onclick="openSubPage('pageReferral')" class="card-white p-5 flex flex-col items-center btn-action">
+                            <i class="fa-solid fa-gift text-2xl mb-2 text-emerald-600"></i>
+                            <p class="font-black text-[9px] uppercase">HADIAH</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <h3 class="text-[11px] font-black uppercase text-slate-400 mb-4 tracking-widest px-2">Aktivitas Terkini</h3>
+                        <div id="history-container" class="space-y-3"></div>
+                    </div>
+                </div>
+            `;
+            loadHistory();
+        });
+    }
+
+    function loadHistory() {
+        db.ref('history/' + userAktif).limitToLast(5).on('value', (s) => {
+            const container = document.getElementById('history-container');
+            if(!s.exists()) {
+                container.innerHTML = `<div class="card-white p-6 text-center opacity-40"><p class="text-[10px] font-bold">Belum ada riwayat</p></div>`;
+                return;
+            }
+            let html = '';
+            s.forEach(item => {
+                const h = item.val();
+                html = `<div class="history-item flex justify-between items-center shadow-sm">
+                        <div>
+                            <p class="text-[10px] font-black uppercase text-slate-800">${h.item}</p>
+                            <p class="text-[8px] font-bold text-slate-400">${h.date}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-black text-emerald-600">Rp ${h.price.toLocaleString()}</p>
+                            <span class="status-badge bg-emerald-100 text-emerald-600">Sukses</span>
+                        </div>
+                    </div>` + html;
+            });
+            container.innerHTML = html;
+        });
+    }
+
+    function fiturTransfer() {
+        Swal.fire({
+            title: 'TRANSFER SALDO',
+            html: `<input id="tf_user" class="swal2-input !m-0 !w-full" placeholder="Penerima"><input id="tf_amount" type="number" class="swal2-input !m-2 !w-full" placeholder="Nominal">`,
+            confirmButtonText: 'Kirim',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            preConfirm: () => {
+                const target = document.getElementById('tf_user').value.toLowerCase().trim();
+                const amount = parseInt(document.getElementById('tf_amount').value);
+                if (!target || !amount || amount < 1000) return Swal.showValidationMessage('Data tidak valid!');
+                return { target, amount };
+            }
+        }).then(res => {
+            if (res.isConfirmed) {
+                const { target, amount } = res.value;
+                Swal.fire({ title: 'Sandi Keamanan', input: 'password', confirmButtonColor: '#10b981', showCancelButton: true }).then(auth => {
+                    if(auth.value === passAktif) {
+                        // KEAMANAN SUPER KETAT: Cek Saldo DB Langsung
+                        db.ref('users/' + userAktif + '/saldo').once('value', (snap) => {
+                            const sal = snap.val();
+                            if(sal >= amount) {
+                                db.ref('users/' + target).once('value', (tsnap) => {
+                                    if(tsnap.exists()){
+                                        db.ref('users/' + userAktif + '/saldo').set(sal - amount);
+                                        db.ref('users/' + target + '/saldo').set(parseInt(tsnap.val().saldo || 0) + amount);
+                                        saveHistory('Transfer Ke @'+target, amount);
+                                        Swal.fire('Berhasil!', 'Saldo Terkirim', 'success');
+                                    } else { Swal.fire('Gagal', 'Penerima tidak ada!', 'error'); }
+                                });
+                            } else { Swal.fire('Gagal', 'Saldo tidak cukup!', 'error'); }
+                        });
                     }
+                });
+            }
+        });
+    }
+
+    function bukaModal(name, tipe) {
+        document.getElementById('modalTitle').innerText = name.toUpperCase();
+        const list = document.getElementById('listProduk');
+        list.innerHTML = "";
+        
+        let noms = [5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000];
+        noms.forEach(v => {
+            // LOGIKA KEUNTUNGAN SESUAI PERMINTAAN
+            let untung = (v < 100000) ? 1500 : 2000;
+            let h = v + untung;
+            list.innerHTML += `<div onclick="beli('${name}', '${v}', ${h})" class="bg-white p-5 rounded-[24px] border border-slate-100 text-center btn-action shadow-sm">
+                <p class="text-xs font-black text-slate-800">${v >= 1000 ? (v/1000)+'RB' : v}</p>
+                <p class="text-[10px] font-bold text-emerald-600">Rp ${h.toLocaleString()}</p>
+            </div>`;
+        });
+        document.getElementById('modalProduk').classList.remove('hidden');
+        setTimeout(() => document.getElementById('modalContent').classList.add('active'), 10);
+    }
+
+    function beli(p, n, h) {
+        const no = document.getElementById('inputTujuan').value;
+        if(!no) return Swal.fire('Error', 'Input ID/No HP!', 'warning');
+
+        // KEAMANAN SUPER KETAT: Cek Saldo DB Langsung
+        db.ref('users/' + userAktif + '/saldo').once('value', (snap) => {
+            const dbSal = snap.val();
+            if(dbSal < h) return Swal.fire('Gagal', 'Saldo tidak cukup!', 'error');
+
+            Swal.fire({ title: 'Sandi Konfirmasi', input: 'password', confirmButtonColor: '#10b981', showCancelButton: true }).then(res => {
+                if(res.value === passAktif) {
+                    db.ref('users/' + userAktif + '/saldo').set(dbSal - h);
+                    saveHistory(p + ' ' + n, h);
+                    Swal.fire('Sukses!', 'Memproses pesanan...', 'success').then(() => {
+                        window.location.href = `https://wa.me/${WA_ADMIN}?text=*ORDER*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${n}*%0ATujuan: *${no}*`;
+                    });
                 }
-            } catch (err) {
-                Swal.fire('Database Error', 'Akses Ditolak! Pastikan Rules Firebase sudah di-SET ke TRUE.', 'error');
-            }
-        }
-
-        // 4. MAIN APP LOGIC
-        function startApp(data) {
-            currentUser = data.username;
-            document.getElementById('auth-panel').classList.add('hidden');
-            document.getElementById('app-panel').classList.remove('hidden');
-            document.getElementById('val-user').innerText = currentUser;
-            
-            // Render Katalog
-            const grid = document.getElementById('catalog-grid');
-            grid.innerHTML = products.map(p => `
-                <div onclick="beli('${p.n}', ${p.p})" class="card-product p-5 rounded-[2rem] text-center cursor-pointer active:scale-95">
-                    <i class="fa-solid ${p.i} text-emerald-600 text-xl mb-2"></i>
-                    <p class="font-black text-[10px] text-slate-400 uppercase">${p.n}</p>
-                    <p class="text-emerald-600 font-extrabold text-sm">Rp ${p.p.toLocaleString()}</p>
-                </div>
-            `).join('');
-
-            // Realtime Saldo
-            db.ref('users/' + currentUser + '/saldo').on('value', (s) => {
-                document.getElementById('val-saldo').innerText = (s.val() || 0).toLocaleString();
             });
-        }
+        });
+    }
 
-        // 5. KEAMANAN TRANSAKSI (ANTI-CHEAT)
-        async function beli(n, p) {
-            const snap = await db.ref('users/' + currentUser).once('value');
-            const data = snap.val();
+    function saveHistory(item, price) {
+        const now = new Date();
+        const ds = now.getHours() + ':' + now.getMinutes() + ' - ' + now.toLocaleDateString();
+        db.ref('history/' + userAktif).push({ item, price, date: ds });
+    }
 
-            if (data.saldo < p) return Swal.fire('Gagal', 'Saldo tidak cukup!', 'error');
+    function topUpWA() {
+        Swal.fire({ title: 'Isi Saldo', input: 'number', confirmButtonColor: '#10b981' }).then(res => {
+            if (res.value >= 10000) window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${res.value}*`;
+        });
+    }
 
-            const { value: passConfirm } = await Swal.fire({
-                title: 'Konfirmasi Sandi',
-                text: `Beli ${n}?`,
-                input: 'password',
-                confirmButtonColor: '#10b981',
-                showCancelButton: true
-            });
+    function copyReferral() {
+        navigator.clipboard.writeText(userAktif.toUpperCase());
+        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Kode Disalin!', showConfirmButton: false, timer: 1500 });
+    }
 
-            if (passConfirm === data.password) {
-                await db.ref('users/' + currentUser).update({ saldo: data.saldo - p });
-                Swal.fire('Berhasil!', 'Saldo dipotong, hubungi admin...', 'success');
-                setTimeout(() => window.location.href = `https://wa.me/6281283303643?text=Beli%20${n}%20ID:%20${currentUser}`, 1500);
-            } else if (passConfirm) {
-                Swal.fire('Salah', 'Sandi Keamanan Salah!', 'error');
-            }
-        }
+    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
+    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
+    function tutupModal() { document.getElementById('modalContent').classList.remove('active'); setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 400); }
 
-        // 6. FITUR TRANSFER LENGKAP
-        async function transferUI() {
-            const { value: target } = await Swal.fire({ title: 'Username Penerima', input: 'text' });
-            if (!target) return;
-            const { value: juml } = await Swal.fire({ title: 'Jumlah Transfer', input: 'number' });
-            const nominal = parseInt(juml);
-
-            if (nominal < 1000) return Swal.fire('Gagal', 'Minimal Rp 1.000', 'warning');
-
-            const sSnap = await db.ref('users/' + currentUser).once('value');
-            const tSnap = await db.ref('users/' + target.toLowerCase()).once('value');
-
-            if (sSnap.val().saldo < nominal) return Swal.fire('Error', 'Saldo kurang!', 'error');
-            if (!tSnap.exists()) return Swal.fire('Error', 'User tidak ditemukan!', 'error');
-
-            const { value: p } = await Swal.fire({ title: 'Password Anda', input: 'password', confirmButtonColor: '#10b981' });
-            if (p === sSnap.val().password) {
-                await db.ref('users/' + currentUser).update({ saldo: sSnap.val().saldo - nominal });
-                await db.ref('users/' + target.toLowerCase()).update({ saldo: (tSnap.val().saldo || 0) + nominal });
-                Swal.fire('Sukses!', 'Saldo terkirim!', 'success');
-            }
-        }
-
-        function shareLink() {
-            const text = `Top Up Murah & Aman di RYD STORE!\nLink: ${window.location.href}\nReferral: ${currentUser}`;
-            window.location.href = `https://wa.me/?text=${encodeURIComponent(text)}`;
-        }
-
-        function topupWA() { window.location.href = "https://wa.me/6281283303643?text=Isi%20Saldo%20RYD"; }
-    </script>
+    pageLogin();
+</script>
 </body>
 </html>
