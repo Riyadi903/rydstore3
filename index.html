@@ -13,7 +13,9 @@
         .card-glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         .btn-grad { background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%); transition: 0.2s; }
         .btn-grad:active { transform: scale(0.95); }
-        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        .banner-ref { background: linear-gradient(45deg, #f59e0b, #ef4444); animation: pulse-border 2s infinite; }
+        @keyframes pulse-border { 0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); } 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); } }
+        .menu-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 10px; margin-bottom: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
         .modal-up { background: white; border-radius: 30px 30px 0 0; color: #0f172a; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.3s ease; }
         .modal-up.active { transform: translateY(0); }
         .section-title { font-size: 10px; font-weight: 900; color: #64748b; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 15px; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
@@ -21,22 +23,29 @@
 </head>
 <body>
 
-<div id="app" class="max-w-md mx-auto min-h-screen flex flex-col relative pb-20">
-    <div class="p-20 text-center animate-pulse">Menyiapkan Layanan...</div>
-</div>
+<div id="app" class="max-w-md mx-auto min-h-screen flex flex-col relative pb-20 bg-[#0f172a]">
+    </div>
 
 <div id="modalProduk" class="fixed inset-0 bg-black/80 z-[90] hidden" onclick="tutupModal()">
     <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
         <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-        <h3 id="modalTitle" class="text-xl font-extrabold mb-6 italic uppercase tracking-tight text-blue-600">Pilih Nominal</h3>
-        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pb-10"></div>
+        <div class="mb-6">
+            <label id="labelTujuan" class="text-[10px] font-bold uppercase text-slate-400 mb-2 block">Nomor Tujuan / ID</label>
+            <input id="inputTujuan" type="number" placeholder="08xxxx" class="w-full p-4 bg-slate-100 border border-slate-200 rounded-2xl outline-none focus:border-blue-500 font-bold">
+        </div>
+        <h3 id="modalTitle" class="text-xl font-extrabold mb-4 italic uppercase tracking-tight text-blue-600 border-t pt-4">Pilih Nominal</h3>
+        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[50vh] overflow-y-auto pb-10"></div>
     </div>
 </div>
 
 <script>
     const WA_ADMIN = "6285881934739";
     const PROFIT_PULSA = 1500;
-    
+    const FEE_TOPUP = 500; // DIUBAH MENJADI 500 PERAK
+    const REWARD_UNDANG = 5000;
+    const MIN_SALDO_REWARD = 50000;
+    const MIN_DAYS = 7;
+
     const firebaseConfig = {
         apiKey: "AIzaSyCEeF0D3RB5uthkMKx5rkSTEYii-7Pp0KM",
         authDomain: "riyadistore3.firebaseapp.com",
@@ -54,32 +63,34 @@
     function view(html) { document.getElementById('app').innerHTML = html; }
 
     function pageLogin() {
-        view(`
-            <div class="p-8 pt-24 text-center">
-                <div class="w-20 h-20 btn-grad rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic shadow-2xl">R</div>
-                <h1 class="text-3xl font-black mb-12 tracking-tighter uppercase italic">RYD STORE</h1>
-                <div class="space-y-4">
-                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white">
-                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none focus:border-blue-500 text-white">
-                    <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase tracking-widest">Login</button>
-                    <button onclick="pageRegister()" class="w-full text-slate-500 text-xs font-bold uppercase">Daftar Akun Baru</button>
-                </div>
+        view(`<div class="p-8 pt-24 text-center">
+            <div class="w-20 h-20 btn-grad rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic shadow-2xl">R</div>
+            <h1 class="text-3xl font-black mb-12 uppercase italic">RYD STORE</h1>
+            <div class="space-y-4">
+                <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white text-center">
+                <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white text-center">
+                <button onclick="doLogin()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Masuk Akun</button>
+                <button onclick="pageRegister()" class="w-full text-slate-500 text-xs font-bold uppercase">Daftar Sekarang</button>
             </div>
-        `);
+        </div>`);
     }
 
     function pageRegister() {
-        view(`
-            <div class="p-8 pt-20">
-                <h2 class="text-3xl font-black mb-8 italic uppercase text-blue-500">Registrasi</h2>
-                <div class="space-y-4">
-                    <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none">
-                    <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none">
-                    <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar Sekarang</button>
-                    <button onclick="pageLogin()" class="w-full text-slate-500 text-xs font-bold uppercase mt-4 text-center block">Kembali ke Login</button>
+        const urlParams = new URLSearchParams(window.location.search);
+        const pengundang = urlParams.get('ref') || "";
+        view(`<div class="p-8 pt-20">
+            <h2 class="text-3xl font-black mb-8 italic uppercase text-blue-500">Registrasi</h2>
+            <div class="space-y-4">
+                <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white">
+                <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-800/50 border border-slate-700 rounded-2xl outline-none text-white">
+                <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl">
+                    <p class="text-[9px] font-bold text-blue-400 mb-1 uppercase">Pengundang (Opsional)</p>
+                    <input id="r_ref" type="text" value="${pengundang}" class="w-full bg-transparent outline-none text-white font-bold uppercase">
                 </div>
+                <button onclick="doRegister()" class="w-full btn-grad p-4 rounded-2xl font-bold uppercase">Daftar</button>
+                <button onclick="pageLogin()" class="w-full text-slate-500 text-xs font-bold uppercase mt-4 text-center block">Kembali</button>
             </div>
-        `);
+        </div>`);
     }
 
     function pageDashboard() {
@@ -88,56 +99,56 @@
             if(!data) return pageLogin();
             const saldo = parseInt(data.saldo || 0);
 
+            // Logika Bonus Referral Otomatis
+            if (data.invitedBy && !data.rewardClaimed && saldo >= MIN_SALDO_REWARD && data.totalTransaksi > 0) {
+                const tglDaftar = new Date(data.createdAt);
+                const selisihHari = Math.floor((new Date() - tglDaftar) / (1000 * 60 * 60 * 24));
+                if (selisihHari >= MIN_DAYS) prosesReward(data.invitedBy);
+            }
+
             view(`
                 <div class="p-6">
-                    <div class="flex justify-between items-center mb-8">
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-black">User Member</p>
-                            <h2 class="text-xl font-black text-blue-400 italic uppercase">@${userAktif}</h2>
+                    <div class="flex justify-between items-center mb-6">
+                        <div><p class="text-[9px] text-slate-500 font-bold uppercase">Member ID</p><h2 class="text-xl font-black text-blue-400 italic">@${userAktif.toUpperCase()}</h2></div>
+                        <button onclick="logout()" class="bg-red-500/10 text-red-500 p-2 px-4 rounded-xl text-[10px] font-bold border border-red-500/20">LOGOUT</button>
+                    </div>
+
+                    <div onclick="menuReferral()" class="banner-ref p-4 rounded-2xl mb-6 flex items-center justify-between cursor-pointer">
+                        <div class="text-white">
+                            <h4 class="text-sm font-black uppercase italic">Dapatkan Rp 5.000 Gratis!</h4>
+                            <p class="text-[9px] font-bold opacity-90">Undang temanmu belanja di RYD STORE</p>
                         </div>
-                        <button onclick="logout()" class="bg-red-500/20 text-red-500 p-2 px-4 rounded-xl text-[10px] font-bold">LOGOUT</button>
+                        <div class="bg-white/20 p-2 rounded-lg font-black text-xs">AMBIL ></div>
                     </div>
 
-                    <div class="btn-grad p-8 rounded-[2.5rem] shadow-2xl mb-8 relative overflow-hidden border border-white/10">
+                    <div class="btn-grad p-8 rounded-[2.5rem] shadow-2xl mb-6 relative overflow-hidden border border-white/10">
                         <p class="text-[10px] font-bold opacity-70 uppercase tracking-widest mb-1">Saldo Tersedia</p>
-                        <h2 class="text-4xl font-black italic tracking-tighter">Rp ${saldo.toLocaleString('id-ID')}</h2>
+                        <h2 class="text-4xl font-black italic">Rp ${saldo.toLocaleString('id-ID')}</h2>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 mb-8">
-                        <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Isi Saldo @${userAktif}'" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-[10px] uppercase"> Isi Saldo</button>
-                        <button onclick="menuTransfer(${saldo})" class="card-glass p-4 rounded-2xl flex items-center justify-center gap-2 font-bold text-[10px] uppercase">Transfer Saldo</button>
+                    <div class="grid grid-cols-3 gap-2 mb-8">
+                        <button onclick="topUpSaldo()" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>+</span> ISI SALDO</button>
+                        <button onclick="menuTransfer(${saldo})" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>⇄</span> TRANSFER</button>
+                        <button onclick="menuReferral()" class="card-glass p-3 rounded-xl flex flex-col items-center justify-center font-bold text-[8px] uppercase"><span>👥</span> REFERRAL</button>
                     </div>
 
                     <div class="bg-white rounded-[2.5rem] p-6 text-slate-900 shadow-2xl space-y-10">
                         <div>
-                            <h3 class="section-title text-slate-400">Operator Pulsa</h3>
+                            <h3 class="section-title">Produk Pulsa</h3>
                             <div class="grid grid-cols-4 gap-4">
-                                <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white shadow-red-500/40 shadow-lg">T-SEL</div><span class="text-[9px] font-bold">Telkom</span></div>
-                                <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black shadow-yellow-500/40 shadow-lg">ISAT</div><span class="text-[9px] font-bold">Indosat</span></div>
-                                <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white shadow-blue-500/40 shadow-lg">XL</div><span class="text-[9px] font-bold">XL Axiata</span></div>
-                                <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white shadow-pink-500/40 shadow-lg">TRI</div><span class="text-[9px] font-bold">Three</span></div>
+                                <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600 text-white">T-SEL</div><span class="text-[9px] font-bold">Telkom</span></div>
+                                <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-400 text-black">ISAT</div><span class="text-[9px] font-bold">Indosat</span></div>
+                                <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-600 text-white">XL</div><span class="text-[9px] font-bold">XL</span></div>
+                                <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-600 text-white">TRI</div><span class="text-[9px] font-bold">Three</span></div>
                             </div>
                         </div>
-
                         <div>
-                            <h3 class="section-title text-slate-400">E-Wallet Top Up</h3>
+                            <h3 class="section-title">Topup E-Wallet</h3>
                             <div class="grid grid-cols-4 gap-4">
-                                <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic shadow-lg">DANA</div><span class="text-[9px] font-bold">DANA</span></div>
-                                <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic shadow-lg">GOPAY</div><span class="text-[9px] font-bold">GoPay</span></div>
-                                <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic shadow-lg">OVO</div><span class="text-[9px] font-bold">OVO</span></div>
-                                <div onclick="bukaModal('Shopee', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 text-white italic shadow-lg">SPay</div><span class="text-[9px] font-bold">Shopee</span></div>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="section-title text-slate-400">Game Top Up</h3>
-                            <div class="grid grid-cols-3 gap-4">
-                                <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-purple-700 text-white italic shadow-lg">RD</div><span class="text-[9px] font-bold">Royal Dream</span></div>
-                                <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 text-white italic shadow-lg">FF</div><span class="text-[9px] font-bold">Free Fire</span></div>
-                                <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-800 text-white italic shadow-lg">ML</div><span class="text-[9px] font-bold">M-Legends</span></div>
-                                <div onclick="bukaModal('PUBG Mobile', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-green-700 text-white italic shadow-lg">PUBG</div><span class="text-[9px] font-bold">PUBG M</span></div>
-                                <div onclick="bukaModal('Higgs Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-indigo-600 text-white italic shadow-lg">HD</div><span class="text-[9px] font-bold">Higgs Dom</span></div>
-                                <div onclick="bukaModal('Boss Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-red-800 text-white italic shadow-lg">BOSS</div><span class="text-[9px] font-bold">Boss Dom</span></div>
+                                <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 text-white italic">DANA</div><span class="text-[9px] font-bold text-center leading-tight">DANA</span></div>
+                                <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 text-white italic">GOPAY</div><span class="text-[9px] font-bold text-center leading-tight">GoPay</span></div>
+                                <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 text-white italic">OVO</div><span class="text-[9px] font-bold text-center leading-tight">OVO</span></div>
+                                <div onclick="bukaModal('ShopeePay', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 text-white italic text-[8px]">SHOPEE</div><span class="text-[9px] font-bold text-center leading-tight">Shopee</span></div>
                             </div>
                         </div>
                     </div>
@@ -146,55 +157,52 @@
         });
     }
 
-    function menuTransfer(saldoUser) {
-        const target = prompt("Masukkan Username Tujuan:");
-        if (!target) return;
-        const jumlah = parseInt(prompt("Masukkan Jumlah Transfer:"));
-        if (!jumlah || jumlah < 1000) return alert("Minimal Rp 1.000");
-        if (saldoUser < jumlah) return alert("Saldo Kurang!");
+    function topUpSaldo() {
+        const nominal = prompt("Masukkan jumlah isi saldo:");
+        if(!nominal || nominal < 10000) return alert("Minimal isi saldo Rp 10.000");
+        const totalBayar = parseInt(nominal) + FEE_TOPUP;
+        const pesan = `*ISI SALDO RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A💰 Nominal: *Rp ${parseInt(nominal).toLocaleString()}*%0A🎟️ Admin: *Rp ${FEE_TOPUP}*%0A💳 *TOTAL BAYAR: Rp ${totalBayar.toLocaleString()}*%0A_Kirim instruksi pembayaran admin!_`;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=${pesan}`;
+    }
 
-        const pathTujuan = 'users/' + target.toLowerCase();
-        db.ref(pathTujuan).once('value', s => {
-            if (!s.exists()) return alert("Username tidak ditemukan!");
-            const saldoTujuan = parseInt(s.val().saldo || 0);
-            db.ref('users/' + userAktif.toLowerCase()).update({ saldo: saldoUser - jumlah });
-            db.ref(pathTujuan).update({ saldo: saldoTujuan + jumlah });
-            alert("Berhasil Transfer!");
+    function menuReferral() {
+        const link = window.location.origin + window.location.pathname + "?ref=" + userAktif;
+        alert(`🎁 BONUS REFERRAL RYD STORE 🎁\n\nDapatkan Rp 5.000 saldo gratis untuk setiap teman yang diundang!\n\nSyarat:\n- Teman bergabung 7 hari\n- Saldo teman min Rp 50.000\n- Teman minimal 1x transaksi\n\nLink Anda:\n${link}`);
+    }
+
+    function prosesReward(pengundang) {
+        const p = 'users/' + pengundang.toLowerCase();
+        db.ref(p).once('value', s => {
+            if(s.exists()){
+                const sLama = parseInt(s.val().saldo || 0);
+                db.ref(p).update({ saldo: sLama + REWARD_UNDANG });
+                db.ref('users/' + userAktif.toLowerCase()).update({ rewardClaimed: true });
+            }
         });
     }
 
     function bukaModal(name, tipe) {
         document.getElementById('modalTitle').innerText = name;
+        document.getElementById('inputTujuan').value = "";
+        const label = document.getElementById('labelTujuan');
+        label.innerText = (tipe === 'game') ? "Masukkan ID Game" : "Masukkan Nomor " + name;
+
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
-        
-        let nominals = [];
+        let noms = [];
         if (tipe === 'pulsa') {
-            nominals = [
-                { lab: '5.000', price: 5000 + PROFIT_PULSA },
-                { lab: '10.000', price: 10000 + PROFIT_PULSA },
-                { lab: '20.000', price: 20000 + PROFIT_PULSA },
-                { lab: '50.000', price: 50000 + PROFIT_PULSA },
-                { lab: '100.000', price: 100000 + PROFIT_PULSA }
-            ];
-        } else if (name === 'Royal Dream') {
-            nominals = [{ lab: '1B (Koin Emas)', price: 65000 }, { lab: '2B', price: 130000 }, { lab: '5B', price: 320000 }];
-        } else if (tipe === 'ewallet') {
-            nominals = [{ lab: '10.000', price: 11500 }, { lab: '20.000', price: 21500 }, { lab: '50.000', price: 51500 }, { lab: '100.000', price: 101500 }];
+            noms = [{lab:'5rb', p:5000+PROFIT_PULSA},{lab:'10rb', p:10000+PROFIT_PULSA},{lab:'20rb', p:20000+PROFIT_PULSA},{lab:'50rb', p:50000+PROFIT_PULSA},{lab:'100rb', p:100000+PROFIT_PULSA}];
         } else {
-            nominals = [{ lab: 'Kecil/86 Gems', price: 15000 }, { lab: 'Besar/Large', price: 50000 }, { lab: 'VIP Pack', price: 100000 }];
+            noms = [{lab:'10rb', p:12000},{lab:'20rb', p:22000},{lab:'50rb', p:52000}];
         }
 
-        nominals.forEach(item => {
-            list.innerHTML += `
-                <div onclick="beli('${name}', '${item.lab}', ${item.price})" class="bg-slate-50 p-5 rounded-2xl border border-slate-100 active:bg-slate-200 text-center shadow-sm">
-                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-widest">${name}</p>
-                    <p class="text-lg font-black text-slate-800 italic">${item.lab}</p>
-                    <p class="text-[10px] font-black text-blue-600 mt-1 border-t pt-1 italic uppercase">Rp ${item.price.toLocaleString('id-ID')}</p>
-                </div>
-            `;
+        noms.forEach(i => {
+            list.innerHTML += `<div onclick="beli('${name}', '${i.lab}', ${i.p})" class="bg-slate-50 p-5 rounded-2xl border text-center shadow-sm active:bg-slate-200">
+                <p class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">${name}</p>
+                <p class="text-lg font-black text-slate-800 italic">${i.lab}</p>
+                <p class="text-[10px] font-black text-blue-600 mt-1 border-t pt-1">Rp ${i.p.toLocaleString()}</p>
+            </div>`;
         });
-        
         document.getElementById('modalProduk').classList.remove('hidden');
         setTimeout(() => document.getElementById('modalContent').classList.add('active'), 10);
     }
@@ -205,27 +213,56 @@
     }
 
     function beli(p, n, h) {
-        const pesan = `*ORDER RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Item: *${p}*%0A💎 Nom: *${n}*%0A💰 Bayar: *Rp ${h.toLocaleString('id-ID')}*%0A_Mohon segera diproses admin!_`;
+        const no = document.getElementById('inputTujuan').value;
+        if(!no || no.length < 5) return alert("Harap isi Nomor/ID!");
+        
+        db.ref('users/' + userAktif.toLowerCase()).once('value', s => {
+            const total = (s.val().totalTransaksi || 0) + 1;
+            db.ref('users/' + userAktif.toLowerCase()).update({ totalTransaksi: total });
+        });
+
+        const pesan = `*ORDER RYD STORE*%0A👤 User: *${userAktif.toUpperCase()}*%0A📦 Produk: *${p}*%0A💎 Nom: *${n}*%0A💰 Harga: *Rp ${h.toLocaleString()}*%0A📱 Tujuan: *${no}*%0A_Mohon diproses segera admin!_`;
         window.location.href = `https://wa.me/${WA_ADMIN}?text=${pesan}`;
+    }
+
+    function menuTransfer(sU) {
+        const t = prompt("Username Tujuan:");
+        if (!t) return;
+        const j = parseInt(prompt("Jumlah Transfer:"));
+        if (!j || j < 1000) return alert("Minimal Rp 1.000");
+        if (sU < j) return alert("Saldo Anda Kurang!");
+        const pT = 'users/' + t.toLowerCase();
+        db.ref(pT).once('value', s => {
+            if (!s.exists()) return alert("Username tujuan tidak ditemukan!");
+            const sT = parseInt(s.val().saldo || 0);
+            db.ref('users/' + userAktif.toLowerCase()).update({ saldo: sU - j });
+            db.ref(pT).update({ saldo: sT + j });
+            alert("Transfer Berhasil!");
+        });
     }
 
     function doLogin() {
         const u = document.getElementById('l_u').value.toLowerCase().trim();
         const p = document.getElementById('l_p').value;
-        if(!u || !p) return alert("Username & Password wajib diisi!");
+        if(!u || !p) return alert("Isi data lengkap!");
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else { alert("Data Login Salah!"); }
+            } else alert("Login Gagal! Periksa Username/Password.");
         });
     }
 
     function doRegister() {
         const u = document.getElementById('r_u').value.toLowerCase().trim();
         const p = document.getElementById('r_p').value;
-        if(u.length < 3) return alert("Minimal 3 karakter!");
-        db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
-            alert("Pendaftaran Berhasil!"); pageLogin();
+        const ref = document.getElementById('r_ref').value.toLowerCase().trim();
+        if(u.length < 3) return alert("Username minimal 3 karakter!");
+        db.ref('users/' + u).once('value', s => {
+            if(s.exists()) return alert("Username sudah digunakan!");
+            db.ref('users/' + u).set({ 
+                password: p, saldo: 0, invitedBy: ref || null, 
+                rewardClaimed: false, createdAt: new Date().toISOString(), totalTransaksi: 0 
+            }).then(() => { alert("Daftar Berhasil! Silakan Login."); pageLogin(); });
         });
     }
 
