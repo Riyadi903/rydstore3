@@ -9,20 +9,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
         .gradient-blue { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
         .btn-active:active { transform: scale(0.95); transition: 0.1s; }
-        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
 <body>
 
 <div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl flex flex-col relative">
-    <div class="p-20 text-center text-slate-400 font-bold animate-pulse">Memuat Database...</div>
+    <div class="p-20 text-center text-slate-400 font-bold">Memuat...</div>
 </div>
 
 <script>
-    // --- KONFIGURASI API KEY BARU ---
     const WA_ADMIN = "6285881934739";
     const PROFIT = 1500;
     const firebaseConfig = {
@@ -36,173 +34,101 @@
         measurementId: "G-BXZDEM1TBP"
     };
 
-    // Proteksi Inisialisasi
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let userAktif = localStorage.getItem('ryd_user');
 
-    const providers = [
-        { name: 'Telkomsel', icon: '🔴', bg: 'bg-red-50' },
-        { name: 'Indosat', icon: '🟡', bg: 'bg-yellow-50' },
-        { name: 'XL Axiata', icon: '🔵', bg: 'bg-blue-50' },
-        { name: 'Axis', icon: '🟣', bg: 'bg-purple-50' },
-        { name: 'Three', icon: '⚫', bg: 'bg-gray-100' },
-        { name: 'Smartfren', icon: '💗', bg: 'bg-pink-50' }
-    ];
-
     function view(html) { document.getElementById('app').innerHTML = html; }
 
-    // --- HALAMAN LOGIN ---
     function pageLogin() {
         view(`
             <div class="p-8 pt-24 text-center">
                 <div class="w-20 h-20 gradient-blue rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-xl text-white text-4xl font-black italic">R</div>
                 <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase">RYD STORE</h1>
-                <p class="text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-12 italic">Fast & Reliable</p>
-                <div class="space-y-4">
-                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-500">
-                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-500">
-                    <button onclick="doLogin()" class="w-full gradient-blue text-white p-4 rounded-2xl font-bold shadow-lg btn-active">MASUK SEKARANG</button>
-                    <button onclick="pageRegister()" class="w-full text-blue-600 font-bold text-sm">Belum punya akun? Daftar</button>
+                <div class="mt-12 space-y-4">
+                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
+                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
+                    <button onclick="doLogin()" class="w-full gradient-blue text-white p-4 rounded-2xl font-bold btn-active">MASUK</button>
+                    <button onclick="pageRegister()" class="w-full text-blue-600 font-bold text-sm">Daftar Akun Baru</button>
                 </div>
             </div>
         `);
     }
 
-    // --- HALAMAN DAFTAR ---
     function pageRegister() {
         view(`
             <div class="p-8 pt-20">
-                <h2 class="text-2xl font-black text-slate-800 mb-8 uppercase italic">Pendaftaran Member</h2>
+                <h2 class="text-2xl font-black text-slate-800 mb-8 uppercase">Pendaftaran</h2>
                 <div class="space-y-4">
-                    <input id="r_u" type="text" placeholder="Buat Username" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-500">
-                    <input id="r_p" type="password" placeholder="Buat Password" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl outline-none focus:border-blue-500">
-                    <button onclick="doRegister()" class="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold shadow-lg btn-active">KONFIRMASI DAFTAR</button>
-                    <button onclick="pageLogin()" class="w-full text-slate-400 font-bold text-sm mt-4 text-center block">Kembali ke Login</button>
+                    <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
+                    <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
+                    <button onclick="doRegister()" class="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold btn-active">DAFTAR SEKARANG</button>
+                    <button onclick="pageLogin()" class="w-full text-slate-400 font-bold text-sm mt-4 text-center block">Kembali</button>
                 </div>
             </div>
         `);
     }
 
-    // --- DASHBOARD ---
     function pageDashboard() {
-        db.ref('users/' + userAktif).on('value', (s) => {
-            const val = s.val();
-            if(!val) { logout(); return; }
+        // PENTING: Menggunakan userAktif yang sudah dipastikan huruf kecil
+        db.ref('users/' + userAktif.toLowerCase()).on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(!data) { 
+                view(`<div class="p-10 text-center">Data user @${userAktif} tidak ditemukan di Firebase. Logout dan Daftar ulang. <button onclick="logout()" class="text-blue-500 underline">Logout</button></div>`);
+                return; 
+            }
+            
+            // Mengambil saldo (pastikan huruf kecil)
+            let sld = data.saldo || 0;
+
             view(`
-                <div class="gradient-blue p-6 pb-24 rounded-b-[3.5rem] shadow-xl text-white">
-                    <div class="flex justify-between items-center mb-10">
-                        <div><p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">Selamat Datang,</p><h2 class="text-xl font-bold uppercase tracking-tighter">@${userAktif}</h2></div>
-                        <button onclick="logout()" class="bg-white/10 p-2 px-4 rounded-xl text-[10px] font-bold border border-white/20">KELUAR</button>
+                <div class="gradient-blue p-6 pb-24 rounded-b-[3.5rem] shadow-xl text-white text-center">
+                    <div class="flex justify-between items-center mb-10 text-left">
+                        <div><p class="text-[10px] font-bold opacity-60 uppercase">Member,</p><h2 class="text-xl font-bold">@${userAktif}</h2></div>
+                        <button onclick="logout()" class="bg-white/10 p-2 px-4 rounded-xl text-[10px] border border-white/20">LOGOUT</button>
                     </div>
-                    <div class="bg-white/10 p-6 rounded-3xl border border-white/10 shadow-inner backdrop-blur-sm text-center">
+                    <div class="bg-white/10 p-6 rounded-3xl border border-white/10 backdrop-blur-md mb-4">
                         <p class="text-[10px] font-bold opacity-80 uppercase mb-1">Saldo Anda</p>
-                        <h2 class="text-4xl font-black tracking-tighter">Rp ${(val.saldo || 0).toLocaleString('id-ID')}</h2>
+                        <h2 class="text-4xl font-black">Rp ${Number(sld).toLocaleString('id-ID')}</h2>
                     </div>
                 </div>
-
-                <div class="px-5 -mt-12 flex-1">
-                    <div class="bg-white p-5 rounded-[2.5rem] shadow-xl flex justify-around mb-8 border border-slate-50 text-center">
-                        <button onclick="pageTransfer()" class="btn-active">
-                            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-1 text-xl font-bold italic">TF</div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase">Transfer</span>
-                        </button>
-                        <button onclick="kirimWA('Halo Admin, saya mau ISI SALDO user: ${userAktif}')" class="btn-active">
+                <div class="px-5 -mt-12 text-center">
+                    <div class="bg-white p-5 rounded-[2.5rem] shadow-xl flex justify-around mb-8 border border-slate-50">
+                        <button onclick="kirimWA('Halo Admin, saya mau ISI SALDO user: ${userAktif}')" class="btn-active flex flex-col items-center">
                             <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-1 text-2xl font-bold">+</div>
-                            <span class="text-[9px] font-black text-slate-400 uppercase">Top Up</span>
+                            <span class="text-[10px] font-black text-slate-400">ISI SALDO</span>
                         </button>
                     </div>
-
-                    <h3 class="font-black text-slate-800 mb-4 px-2 text-[10px] uppercase tracking-[0.2em] text-center">Kategori Produk</h3>
-                    <div class="grid grid-cols-3 gap-3 pb-10">
-                        ${providers.map(p => `
-                            <div onclick="pageProduct('${p.name}')" class="${p.bg} p-4 rounded-[2rem] flex flex-col items-center btn-active border border-white shadow-sm">
-                                <span class="text-2xl mb-1">${p.icon}</span>
-                                <span class="font-bold text-slate-600 text-[8px] uppercase">${p.name}</span>
-                            </div>
-                        `).join('')}
-                    </div>
+                    <p class="text-slate-400 text-sm italic">Silakan hubungi admin untuk aktivasi produk.</p>
                 </div>
             `);
         });
     }
 
-    function pageProduct(p) {
-        const noms = [5000, 10000, 15000, 20000, 25000, 50000, 100000];
-        let h = `<div class="p-6"><div class="flex items-center mb-8"><button onclick="pageDashboard()" class="text-3xl mr-4 text-slate-800">←</button><h2 class="text-xl font-black uppercase italic">PULSA ${p}</h2></div>
-        <div class="bg-slate-50 p-5 rounded-3xl mb-6 shadow-inner border border-slate-100"><input id="no_hp" type="number" placeholder="08xx..." class="w-full bg-transparent text-xl font-black text-center outline-none"></div><div class="space-y-3 pb-10">`;
-        noms.forEach(n => {
-            const hrg = n + PROFIT;
-            h += `<div onclick="doOrder('${p}', ${n}, ${hrg})" class="flex justify-between p-5 bg-slate-50 border border-slate-100 rounded-3xl items-center btn-active"><p class="text-xl font-black tracking-tighter">${n/1000}K</p><p class="text-blue-600 font-black">Rp ${hrg.toLocaleString()}</p></div>`;
-        });
-        view(h + `</div></div>`);
-    }
-
-    function pageTransfer() {
-        view(`<div class="p-6"><div class="flex items-center mb-8"><button onclick="pageDashboard()" class="text-3xl mr-4">←</button><h2 class="text-xl font-black uppercase italic tracking-tighter">Kirim Saldo</h2></div>
-        <div class="space-y-4"><input id="t_u" type="text" placeholder="Username Penerima" class="w-full p-5 bg-slate-50 border rounded-3xl outline-none font-bold">
-        <input id="t_a" type="number" placeholder="Nominal" class="w-full p-5 bg-slate-50 border rounded-3xl outline-none font-bold">
-        <button onclick="doTransfer()" class="w-full gradient-blue text-white p-5 rounded-3xl font-black shadow-lg btn-active">KIRIM SEKARANG</button></div></div>`);
-    }
-
-    // --- LOGIKA ---
     function doLogin() {
         const u = document.getElementById('l_u').value.toLowerCase().trim();
         const p = document.getElementById('l_p').value;
-        if(!u || !p) return alert("Lengkapi data!");
+        if(!u || !p) return alert("Isi semua!");
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else { alert("Login Gagal!"); }
+            } else { alert("User atau Password salah!"); }
         });
     }
 
     function doRegister() {
         const u = document.getElementById('r_u').value.toLowerCase().trim();
         const p = document.getElementById('r_p').value;
-        if(u.length < 3) return alert("Username minimal 3 huruf!");
-        db.ref('users/' + u).once('value', s => {
-            if(s.exists()) return alert("Username sudah terpakai!");
-            db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
-                alert("Berhasil! Silakan Login."); pageLogin();
-            }).catch(e => alert("Gagal: " + e.message));
-        });
-    }
-
-    function doOrder(p, n, h) {
-        const no = document.getElementById('no_hp').value;
-        if(no.length < 10) return alert("Nomor HP salah!");
-        db.ref('users/' + userAktif).once('value', s => {
-            const sld = s.val().saldo || 0;
-            if(sld < h) return alert("Saldo Kurang!");
-            db.ref('users/' + userAktif).update({ saldo: sld - h });
-            kirimWA(`PESANAN RYD STORE\n----------\nProduk: ${p} ${n}\nTujuan: ${no}\nUser: ${userAktif}\nSisa Saldo: ${sld - h}`);
-        });
-    }
-
-    function doTransfer() {
-        const target = document.getElementById('t_u').value.toLowerCase().trim();
-        const amount = parseInt(document.getElementById('t_a').value);
-        if(target === userAktif) return alert("Gak bisa ke diri sendiri!");
-        db.ref('users/' + userAktif).once('value', my => {
-            const sld = my.val().saldo || 0;
-            if(sld < amount) return alert("Saldo Kurang!");
-            db.ref('users/' + target).once('value', tg => {
-                if(!tg.exists()) return alert("User tidak ditemukan!");
-                db.ref('users/' + userAktif).update({ saldo: sld - amount });
-                db.ref('users/' + target).update({ saldo: (tg.val().saldo || 0) + amount });
-                alert("Transfer Sukses!"); pageDashboard();
-            });
+        if(u.length < 3) return alert("Username min 3 huruf");
+        db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
+            alert("Berhasil Daftar!"); pageLogin();
         });
     }
 
     function kirimWA(msg) { window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`; }
     function logout() { localStorage.removeItem('ryd_user'); location.reload(); }
 
-    // Start App
-    setTimeout(() => { if(userAktif) pageDashboard(); else pageLogin(); }, 1500);
+    if(userAktif) pageDashboard(); else pageLogin();
 </script>
 </body>
 </html>
