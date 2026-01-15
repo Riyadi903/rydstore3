@@ -30,18 +30,18 @@
     <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
         <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-8"></div>
         <div class="mb-6 text-center">
-            <label class="text-[10px] font-bold uppercase text-slate-400 mb-2 block tracking-widest">Nomor HP / ID Tujuan</label>
-            <input id="inputTujuan" type="number" placeholder="Ketik di sini..." class="w-full p-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 font-bold text-center text-lg focus:ring-2 focus:ring-emerald-500 transition">
+            <label class="text-[10px] font-bold uppercase text-slate-400 mb-2 block tracking-widest text-center">Nomor HP / ID Tujuan</label>
+            <input id="inputTujuan" type="number" placeholder="Ketik nomor/ID di sini..." class="w-full p-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 font-bold text-center text-lg">
         </div>
-        <h3 id="modalTitle" class="text-xl font-black italic text-emerald-600 mb-6 text-center uppercase tracking-tighter">Pilih Nominal</h3>
+        <h3 id="modalTitle" class="text-xl font-black italic text-emerald-600 mb-6 text-center uppercase">Pilih Nominal</h3>
         <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pb-10 px-1"></div>
     </div>
 </div>
 
 <div id="pagePulsa" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase">Pulsa & Data</h2>
+        <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
+        <h2 class="text-xl font-black italic uppercase text-center">Pulsa & Data</h2>
     </div>
     <div class="grid grid-cols-3 gap-6 text-center">
         <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-500">T-SEL</div><span class="text-[10px] font-bold">Telkomsel</span></div>
@@ -53,29 +53,29 @@
 
 <div id="pageGame" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pageGame')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase">Top Up Game</h2>
+        <button onclick="closeSubPage('pageGame')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
+        <h2 class="text-xl font-black italic uppercase text-center">Top Up Game</h2>
     </div>
     <div class="grid grid-cols-3 gap-6 text-center">
-        <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-emerald italic">RD</div><span class="text-[10px] font-bold uppercase">Royal Dream</span></div>
-        <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 italic">FF</div><span class="text-[10px] font-bold uppercase">Free Fire</span></div>
-        <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-700 italic">ML</div><span class="text-[10px] font-bold uppercase">M-Legends</span></div>
+        <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-emerald italic">RD</div><span class="text-[10px] font-bold uppercase text-center leading-none">Royal Dream</span></div>
+        <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 italic">FF</div><span class="text-[10px] font-bold uppercase text-center leading-none">Free Fire</span></div>
+        <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-700 italic">ML</div><span class="text-[10px] font-bold uppercase text-center leading-none">M-Legends</span></div>
     </div>
 </div>
 
 <div id="pageReferral" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pageReferral')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase text-blue-600">Undang Teman</h2>
+        <button onclick="closeSubPage('pageReferral')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
+        <h2 class="text-xl font-black italic uppercase text-blue-600 text-center">Undang Teman</h2>
     </div>
     <div class="card-white p-8 text-center bg-gradient-to-br from-blue-500 to-blue-700 text-white border-none mb-6">
         <h3 class="text-3xl font-black mb-2 italic">Bonus Rp 5.000</h3>
-        <p class="text-[10px] font-bold opacity-80 uppercase leading-relaxed text-center">Bonus masuk otomatis jika teman mendaftar & mempertahankan saldo Rp 50.000!</p>
+        <p class="text-[10px] font-bold opacity-80 uppercase leading-relaxed text-center">Dapatkan bonus jika teman mendaftar & mempertahankan saldo Rp 50.000!</p>
     </div>
     <div class="card-white p-6 text-center">
         <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest text-center">Kode Referral Anda</p>
         <div onclick="copyReferral()" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-blue-200 cursor-pointer active:scale-95 transition">
-            <h4 id="refCodeDisplay" class="text-3xl font-black text-blue-600 tracking-widest uppercase italic">...</h4>
+            <h4 id="refCodeDisplay" class="text-3xl font-black text-blue-600 tracking-widest uppercase italic text-center">...</h4>
             <p class="text-[8px] text-blue-500 font-bold mt-2 uppercase text-center">Klik untuk salin kode</p>
         </div>
     </div>
@@ -105,12 +105,12 @@
     function pageLogin() {
         render(`<div class="p-10 pt-24 text-center">
             <div class="w-20 h-20 bg-emerald rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic text-white shadow-xl">R</div>
-            <h1 class="text-3xl font-extrabold italic mb-10 text-emerald-600 tracking-tighter uppercase text-center">RYD STORE</h1>
+            <h1 class="text-3xl font-extrabold italic mb-10 text-emerald-600 uppercase tracking-tighter text-center">RYD STORE</h1>
             <div class="space-y-4">
                 <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
                 <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
                 <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase tracking-widest shadow-lg">Masuk Akun</button>
-                <button onclick="pageRegister()" class="w-full text-slate-400 text-[10px] font-bold uppercase pt-4 block text-center">Belum punya akun? Daftar</button>
+                <button onclick="pageRegister()" class="w-full text-slate-400 text-[10px] font-bold uppercase pt-4 block text-center">Daftar Akun Baru</button>
             </div>
         </div>`);
     }
@@ -122,8 +122,8 @@
                 <input id="r_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
                 <input id="r_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
                 <input id="r_ref" type="text" placeholder="Kode Referral (Opsional)" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase">Daftar Sekarang</button>
-                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-bold uppercase mt-4 text-center block tracking-widest">Kembali ke Login</button>
+                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase">Daftar Akun</button>
+                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-bold uppercase mt-4 text-center block">Kembali</button>
             </div>
         </div>`);
     }
@@ -134,7 +134,7 @@
         db.ref('users/' + u).once('value', (s) => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; passAktif = p; pageDashboard();
-            } else { Swal.fire('Gagal', 'Akses Ditolak!', 'error'); }
+            } else { Swal.fire('Gagal', 'Username/Password Salah!', 'error'); }
         });
     }
 
@@ -144,7 +144,7 @@
         const ref = document.getElementById('r_ref').value.toLowerCase().trim();
         if(!u || !p) return;
         db.ref('users/' + u).set({ password: p, saldo: 0, invitedBy: ref || "No" }).then(() => {
-            Swal.fire('Berhasil!', 'Akun dibuat!', 'success').then(() => pageLogin());
+            Swal.fire('Berhasil!', 'Akun terdaftar!', 'success').then(() => pageLogin());
         });
     }
 
@@ -158,17 +158,17 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-8">
                         <div>
-                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest text-left">Member RYD</p>
+                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest text-left">Account Member</p>
                             <h2 class="text-lg font-black text-slate-800 italic uppercase text-left">@${userAktif}</h2>
                         </div>
                         <button onclick="location.reload()" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-black italic">LOGOUT</button>
                     </div>
 
                     <div class="card-white p-6 mb-8 bg-gradient-to-br from-white to-emerald-50 text-center relative overflow-hidden">
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-1 text-center">Saldo Anda</p>
+                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-1 text-center">Saldo RYD Store</p>
                         <h2 class="text-3xl font-black text-slate-800 italic text-center">Rp ${saldoAktif.toLocaleString()}</h2>
                         <div class="flex gap-2 justify-center mt-3">
-                            <button onclick="topUpWA()" class="btn-emerald px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Isi Saldo</button>
+                            <button onclick="topUpWA()" class="btn-emerald px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Top Up</button>
                             <button onclick="fiturTransfer()" class="bg-slate-800 text-white px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Transfer</button>
                         </div>
                     </div>
@@ -181,24 +181,24 @@
                             <span class="text-2xl mb-1 text-center">🎮</span><p class="font-black text-[9px] uppercase text-center">GAME</p>
                         </div>
                         <div onclick="openSubPage('pageReferral')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-blue-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1 text-center text-blue-500">🎁</span><p class="font-black text-[9px] uppercase text-blue-500 text-center">UNDANG</p>
+                            <span class="text-2xl mb-1 text-center text-blue-500">🎁</span><p class="font-black text-[9px] uppercase text-blue-500 text-center text-center">UNDANG</p>
                         </div>
                     </div>
 
                     <div class="mb-10">
-                        <h3 class="section-title text-left">Layanan E-Wallet</h3>
+                        <h3 class="section-title text-left">E-Wallet Menu</h3>
                         <div class="grid grid-cols-4 gap-4 text-center">
-                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 italic">DANA</div><span class="text-[9px] font-bold text-center">DANA</span></div>
-                            <div onclick="bukaModal('GOPAY', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 italic">GOPY</div><span class="text-[9px] font-bold text-center">GOPAY</span></div>
-                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 italic">OVO</div><span class="text-[9px] font-bold text-center">OVO</span></div>
-                            <div onclick="bukaModal('SHOPEE', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 italic text-center">SPAY</div><span class="text-[9px] font-bold text-center">SPAY</span></div>
+                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-blue-500 italic">DANA</div><span class="text-[9px] font-bold text-center">DANA</span></div>
+                            <div onclick="bukaModal('GOPAY', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-emerald-600 italic">GOPY</div><span class="text-[9px] font-bold text-center">GOPAY</span></div>
+                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-purple-800 italic text-center">OVO</div><span class="text-[9px] font-bold text-center">OVO</span></div>
+                            <div onclick="bukaModal('SHOPEE', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-orange-600 italic text-center">SPAY</div><span class="text-[9px] font-bold text-center">SPAY</span></div>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="section-title text-left">Riwayat Transaksi</h3>
-                        <div class="card-white p-5 flex justify-between items-center opacity-40">
-                            <p class="text-[10px] font-bold italic uppercase text-left">Belum ada transaksi</p><span class="text-xl">📋</span>
+                        <h3 class="section-title text-left">Aktivitas Terakhir</h3>
+                        <div class="card-white p-5 flex justify-between items-center opacity-30">
+                            <p class="text-[10px] font-bold italic uppercase text-left">No History Found</p><span class="text-xl">📋</span>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,8 @@
             title: 'Transfer Saldo',
             html: `
                 <input id="tf_user" class="swal2-input" placeholder="Username Penerima">
-                <input id="tf_amount" type="number" class="swal2-input" placeholder="Nominal Transfer">
+                <input id="tf_amount" type="number" class="swal2-input" placeholder="Nominal">
+                <input id="tf_pass" type="password" class="swal2-input" placeholder="Password Akun Anda">
             `,
             confirmButtonText: 'Kirim Sekarang',
             showCancelButton: true,
@@ -219,8 +220,10 @@
             preConfirm: () => {
                 const target = document.getElementById('tf_user').value.toLowerCase().trim();
                 const amount = parseInt(document.getElementById('tf_amount').value);
-                if (!target || amount < 1000) return Swal.showValidationMessage('Minimal transfer Rp 1.000');
-                if (target === userAktif) return Swal.showValidationMessage('Tidak bisa kirim ke diri sendiri');
+                const pass = document.getElementById('tf_pass').value;
+                if (!target || !amount || !pass) return Swal.showValidationMessage('Lengkapi semua data!');
+                if (pass !== passAktif) return Swal.showValidationMessage('Password Salah!');
+                if (target === userAktif) return Swal.showValidationMessage('Diri sendiri dilarang');
                 if (amount > saldoAktif) return Swal.showValidationMessage('Saldo tidak cukup');
                 return { target, amount };
             }
@@ -231,9 +234,9 @@
                     if (s.exists()) {
                         db.ref('users/' + userAktif + '/saldo').set(saldoAktif - amount);
                         db.ref('users/' + target + '/saldo').set(parseInt(s.val().saldo || 0) + amount);
-                        Swal.fire('Berhasil!', `Berhasil transfer Rp ${amount.toLocaleString()} ke @${target}`, 'success');
+                        Swal.fire('Berhasil!', `Rp ${amount.toLocaleString()} dikirim ke @${target}`, 'success');
                     } else {
-                        Swal.fire('Gagal', 'Username penerima tidak ditemukan!', 'error');
+                        Swal.fire('Gagal', 'User tidak ditemukan!', 'error');
                     }
                 });
             }
@@ -259,16 +262,22 @@
 
     function beli(p, n, h) {
         const no = document.getElementById('inputTujuan').value;
-        if(!no) return Swal.fire('Error', 'Tujuan Kosong!', 'warning');
-        Swal.fire({ title: 'Sandi', input: 'password', showCancelButton: true }).then(res => {
+        if(!no) return Swal.fire('Error', 'Input Kosong!', 'warning');
+        Swal.fire({ 
+            title: 'Keamanan', 
+            text: 'Masukkan password untuk konfirmasi',
+            input: 'password', 
+            inputPlaceholder: 'Password Akun Anda',
+            showCancelButton: true 
+        }).then(res => {
             if(res.value === passAktif) {
                 window.location.href = `https://wa.me/${WA_ADMIN}?text=*BELI*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${n}*%0AHarga: *Rp ${h.toLocaleString()}*%0ATujuan: *${no}*`;
-            } else if(res.value) { Swal.fire('Gagal', 'Sandi Salah!', 'error'); }
+            } else if(res.value) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
         });
     }
 
     function topUpWA() {
-        Swal.fire({ title: 'Top Up', input: 'number', inputLabel: 'Min Rp 10.000', showCancelButton: true }).then(res => {
+        Swal.fire({ title: 'Isi Saldo', input: 'number', inputLabel: 'Min Rp 10.000', showCancelButton: true }).then(res => {
             if (res.value >= 10000) {
                 window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(res.value).toLocaleString()}*`;
             }
@@ -277,7 +286,7 @@
 
     function copyReferral() {
         navigator.clipboard.writeText(userAktif.toUpperCase());
-        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Kode Disalin!', showConfirmButton: false, timer: 1500 });
+        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Salin!', showConfirmButton: false, timer: 1500 });
     }
 
     function openSubPage(id) { document.getElementById(id).classList.add('active'); }
