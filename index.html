@@ -2,298 +2,283 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RYD STORE OFFICIAL</title>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RYD STORE - Full Features</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-database-compat.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; overflow-x: hidden; }
-        .bg-emerald { background-color: #10b981; }
-        .card-white { background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-        .btn-emerald { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; transition: 0.3s; }
-        .menu-icon { width: 56px; height: 56px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 11px; margin-bottom: 8px; color: white; box-shadow: 0 8px 20px rgba(16, 185, 129, 0.15); }
-        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f8fafc; z-index: 80; transform: translateX(100%); transition: 0.3s ease-in-out; overflow-y: auto; }
-        .sub-page.active { transform: translateX(0); }
-        .modal-up { background: white; border-radius: 32px 32px 0 0; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }
-        .modal-up.active { transform: translateY(0); }
-        .section-title { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; border-left: 3px solid #10b981; padding-left: 10px; }
+        body { background: #0f172a; font-family: sans-serif; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); }
+        .product-card:active { transform: scale(0.96); }
+        ::-webkit-scrollbar { width: 0; }
     </style>
 </head>
-<body>
+<body class="p-4 text-slate-800">
 
-<div id="app" class="max-w-md mx-auto min-h-screen relative pb-24"></div>
-
-<div id="modalProduk" class="fixed inset-0 bg-black/40 z-[110] hidden" onclick="tutupModal()">
-    <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
-        <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-8"></div>
-        <div class="mb-6 text-center">
-            <label class="text-[10px] font-bold uppercase text-slate-400 mb-2 block tracking-widest text-center">Nomor HP / ID Tujuan</label>
-            <input id="inputTujuan" type="number" placeholder="Ketik nomor/ID di sini..." class="w-full p-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 font-bold text-center text-lg">
-        </div>
-        <h3 id="modalTitle" class="text-xl font-black italic text-emerald-600 mb-6 text-center uppercase">Pilih Nominal</h3>
-        <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pb-10 px-1"></div>
-    </div>
-</div>
-
-<div id="pagePulsa" class="sub-page max-w-md mx-auto p-6">
-    <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
-        <h2 class="text-xl font-black italic uppercase text-center">Pulsa & Data</h2>
-    </div>
-    <div class="grid grid-cols-3 gap-6 text-center">
-        <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-500">T-SEL</div><span class="text-[10px] font-bold">Telkomsel</span></div>
-        <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-500">ISAT</div><span class="text-[10px] font-bold">Indosat</span></div>
-        <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500">XL</div><span class="text-[10px] font-bold">XL Axiata</span></div>
-        <div onclick="bukaModal('Three', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-500">TRI</div><span class="text-[10px] font-bold">Three</span></div>
-    </div>
-</div>
-
-<div id="pageGame" class="sub-page max-w-md mx-auto p-6">
-    <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pageGame')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
-        <h2 class="text-xl font-black italic uppercase text-center">Top Up Game</h2>
-    </div>
-    <div class="grid grid-cols-3 gap-6 text-center">
-        <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-emerald italic">RD</div><span class="text-[10px] font-bold uppercase text-center leading-none">Royal Dream</span></div>
-        <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 italic">FF</div><span class="text-[10px] font-bold uppercase text-center leading-none">Free Fire</span></div>
-        <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-700 italic">ML</div><span class="text-[10px] font-bold uppercase text-center leading-none">M-Legends</span></div>
-    </div>
-</div>
-
-<div id="pageReferral" class="sub-page max-w-md mx-auto p-6">
-    <div class="flex items-center gap-4 mb-8">
-        <button onclick="closeSubPage('pageReferral')" class="w-10 h-10 card-white flex items-center justify-center font-bold text-center">←</button>
-        <h2 class="text-xl font-black italic uppercase text-blue-600 text-center">Undang Teman</h2>
-    </div>
-    <div class="card-white p-8 text-center bg-gradient-to-br from-blue-500 to-blue-700 text-white border-none mb-6">
-        <h3 class="text-3xl font-black mb-2 italic">Bonus Rp 5.000</h3>
-        <p class="text-[10px] font-bold opacity-80 uppercase leading-relaxed text-center">Dapatkan bonus jika teman mendaftar & mempertahankan saldo Rp 50.000!</p>
-    </div>
-    <div class="card-white p-6 text-center">
-        <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest text-center">Kode Referral Anda</p>
-        <div onclick="copyReferral()" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-blue-200 cursor-pointer active:scale-95 transition">
-            <h4 id="refCodeDisplay" class="text-3xl font-black text-blue-600 tracking-widest uppercase italic text-center">...</h4>
-            <p class="text-[8px] text-blue-500 font-bold mt-2 uppercase text-center">Klik untuk salin kode</p>
-        </div>
-    </div>
-</div>
-
-<script>
-    const WA_ADMIN = "6285881934739";
-    const firebaseConfig = {
-        apiKey: "AIzaSyCEeF0D3RB5uthkMKx5rkSTEYii-7Pp0KM",
-        authDomain: "riyadistore3.firebaseapp.com",
-        databaseURL: "https://riyadistore3-default-rtdb.asia-southeast1.firebasedatabase.app",
-        projectId: "riyadistore3",
-        storageBucket: "riyadistore3.firebasestorage.app",
-        messagingSenderId: "28764528472",
-        appId: "1:28764528472:web:941e615ef35d62b4724f2d"
-    };
-
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    
-    let userAktif = null; 
-    let passAktif = null;
-    let saldoAktif = 0;
-
-    const render = (html) => { document.getElementById('app').innerHTML = html; };
-
-    function pageLogin() {
-        render(`<div class="p-10 pt-24 text-center">
-            <div class="w-20 h-20 bg-emerald rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic text-white shadow-xl">R</div>
-            <h1 class="text-3xl font-extrabold italic mb-10 text-emerald-600 uppercase tracking-tighter text-center">RYD STORE</h1>
-            <div class="space-y-4">
-                <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
-                <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
-                <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase tracking-widest shadow-lg">Masuk Akun</button>
-                <button onclick="pageRegister()" class="w-full text-slate-400 text-[10px] font-bold uppercase pt-4 block text-center">Daftar Akun Baru</button>
+    <div id="auth-container" class="max-w-md mx-auto mt-6 glass p-8 rounded-[2.5rem] shadow-2xl border border-blue-100">
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/50">
+                <span class="text-white text-4xl font-black italic">R</span>
             </div>
-        </div>`);
-    }
+            <h1 class="text-2xl font-black text-slate-900">RYD STORE</h1>
+            <p class="text-[10px] text-blue-500 font-black uppercase tracking-[0.2em]">Human Verified System</p>
+        </div>
 
-    function pageRegister() {
-        render(`<div class="p-10 pt-20">
-            <h2 class="text-2xl font-black italic text-emerald-600 mb-6 uppercase text-center">Pendaftaran</h2>
-            <div class="space-y-4">
-                <input id="r_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <input id="r_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <input id="r_ref" type="text" placeholder="Kode Referral (Opsional)" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase">Daftar Akun</button>
-                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-bold uppercase mt-4 text-center block">Kembali</button>
+        <div class="space-y-4">
+            <div class="relative">
+                <i class="fa-solid fa-user absolute left-4 top-4 text-gray-400"></i>
+                <input type="text" id="username" placeholder="Username" class="w-full pl-12 p-4 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all">
             </div>
-        </div>`);
-    }
-
-    function doLogin() {
-        const u = document.getElementById('l_u').value.toLowerCase().trim();
-        const p = document.getElementById('l_p').value;
-        db.ref('users/' + u).once('value', (s) => {
-            if(s.exists() && s.val().password === p) {
-                userAktif = u; passAktif = p; pageDashboard();
-            } else { Swal.fire('Gagal', 'Username/Password Salah!', 'error'); }
-        });
-    }
-
-    function doRegister() {
-        const u = document.getElementById('r_u').value.toLowerCase().trim();
-        const p = document.getElementById('r_p').value;
-        const ref = document.getElementById('r_ref').value.toLowerCase().trim();
-        if(!u || !p) return;
-        db.ref('users/' + u).set({ password: p, saldo: 0, invitedBy: ref || "No" }).then(() => {
-            Swal.fire('Berhasil!', 'Akun terdaftar!', 'success').then(() => pageLogin());
-        });
-    }
-
-    function pageDashboard() {
-        db.ref('users/' + userAktif).on('value', (snapshot) => {
-            const data = snapshot.val();
-            saldoAktif = parseInt(data.saldo || 0);
-            if(document.getElementById('refCodeDisplay')) document.getElementById('refCodeDisplay').innerText = userAktif.toUpperCase();
+            <div class="relative">
+                <i class="fa-solid fa-lock absolute left-4 top-4 text-gray-400"></i>
+                <input type="password" id="password" placeholder="Password" class="w-full pl-12 p-4 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all">
+            </div>
             
-            render(`
-                <div class="p-6">
-                    <div class="flex justify-between items-center mb-8">
-                        <div>
-                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest text-left">Account Member</p>
-                            <h2 class="text-lg font-black text-slate-800 italic uppercase text-left">@${userAktif}</h2>
-                        </div>
-                        <button onclick="location.reload()" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-black italic">LOGOUT</button>
-                    </div>
-
-                    <div class="card-white p-6 mb-8 bg-gradient-to-br from-white to-emerald-50 text-center relative overflow-hidden">
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-1 text-center">Saldo RYD Store</p>
-                        <h2 class="text-3xl font-black text-slate-800 italic text-center">Rp ${saldoAktif.toLocaleString()}</h2>
-                        <div class="flex gap-2 justify-center mt-3">
-                            <button onclick="topUpWA()" class="btn-emerald px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Top Up</button>
-                            <button onclick="fiturTransfer()" class="bg-slate-800 text-white px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Transfer</button>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3 mb-10 text-center">
-                        <div onclick="openSubPage('pagePulsa')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-emerald-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1 text-center">📱</span><p class="font-black text-[9px] uppercase text-center">PULSA</p>
-                        </div>
-                        <div onclick="openSubPage('pageGame')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-emerald-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1 text-center">🎮</span><p class="font-black text-[9px] uppercase text-center">GAME</p>
-                        </div>
-                        <div onclick="openSubPage('pageReferral')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-blue-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1 text-center text-blue-500">🎁</span><p class="font-black text-[9px] uppercase text-blue-500 text-center text-center">UNDANG</p>
-                        </div>
-                    </div>
-
-                    <div class="mb-10">
-                        <h3 class="section-title text-left">E-Wallet Menu</h3>
-                        <div class="grid grid-cols-4 gap-4 text-center">
-                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-blue-500 italic">DANA</div><span class="text-[9px] font-bold text-center">DANA</span></div>
-                            <div onclick="bukaModal('GOPAY', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-emerald-600 italic">GOPY</div><span class="text-[9px] font-bold text-center">GOPAY</span></div>
-                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-purple-800 italic text-center">OVO</div><span class="text-[9px] font-bold text-center">OVO</span></div>
-                            <div onclick="bukaModal('SHOPEE', 'ewallet')" class="flex flex-col items-center text-center"><div class="menu-icon bg-orange-600 italic text-center">SPAY</div><span class="text-[9px] font-bold text-center">SPAY</span></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="section-title text-left">Aktivitas Terakhir</h3>
-                        <div class="card-white p-5 flex justify-between items-center opacity-30">
-                            <p class="text-[10px] font-bold italic uppercase text-left">No History Found</p><span class="text-xl">📋</span>
-                        </div>
-                    </div>
+            <div id="reg-extra" class="hidden space-y-4">
+                <div class="relative">
+                    <i class="fa-solid fa-users absolute left-4 top-4 text-blue-400"></i>
+                    <input type="text" id="referral" placeholder="Username Pengajak (Opsional)" class="w-full pl-12 p-4 border-2 border-blue-100 rounded-2xl outline-none bg-blue-50">
                 </div>
-            `);
-        });
-    }
+                <div class="bg-red-50 p-3 rounded-xl border border-red-100">
+                    <p class="text-[10px] text-red-600 font-black text-center uppercase animate-bounce">⚠️ WAJIB SCREENSHOT SETELAH KLIK DAFTAR!</p>
+                </div>
+            </div>
 
-    function fiturTransfer() {
-        Swal.fire({
-            title: 'Transfer Saldo',
-            html: `
-                <input id="tf_user" class="swal2-input" placeholder="Username Penerima">
-                <input id="tf_amount" type="number" class="swal2-input" placeholder="Nominal">
-                <input id="tf_pass" type="password" class="swal2-input" placeholder="Password Akun Anda">
-            `,
-            confirmButtonText: 'Kirim Sekarang',
-            showCancelButton: true,
-            confirmButtonColor: '#10b981',
-            preConfirm: () => {
-                const target = document.getElementById('tf_user').value.toLowerCase().trim();
-                const amount = parseInt(document.getElementById('tf_amount').value);
-                const pass = document.getElementById('tf_pass').value;
-                if (!target || !amount || !pass) return Swal.showValidationMessage('Lengkapi semua data!');
-                if (pass !== passAktif) return Swal.showValidationMessage('Password Salah!');
-                if (target === userAktif) return Swal.showValidationMessage('Diri sendiri dilarang');
-                if (amount > saldoAktif) return Swal.showValidationMessage('Saldo tidak cukup');
-                return { target, amount };
+            <button onclick="handleAuth()" id="btn-auth" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg hover:bg-blue-700 active:scale-95 transition-all">MASUK</button>
+            <p class="text-center text-sm font-bold text-slate-400">
+                <span id="auth-text">Belum punya akun?</span> 
+                <button onclick="toggleAuth()" class="text-blue-600 font-black ml-1 uppercase text-xs">Daftar Sekarang</button>
+            </p>
+        </div>
+    </div>
+
+    <div id="app-container" class="max-w-md mx-auto hidden pb-10">
+        <div class="glass p-6 rounded-[2.5rem] mb-6 shadow-2xl border-b-8 border-blue-600 relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Total Saldo</p>
+                <h2 class="text-4xl font-black text-slate-900 mb-2">Rp <span id="user-balance">0</span></h2>
+                <div class="flex items-center gap-2">
+                    <span class="px-3 py-1 bg-blue-100 text-blue-600 text-[10px] font-black rounded-full uppercase">User: <span id="display-name"></span></span>
+                </div>
+            </div>
+            <button onclick="logout()" class="absolute top-6 right-6 w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
+                <i class="fa-solid fa-power-off"></i>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mb-8">
+            <button onclick="topup()" class="bg-white p-5 rounded-[2rem] shadow-xl flex flex-col items-center gap-2 active:scale-95 transition-all border-b-4 border-blue-200">
+                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <span class="font-black text-[10px] text-slate-600 uppercase">Top Up Saldo</span>
+            </button>
+            <button onclick="transferSaldo()" class="bg-white p-5 rounded-[2rem] shadow-xl flex flex-col items-center gap-2 active:scale-95 transition-all border-b-4 border-emerald-200">
+                <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+                <span class="font-black text-[10px] text-slate-600 uppercase">Kirim Saldo</span>
+            </button>
+        </div>
+
+        <h3 class="text-white font-black mb-4 ml-2 text-xs tracking-widest uppercase flex items-center gap-2">
+            <i class="fa-solid fa-shopping-cart text-blue-400"></i> Menu Transaksi
+        </h3>
+        
+        <div class="grid grid-cols-2 gap-3" id="product-list">
+            </div>
+
+        <div class="mt-8 glass p-6 rounded-[2.5rem] border-2 border-dashed border-blue-200 shadow-xl relative">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase">Bonus Saldo</div>
+            <div class="text-center">
+                <h4 class="font-black text-slate-800 uppercase text-sm mb-1">Undang Teman & Cuan!</h4>
+                <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">Dapatkan bonus Rp 5.000 setelah temanmu daftar dan melakukan transaksi pertama.</p>
+                <button onclick="bagikanReferral()" class="w-full bg-slate-900 text-white py-3 rounded-2xl font-black text-xs uppercase hover:bg-blue-600 transition-all">
+                    <i class="fa-solid fa-share-nodes mr-2"></i> Bagikan Link Ke Teman
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FIREBASE CONFIG
+        const firebaseConfig = { databaseURL: "https://riyadistore3-default-rtdb.firebaseio.com/" };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        let currentUser = null;
+        let isRegister = false;
+
+        // DAFTAR HARGA (KEUNTUNGAN 1.500 & 500 SESUAI REQUEST)
+        const products = [
+            { name: "Royal Dream 1B", price: 66500, icon: "fa-gem", color: "text-purple-500" },
+            { name: "Royal Dream 2B", price: 132000, icon: "fa-gem", color: "text-purple-500" },
+            { name: "Royal Dream 5B", price: 325000, icon: "fa-gem", color: "text-purple-500" },
+            { name: "Pulsa 5.000", price: 7000, icon: "fa-mobile-screen", color: "text-blue-500" },
+            { name: "Pulsa 10.000", price: 12500, icon: "fa-mobile-screen", color: "text-blue-500" },
+            { name: "Pulsa 20.000", price: 21500, icon: "fa-mobile-screen", color: "text-blue-500" },
+            { name: "Pulsa 50.000", price: 51500, icon: "fa-mobile-screen", color: "text-blue-500" },
+            { name: "Pulsa 100.000", price: 101500, icon: "fa-mobile-screen", color: "text-blue-500" },
+            { name: "E-Wallet 50.000", price: 51500, icon: "fa-wallet", color: "text-emerald-500" },
+            { name: "E-Wallet 100.000", price: 101500, icon: "fa-wallet", color: "text-emerald-500" },
+            { name: "Saldo RYD 500k", price: 501500, icon: "fa-coins", color: "text-yellow-500" },
+            { name: "Saldo RYD 1 Juta", price: 1001500, icon: "fa-crown", color: "text-orange-500" }
+        ];
+
+        function renderProducts() {
+            const list = document.getElementById('product-list');
+            list.innerHTML = products.map(p => `
+                <div onclick="beli('${p.name}', ${p.price})" class="glass p-5 rounded-[2rem] product-card shadow-lg border border-slate-50 flex flex-col items-center text-center">
+                    <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-3">
+                        <i class="fa-solid ${p.icon} ${p.color} text-lg"></i>
+                    </div>
+                    <p class="font-black text-[10px] text-slate-500 uppercase mb-1 leading-tight">${p.name}</p>
+                    <p class="text-blue-600 font-black text-xs tracking-tighter">Rp ${p.price.toLocaleString()}</p>
+                </div>
+            `).join('');
+        }
+
+        function toggleAuth() {
+            isRegister = !isRegister;
+            document.getElementById('auth-text').innerText = isRegister ? 'Sudah punya akun?' : 'Belum punya akun?';
+            document.getElementById('btn-auth').innerText = isRegister ? 'DAFTAR SEKARANG' : 'MASUK KE AKUN';
+            document.getElementById('reg-extra').classList.toggle('hidden');
+        }
+
+        async function handleAuth() {
+            const user = document.getElementById('username').value.toLowerCase().trim();
+            const pass = document.getElementById('password').value;
+            const ref = document.getElementById('referral').value.trim();
+
+            if (!user || !pass) return Swal.fire('Error', ' Username & Password wajib isi!', 'error');
+
+            const userRef = db.ref('users/' + user);
+            const snap = await userRef.once('value');
+
+            if (isRegister) {
+                if (snap.exists()) return Swal.fire('Gagal', 'Username sudah terpakai!', 'warning');
+                
+                await userRef.set({
+                    username: user, password: pass, saldo: 0,
+                    invitedBy: ref || "Owner", date: new Date().toLocaleDateString()
+                });
+
+                // NOTIF SCREENSHOT WAJIB
+                await Swal.fire({
+                    title: 'PENDAFTARAN BERHASIL!',
+                    html: `<div style="text-align:left; background:#fff9c4; padding:20px; border-radius:15px; border:3px dashed #fbc02d">
+                            <p style="color:red; font-weight:900; text-align:center; margin-bottom:10px">📸 SCREENSHOT SEKARANG!</p>
+                            <hr style="border:1px solid #fdd835">
+                            <p style="font-size:14px; margin-top:10px"><b>ID USER:</b> ${user}</p>
+                            <p style="font-size:14px"><b>PASSWORD:</b> ${pass}</p>
+                            <p style="font-size:10px; color:gray; margin-top:15px"><i>*Jangan berikan password ke siapapun termasuk Admin!</i></p>
+                           </div>`,
+                    icon: 'success',
+                    confirmButtonText: 'SAYA SUDAH SIMPAN'
+                });
+                location.reload();
+            } else {
+                const data = snap.val();
+                if (data && data.password === pass) {
+                    startApp(data);
+                } else {
+                    Swal.fire('Gagal', 'Username atau Password salah!', 'error');
+                }
             }
-        }).then(res => {
-            if (res.isConfirmed) {
-                const { target, amount } = res.value;
-                db.ref('users/' + target).once('value', (s) => {
-                    if (s.exists()) {
-                        db.ref('users/' + userAktif + '/saldo').set(saldoAktif - amount);
-                        db.ref('users/' + target + '/saldo').set(parseInt(s.val().saldo || 0) + amount);
-                        Swal.fire('Berhasil!', `Rp ${amount.toLocaleString()} dikirim ke @${target}`, 'success');
-                    } else {
-                        Swal.fire('Gagal', 'User tidak ditemukan!', 'error');
-                    }
+        }
+
+        function startApp(data) {
+            currentUser = data.username;
+            document.getElementById('auth-container').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+            document.getElementById('display-name').innerText = currentUser;
+            renderProducts();
+            
+            db.ref('users/' + currentUser + '/saldo').on('value', (snap) => {
+                document.getElementById('user-balance').innerText = (snap.val() || 0).toLocaleString();
+            });
+        }
+
+        // FITUR BELI: KEAMANAN SALDO HARUS CUKUP
+        async function beli(produk, harga) {
+            const snap = await db.ref('users/' + currentUser).once('value');
+            const dataUser = snap.val();
+            const saldoUser = dataUser.saldo;
+
+            if (saldoUser < harga) {
+                return Swal.fire({
+                    title: 'SALDO TIDAK CUKUP',
+                    text: `Harga Rp ${harga.toLocaleString()}, Saldo Anda Rp ${saldoUser.toLocaleString()}. Segera Top Up!`,
+                    icon: 'error'
                 });
             }
-        });
-    }
 
-    function bukaModal(name, tipe) {
-        document.getElementById('modalTitle').innerText = name;
-        document.getElementById('inputTujuan').value = "";
-        const list = document.getElementById('listProduk');
-        list.innerHTML = "";
-        let noms = [5000, 10000, 20000, 50000, 100000, 250000, 500000, 1000000];
-        noms.forEach(v => {
-            let h = v + 2000;
-            list.innerHTML += `<div onclick="beli('${name}', '${v.toLocaleString()}', ${h})" class="bg-white p-5 rounded-2xl border border-slate-100 text-center active:scale-95 shadow-sm">
-                <p class="text-[11px] font-black uppercase text-center">${v >= 1000 ? (v/1000)+'RB' : v}</p>
-                <p class="text-[9px] font-bold text-emerald-600 text-center">Rp ${h.toLocaleString()}</p>
-            </div>`;
-        });
-        document.getElementById('modalProduk').classList.remove('hidden');
-        setTimeout(() => document.getElementById('modalContent').classList.add('active'), 10);
-    }
+            const { value: passConfirm } = await Swal.fire({
+                title: 'Konfirmasi',
+                text: `Beli ${produk} seharga Rp ${harga.toLocaleString()}?`,
+                input: 'password',
+                inputPlaceholder: 'Masukkan Password Akun',
+                showCancelButton: true
+            });
 
-    function beli(p, n, h) {
-        const no = document.getElementById('inputTujuan').value;
-        if(!no) return Swal.fire('Error', 'Input Kosong!', 'warning');
-        Swal.fire({ 
-            title: 'Keamanan', 
-            text: 'Masukkan password untuk konfirmasi',
-            input: 'password', 
-            inputPlaceholder: 'Password Akun Anda',
-            showCancelButton: true 
-        }).then(res => {
-            if(res.value === passAktif) {
-                window.location.href = `https://wa.me/${WA_ADMIN}?text=*BELI*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${n}*%0AHarga: *Rp ${h.toLocaleString()}*%0ATujuan: *${no}*`;
-            } else if(res.value) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
-        });
-    }
+            if (passConfirm === dataUser.password) {
+                const saldoBaru = saldoUser - harga;
+                await db.ref('users/' + currentUser).update({ saldo: saldoBaru });
 
-    function topUpWA() {
-        Swal.fire({ title: 'Isi Saldo', input: 'number', inputLabel: 'Min Rp 10.000', showCancelButton: true }).then(res => {
-            if (res.value >= 10000) {
-                window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(res.value).toLocaleString()}*`;
+                const pesan = `Halo Admin RYD STORE, Saya ${currentUser} beli ${produk}. Saldo sudah terpotong otomatis. Mohon segera diproses!`;
+                Swal.fire('Berhasil!', 'Saldo terpotong, sedang mengalihkan ke WhatsApp...', 'success');
+                setTimeout(() => window.location.href = `https://wa.me/6281283303643?text=${encodeURIComponent(pesan)}`, 2000);
+            } else if (passConfirm) {
+                Swal.fire('Password Salah!', 'Transaksi dibatalkan.', 'error');
             }
-        });
-    }
+        }
 
-    function copyReferral() {
-        navigator.clipboard.writeText(userAktif.toUpperCase());
-        Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Salin!', showConfirmButton: false, timer: 1500 });
-    }
+        // FITUR TRANSFER SALDO LENGKAP
+        async function transferSaldo() {
+            const { value: target } = await Swal.fire({ title: 'Username Penerima', input: 'text', confirmButtonText: 'Cek User' });
+            if (!target) return;
 
-    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
-    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
-    function tutupModal() { document.getElementById('modalContent').classList.remove('active'); setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 400); }
+            const targetUser = target.toLowerCase().trim();
+            if (targetUser === currentUser) return Swal.fire('Gagal', 'Tidak bisa kirim ke diri sendiri!', 'warning');
 
-    pageLogin();
-</script>
+            const { value: jumlah } = await Swal.fire({ title: 'Jumlah Transfer', input: 'number', inputPlaceholder: 'Min 1.000' });
+            const nominal = parseInt(jumlah);
+
+            if (nominal < 1000) return Swal.fire('Gagal', 'Minimal transfer Rp 1.000', 'warning');
+
+            const snapPengirim = await db.ref('users/' + currentUser).once('value');
+            if (snapPengirim.val().saldo < nominal) return Swal.fire('Gagal', 'Saldo tidak cukup!', 'error');
+
+            const targetRef = db.ref('users/' + targetUser);
+            const snapTarget = await targetRef.once('value');
+
+            if (!snapTarget.exists()) return Swal.fire('Gagal', 'Username tujuan tidak ditemukan!', 'error');
+
+            const { value: p } = await Swal.fire({ title: 'Konfirmasi Password', input: 'password' });
+            if (p === snapPengirim.val().password) {
+                await db.ref('users/' + currentUser).update({ saldo: snapPengirim.val().saldo - nominal });
+                await targetRef.update({ saldo: (snapTarget.val().saldo || 0) + nominal });
+                Swal.fire('Sukses!', `Berhasil transfer Rp ${nominal.toLocaleString()} ke ${targetUser}`, 'success');
+            } else if (p) {
+                Swal.fire('Password Salah!', '', 'error');
+            }
+        }
+
+        // FITUR UNDANG TEMAN LENGKAP
+        function bagikanReferral() {
+            const linkAplikasi = window.location.href;
+            const pesan = `🚀 Ayo gabung di RYD STORE! Top Up Game & Pulsa Amanah.\n\nKlik Link: ${linkAplikasi}\n\nMasukkan kode referral: *${currentUser}* saat daftar untuk dapatkan bonus saldo!`;
+            window.location.href = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+        }
+
+        function topup() {
+            window.location.href = "https://wa.me/6281283303643?text=Halo Admin, saya mau isi saldo RYD STORE";
+        }
+
+        function logout() { location.reload(); }
+    </script>
 </body>
 </html>
