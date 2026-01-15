@@ -9,15 +9,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; -webkit-tap-highlight-color: transparent; }
         .gradient-blue { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
-        .btn-active:active { transform: scale(0.95); transition: 0.1s; }
+        .card-menu { background: white; border-radius: 24px; transition: all 0.3s; border: 1px solid #e2e8f0; }
+        .card-menu:active { transform: scale(0.95); background: #f8fafc; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; align-items: flex-end; }
+        .modal.active { display: flex; }
     </style>
 </head>
 <body>
 
-<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-2xl flex flex-col relative">
-    <div class="p-20 text-center text-slate-400 font-bold">Memuat...</div>
+<div id="app" class="max-w-md mx-auto min-h-screen bg-[#f8fafc] shadow-2xl flex flex-col relative pb-20">
+    </div>
+
+<div id="modalProduk" class="modal" onclick="tutupModal()">
+    <div class="bg-white w-full max-w-md rounded-t-[3rem] p-8 animate-slide-up" onclick="event.stopPropagation()">
+        <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
+        <h3 id="modalTitle" class="text-xl font-bold text-slate-800 mb-6">Pilih Nominal</h3>
+        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pb-10">
+            </div>
+    </div>
 </div>
 
 <script>
@@ -30,13 +41,20 @@
         projectId: "riyadistore3",
         storageBucket: "riyadistore3.firebasestorage.app",
         messagingSenderId: "28764528472",
-        appId: "1:28764528472:web:941e615ef35d62b4724f2d",
-        measurementId: "G-BXZDEM1TBP"
+        appId: "1:28764528472:web:941e615ef35d62b4724f2d"
     };
 
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let userAktif = localStorage.getItem('ryd_user');
+
+    const daftarNominal = [5000, 10000, 20000, 50000, 100000];
+    const operators = [
+        { id: 'telkomsel', name: 'Telkomsel', img: 'https://upload.wikimedia.org/wikipedia/commons/b/b2/Telkomsel_2021_logo.svg', color: 'bg-red-50 text-red-600' },
+        { id: 'indosat', name: 'Indosat', img: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Indosat_Ooredoo_logo.svg', color: 'bg-yellow-50 text-yellow-600' },
+        { id: 'xl', name: 'XL Axiata', img: 'https://upload.wikimedia.org/wikipedia/en/5/55/XL_Axiata_logo_2016.svg', color: 'bg-blue-50 text-blue-600' },
+        { id: 'tri', name: 'Three (3)', img: 'https://upload.wikimedia.org/wikipedia/commons/4/40/3-id-logo.svg', color: 'bg-slate-50 text-slate-800' }
+    ];
 
     function view(html) { document.getElementById('app').innerHTML = html; }
 
@@ -44,11 +62,11 @@
         view(`
             <div class="p-8 pt-24 text-center">
                 <div class="w-20 h-20 gradient-blue rounded-[2rem] mx-auto mb-6 flex items-center justify-center shadow-xl text-white text-4xl font-black italic">R</div>
-                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase">RYD STORE</h1>
-                <div class="mt-12 space-y-4">
-                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                    <button onclick="doLogin()" class="w-full gradient-blue text-white p-4 rounded-2xl font-bold btn-active">MASUK</button>
+                <h1 class="text-3xl font-extrabold text-slate-800 tracking-tighter uppercase mb-12">RYD STORE</h1>
+                <div class="space-y-4">
+                    <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none">
+                    <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none">
+                    <button onclick="doLogin()" class="w-full gradient-blue text-white p-4 rounded-2xl font-bold shadow-lg btn-active">LOGIN</button>
                     <button onclick="pageRegister()" class="w-full text-blue-600 font-bold text-sm">Daftar Akun Baru</button>
                 </div>
             </div>
@@ -58,11 +76,11 @@
     function pageRegister() {
         view(`
             <div class="p-8 pt-20">
-                <h2 class="text-2xl font-black text-slate-800 mb-8 uppercase">Pendaftaran</h2>
+                <h2 class="text-2xl font-black text-slate-800 mb-8 uppercase italic">Registrasi</h2>
                 <div class="space-y-4">
-                    <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                    <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-slate-50 border rounded-2xl outline-none">
-                    <button onclick="doRegister()" class="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold btn-active">DAFTAR SEKARANG</button>
+                    <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none">
+                    <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none">
+                    <button onclick="doRegister()" class="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold shadow-lg btn-active">DAFTAR</button>
                     <button onclick="pageLogin()" class="w-full text-slate-400 font-bold text-sm mt-4 text-center block">Kembali</button>
                 </div>
             </div>
@@ -70,62 +88,99 @@
     }
 
     function pageDashboard() {
-        // PENTING: Menggunakan userAktif yang sudah dipastikan huruf kecil
         db.ref('users/' + userAktif.toLowerCase()).on('value', (snapshot) => {
             const data = snapshot.val();
-            if(!data) { 
-                view(`<div class="p-10 text-center">Data user @${userAktif} tidak ditemukan di Firebase. Logout dan Daftar ulang. <button onclick="logout()" class="text-blue-500 underline">Logout</button></div>`);
-                return; 
-            }
-            
-            // Mengambil saldo (pastikan huruf kecil)
-            let sld = data.saldo || 0;
+            if(!data) return pageLogin();
+            const sld = Number(data.saldo || 0);
 
             view(`
-                <div class="gradient-blue p-6 pb-24 rounded-b-[3.5rem] shadow-xl text-white text-center">
-                    <div class="flex justify-between items-center mb-10 text-left">
-                        <div><p class="text-[10px] font-bold opacity-60 uppercase">Member,</p><h2 class="text-xl font-bold">@${userAktif}</h2></div>
-                        <button onclick="logout()" class="bg-white/10 p-2 px-4 rounded-xl text-[10px] border border-white/20">LOGOUT</button>
+                <div class="gradient-blue p-6 pb-20 rounded-b-[3rem] shadow-xl text-white">
+                    <div class="flex justify-between items-center mb-8">
+                        <div><p class="text-[10px] font-bold opacity-60 uppercase">Member</p><h2 class="text-lg font-bold uppercase tracking-tighter">@${userAktif}</h2></div>
+                        <button onclick="logout()" class="bg-white/10 p-2 px-4 rounded-xl text-[10px] font-bold border border-white/20">LOGOUT</button>
                     </div>
-                    <div class="bg-white/10 p-6 rounded-3xl border border-white/10 backdrop-blur-md mb-4">
-                        <p class="text-[10px] font-bold opacity-80 uppercase mb-1">Saldo Anda</p>
-                        <h2 class="text-4xl font-black">Rp ${Number(sld).toLocaleString('id-ID')}</h2>
+                    <div class="bg-white/10 p-6 rounded-[2rem] border border-white/10 backdrop-blur-md relative overflow-hidden">
+                        <p class="text-[10px] font-bold opacity-80 uppercase mb-1">Total Saldo Anda</p>
+                        <h2 class="text-4xl font-black italic">Rp ${sld.toLocaleString('id-ID')}</h2>
+                        <div class="absolute -right-4 -bottom-4 w-20 h-20 bg-white/5 rounded-full"></div>
                     </div>
                 </div>
-                <div class="px-5 -mt-12 text-center">
-                    <div class="bg-white p-5 rounded-[2.5rem] shadow-xl flex justify-around mb-8 border border-slate-50">
-                        <button onclick="kirimWA('Halo Admin, saya mau ISI SALDO user: ${userAktif}')" class="btn-active flex flex-col items-center">
-                            <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600 mb-1 text-2xl font-bold">+</div>
-                            <span class="text-[10px] font-black text-slate-400">ISI SALDO</span>
+
+                <div class="px-6 -mt-10">
+                    <div class="bg-white p-4 rounded-[2.5rem] shadow-xl flex justify-around mb-8 border border-slate-50">
+                        <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Halo Admin, saya mau ISI SALDO user: ${userAktif}'" class="flex flex-col items-center btn-active">
+                            <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-2 text-2xl font-bold">+</div>
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase">Isi Saldo</span>
+                        </button>
+                        <button onclick="alert('Gunakan Menu Operator di Bawah')" class="flex flex-col items-center btn-active">
+                            <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-2 text-2xl font-bold">⇅</div>
+                            <span class="text-[10px] font-extrabold text-slate-500 uppercase">Transfer</span>
                         </button>
                     </div>
-                    <p class="text-slate-400 text-sm italic">Silakan hubungi admin untuk aktivasi produk.</p>
+
+                    <h3 class="text-sm font-black text-slate-800 mb-4 uppercase tracking-widest px-2 italic">Isi Pulsa Operator</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        ${operators.map(op => `
+                            <div onclick="bukaModal('${op.name}', '${op.id}')" class="card-menu p-4 flex flex-col items-center justify-center text-center">
+                                <img src="${op.img}" class="h-8 mb-3 object-contain">
+                                <span class="text-[10px] font-black uppercase text-slate-600 tracking-tighter">${op.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="px-8 text-center opacity-40">
+                    <p class="text-[10px] font-bold italic tracking-widest text-slate-400 uppercase">RYD Store Digital System</p>
                 </div>
             `);
         });
     }
 
+    function bukaModal(name, id) {
+        document.getElementById('modalTitle').innerText = "Top Up " + name;
+        const list = document.getElementById('listProduk');
+        list.innerHTML = "";
+        
+        daftarNominal.forEach(nom => {
+            const harga = nom + PROFIT;
+            list.innerHTML += `
+                <div onclick="beli('${name}', ${nom}, ${harga})" class="border-2 border-slate-100 p-4 rounded-2xl btn-active hover:border-blue-500 bg-white">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase">Pulsa</p>
+                    <p class="text-lg font-black text-slate-800">${(nom/1000)}K</p>
+                    <p class="text-[10px] font-bold text-blue-600 mt-1">Rp ${harga.toLocaleString('id-ID')}</p>
+                </div>
+            `;
+        });
+        document.getElementById('modalProduk').classList.add('active');
+    }
+
+    function tutupModal() { document.getElementById('modalProduk').classList.remove('active'); }
+
+    function beli(op, nom, harga) {
+        const msg = `Halo Admin RYD STORE,%0A%0ASaya ingin Top Up Pulsa:%0A- Operator: *${op}*%0A- Nominal: *Rp ${nom.toLocaleString('id-ID')}*%0A- Harga: *Rp ${harga.toLocaleString('id-ID')}*%0A- Username: *${userAktif}*%0A%0AMohon diproses admin.`;
+        window.location.href = `https://wa.me/${WA_ADMIN}?text=${msg}`;
+    }
+
     function doLogin() {
         const u = document.getElementById('l_u').value.toLowerCase().trim();
         const p = document.getElementById('l_p').value;
-        if(!u || !p) return alert("Isi semua!");
+        if(!u || !p) return alert("Isi Username & Password!");
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else { alert("User atau Password salah!"); }
+            } else { alert("Data Salah!"); }
         });
     }
 
     function doRegister() {
         const u = document.getElementById('r_u').value.toLowerCase().trim();
         const p = document.getElementById('r_p').value;
-        if(u.length < 3) return alert("Username min 3 huruf");
+        if(u.length < 3) return alert("Minimal 3 huruf!");
         db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
-            alert("Berhasil Daftar!"); pageLogin();
+            alert("Pendaftaran Berhasil!"); pageLogin();
         });
     }
 
-    function kirimWA(msg) { window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`; }
     function logout() { localStorage.removeItem('ryd_user'); location.reload(); }
 
     if(userAktif) pageDashboard(); else pageLogin();
