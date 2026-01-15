@@ -20,9 +20,6 @@
         .modal-up { background: white; border-radius: 32px 32px 0 0; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }
         .modal-up.active { transform: translateY(0); }
         .section-title { font-size: 10px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; border-left: 3px solid #10b981; padding-left: 10px; }
-        /* Custom Scrollbar */
-        #listProduk::-webkit-scrollbar { width: 4px; }
-        #listProduk::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -34,7 +31,7 @@
         <div class="w-12 h-1 bg-slate-200 rounded-full mx-auto mb-8"></div>
         <div class="mb-6 text-center">
             <label class="text-[10px] font-bold uppercase text-slate-400 mb-2 block tracking-widest">Nomor HP / ID Tujuan</label>
-            <input id="inputTujuan" type="number" placeholder="Contoh: 0858xxxx / 12345xxx" class="w-full p-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 font-bold text-center text-lg">
+            <input id="inputTujuan" type="number" placeholder="Ketik di sini..." class="w-full p-4 bg-slate-50 rounded-2xl outline-none border border-slate-100 font-bold text-center text-lg focus:ring-2 focus:ring-emerald-500 transition">
         </div>
         <h3 id="modalTitle" class="text-xl font-black italic text-emerald-600 mb-6 text-center uppercase tracking-tighter">Pilih Nominal</h3>
         <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pb-10 px-1"></div>
@@ -44,56 +41,48 @@
 <div id="pagePulsa" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
         <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase">Pulsa & Paket Data</h2>
+        <h2 class="text-xl font-black italic uppercase">Pulsa & Data</h2>
     </div>
     <div class="grid grid-cols-3 gap-6 text-center">
         <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-500">T-SEL</div><span class="text-[10px] font-bold">Telkomsel</span></div>
         <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-yellow-500">ISAT</div><span class="text-[10px] font-bold">Indosat</span></div>
         <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500">XL</div><span class="text-[10px] font-bold">XL Axiata</span></div>
-        <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-500">TRI</div><span class="text-[10px] font-bold">Three</span></div>
-        <div onclick="bukaModal('Smartfren', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-red-600">SMART</div><span class="text-[10px] font-bold">Smartfren</span></div>
-        <div onclick="bukaModal('Paket Data All', 'data')" class="flex flex-col items-center"><div class="menu-icon bg-slate-800">DATA</div><span class="text-[10px] font-bold">Paket Data</span></div>
+        <div onclick="bukaModal('Three', 'pulsa')" class="flex flex-col items-center"><div class="menu-icon bg-pink-500">TRI</div><span class="text-[10px] font-bold">Three</span></div>
     </div>
 </div>
 
 <div id="pageGame" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
         <button onclick="closeSubPage('pageGame')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase">Topup Game</h2>
+        <h2 class="text-xl font-black italic uppercase">Top Up Game</h2>
     </div>
     <div class="grid grid-cols-3 gap-6 text-center">
-        <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-emerald italic">RD</div><span class="text-[10px] font-bold uppercase leading-none">Royal Dream</span></div>
-        <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 italic">FF</div><span class="text-[10px] font-bold uppercase leading-none">Free Fire</span></div>
-        <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-700 italic">ML</div><span class="text-[10px] font-bold uppercase leading-none text-center">M-Legends</span></div>
-        <div onclick="bukaModal('Higgs Domino', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-purple-600 italic">HD</div><span class="text-[10px] font-bold uppercase leading-none text-center">Higgs Domino</span></div>
-        <div onclick="bukaModal('COD Mobile', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-slate-800 italic">COD</div><span class="text-[10px] font-bold uppercase leading-none">COD M</span></div>
-        <div onclick="bukaModal('AOV', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-900 italic">AOV</div><span class="text-[10px] font-bold uppercase leading-none">AOV</span></div>
+        <div onclick="bukaModal('Royal Dream', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-emerald italic">RD</div><span class="text-[10px] font-bold uppercase">Royal Dream</span></div>
+        <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-orange-500 italic">FF</div><span class="text-[10px] font-bold uppercase">Free Fire</span></div>
+        <div onclick="bukaModal('Mobile Legends', 'game')" class="flex flex-col items-center"><div class="menu-icon bg-blue-700 italic">ML</div><span class="text-[10px] font-bold uppercase">M-Legends</span></div>
     </div>
 </div>
 
 <div id="pageReferral" class="sub-page max-w-md mx-auto p-6">
     <div class="flex items-center gap-4 mb-8">
         <button onclick="closeSubPage('pageReferral')" class="w-10 h-10 card-white flex items-center justify-center font-bold">←</button>
-        <h2 class="text-xl font-black italic uppercase">Undang Teman</h2>
+        <h2 class="text-xl font-black italic uppercase text-blue-600">Undang Teman</h2>
     </div>
-    <div class="card-white p-8 text-center bg-gradient-to-br from-emerald-500 to-emerald-700 text-white border-none mb-6">
-        <h3 class="text-3xl font-black mb-2 italic">Dapatkan Rp 5.000</h3>
-        <p class="text-[10px] font-bold opacity-80 uppercase leading-relaxed">Berikan kode referral Anda. Bonus cair jika teman daftar & mempertahankan saldo minimal Rp 50.000!</p>
+    <div class="card-white p-8 text-center bg-gradient-to-br from-blue-500 to-blue-700 text-white border-none mb-6">
+        <h3 class="text-3xl font-black mb-2 italic">Bonus Rp 5.000</h3>
+        <p class="text-[10px] font-bold opacity-80 uppercase leading-relaxed text-center">Bonus masuk otomatis jika teman mendaftar & mempertahankan saldo Rp 50.000!</p>
     </div>
     <div class="card-white p-6 text-center">
-        <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest">Kode Referral Anda</p>
-        <div onclick="copyReferral()" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-emerald-200 cursor-pointer active:scale-95 transition">
-            <h4 id="refCodeDisplay" class="text-3xl font-black text-emerald-600 tracking-widest uppercase italic">...</h4>
-            <p class="text-[8px] text-emerald-500 font-bold mt-2 uppercase tracking-tighter">Klik untuk salin kode</p>
+        <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase tracking-widest text-center">Kode Referral Anda</p>
+        <div onclick="copyReferral()" class="bg-slate-50 p-5 rounded-2xl border-2 border-dashed border-blue-200 cursor-pointer active:scale-95 transition">
+            <h4 id="refCodeDisplay" class="text-3xl font-black text-blue-600 tracking-widest uppercase italic">...</h4>
+            <p class="text-[8px] text-blue-500 font-bold mt-2 uppercase text-center">Klik untuk salin kode</p>
         </div>
     </div>
 </div>
 
 <script>
     const WA_ADMIN = "6285881934739";
-    const PROFIT_PULSA = 1500;
-    
-    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyCEeF0D3RB5uthkMKx5rkSTEYii-7Pp0KM",
         authDomain: "riyadistore3.firebaseapp.com",
@@ -109,31 +98,32 @@
     
     let userAktif = null; 
     let passAktif = null;
+    let saldoAktif = 0;
 
     const render = (html) => { document.getElementById('app').innerHTML = html; };
 
     function pageLogin() {
         render(`<div class="p-10 pt-24 text-center">
             <div class="w-20 h-20 bg-emerald rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic text-white shadow-xl">R</div>
-            <h1 class="text-3xl font-extrabold italic mb-10 text-emerald-600 tracking-tighter uppercase">RYD STORE</h1>
+            <h1 class="text-3xl font-extrabold italic mb-10 text-emerald-600 tracking-tighter uppercase text-center">RYD STORE</h1>
             <div class="space-y-4">
                 <input id="l_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
                 <input id="l_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none text-center font-bold">
-                <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase tracking-widest shadow-lg">Login</button>
-                <button onclick="pageRegister()" class="w-full text-slate-400 text-[10px] font-bold uppercase pt-4 block">Daftar Akun Baru</button>
+                <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase tracking-widest shadow-lg">Masuk Akun</button>
+                <button onclick="pageRegister()" class="w-full text-slate-400 text-[10px] font-bold uppercase pt-4 block text-center">Belum punya akun? Daftar</button>
             </div>
         </div>`);
     }
 
     function pageRegister() {
         render(`<div class="p-10 pt-20">
-            <h2 class="text-2xl font-black italic text-emerald-600 mb-6 uppercase">Pendaftaran</h2>
+            <h2 class="text-2xl font-black italic text-emerald-600 mb-6 uppercase text-center">Pendaftaran</h2>
             <div class="space-y-4">
                 <input id="r_u" type="text" placeholder="Username" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
                 <input id="r_p" type="password" placeholder="Password" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <input id="r_ref" type="text" placeholder="Kode Referral (Jika ada)" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
-                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase">Buat Akun</button>
-                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-bold uppercase mt-4 text-center block tracking-widest">Batal</button>
+                <input id="r_ref" type="text" placeholder="Kode Referral (Opsional)" class="w-full p-4 bg-white border border-slate-200 rounded-2xl outline-none font-bold">
+                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase">Daftar Sekarang</button>
+                <button onclick="pageLogin()" class="w-full text-slate-400 text-xs font-bold uppercase mt-4 text-center block tracking-widest">Kembali ke Login</button>
             </div>
         </div>`);
     }
@@ -144,7 +134,7 @@
         db.ref('users/' + u).once('value', (s) => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; passAktif = p; pageDashboard();
-            } else { Swal.fire('Gagal', 'Username/Password Salah', 'error'); }
+            } else { Swal.fire('Gagal', 'Akses Ditolak!', 'error'); }
         });
     }
 
@@ -153,63 +143,62 @@
         const p = document.getElementById('r_p').value;
         const ref = document.getElementById('r_ref').value.toLowerCase().trim();
         if(!u || !p) return;
-        db.ref('users/' + u).set({ password: p, saldo: 0, invitedBy: ref || "Tidak Ada" }).then(() => {
-            Swal.fire('Berhasil!', 'Silakan Login', 'success').then(() => pageLogin());
+        db.ref('users/' + u).set({ password: p, saldo: 0, invitedBy: ref || "No" }).then(() => {
+            Swal.fire('Berhasil!', 'Akun dibuat!', 'success').then(() => pageLogin());
         });
     }
 
     function pageDashboard() {
         db.ref('users/' + userAktif).on('value', (snapshot) => {
             const data = snapshot.val();
-            const saldo = parseInt(data.saldo || 0);
+            saldoAktif = parseInt(data.saldo || 0);
             if(document.getElementById('refCodeDisplay')) document.getElementById('refCodeDisplay').innerText = userAktif.toUpperCase();
             
             render(`
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-8">
                         <div>
-                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest">Member Area</p>
-                            <h2 class="text-lg font-black text-slate-800 italic uppercase">@${userAktif}</h2>
+                            <p class="text-[8px] text-slate-400 font-bold uppercase tracking-widest text-left">Member RYD</p>
+                            <h2 class="text-lg font-black text-slate-800 italic uppercase text-left">@${userAktif}</h2>
                         </div>
                         <button onclick="location.reload()" class="bg-red-50 text-red-500 px-3 py-1 rounded-lg text-[10px] font-black italic">LOGOUT</button>
                     </div>
 
-                    <div class="card-white p-6 mb-8 bg-gradient-to-br from-white to-emerald-50 relative overflow-hidden text-center">
-                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-1">Saldo Tersedia</p>
-                        <h2 class="text-3xl font-black text-slate-800 italic">Rp ${saldo.toLocaleString()}</h2>
-                        <button onclick="topUpWA()" class="btn-emerald px-8 py-2 rounded-xl text-[10px] font-black uppercase mt-3 shadow-md shadow-emerald-200">Isi Saldo</button>
+                    <div class="card-white p-6 mb-8 bg-gradient-to-br from-white to-emerald-50 text-center relative overflow-hidden">
+                        <p class="text-[9px] font-black text-emerald-600 uppercase mb-1 text-center">Saldo Anda</p>
+                        <h2 class="text-3xl font-black text-slate-800 italic text-center">Rp ${saldoAktif.toLocaleString()}</h2>
+                        <div class="flex gap-2 justify-center mt-3">
+                            <button onclick="topUpWA()" class="btn-emerald px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Isi Saldo</button>
+                            <button onclick="fiturTransfer()" class="bg-slate-800 text-white px-6 py-2 rounded-xl text-[9px] font-black uppercase shadow-md">Transfer</button>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-3 gap-3 mb-10 text-center">
                         <div onclick="openSubPage('pagePulsa')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-emerald-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1">📱</span>
-                            <p class="font-black text-[9px] uppercase italic">PULSA</p>
+                            <span class="text-2xl mb-1 text-center">📱</span><p class="font-black text-[9px] uppercase text-center">PULSA</p>
                         </div>
                         <div onclick="openSubPage('pageGame')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-emerald-500 active:scale-95 transition">
-                            <span class="text-2xl mb-1">🎮</span>
-                            <p class="font-black text-[9px] uppercase italic">GAME</p>
+                            <span class="text-2xl mb-1 text-center">🎮</span><p class="font-black text-[9px] uppercase text-center">GAME</p>
                         </div>
-                        <div onclick="openSubPage('pageReferral')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-blue-500 active:scale-95 transition bg-blue-50/20">
-                            <span class="text-2xl mb-1">🎁</span>
-                            <p class="font-black text-[9px] uppercase italic text-blue-600">UNDANG</p>
+                        <div onclick="openSubPage('pageReferral')" class="card-white p-4 flex flex-col items-center justify-center border-b-4 border-b-blue-500 active:scale-95 transition">
+                            <span class="text-2xl mb-1 text-center text-blue-500">🎁</span><p class="font-black text-[9px] uppercase text-blue-500 text-center">UNDANG</p>
                         </div>
                     </div>
 
                     <div class="mb-10">
-                        <h3 class="section-title">Layanan E-Wallet</h3>
+                        <h3 class="section-title text-left">Layanan E-Wallet</h3>
                         <div class="grid grid-cols-4 gap-4 text-center">
-                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 italic shadow-blue-100">DANA</div><span class="text-[9px] font-bold">DANA</span></div>
-                            <div onclick="bukaModal('GOPAY', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 italic">GOPY</div><span class="text-[9px] font-bold">GOPAY</span></div>
-                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 italic">OVO</div><span class="text-[9px] font-bold">OVO</span></div>
-                            <div onclick="bukaModal('SHOPEE', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 italic">SPAY</div><span class="text-[9px] font-bold">SPAY</span></div>
+                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-blue-500 italic">DANA</div><span class="text-[9px] font-bold text-center">DANA</span></div>
+                            <div onclick="bukaModal('GOPAY', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-emerald-600 italic">GOPY</div><span class="text-[9px] font-bold text-center">GOPAY</span></div>
+                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-purple-800 italic">OVO</div><span class="text-[9px] font-bold text-center">OVO</span></div>
+                            <div onclick="bukaModal('SHOPEE', 'ewallet')" class="flex flex-col items-center"><div class="menu-icon bg-orange-600 italic text-center">SPAY</div><span class="text-[9px] font-bold text-center">SPAY</span></div>
                         </div>
                     </div>
 
                     <div>
-                        <h3 class="section-title">Riwayat Transaksi</h3>
-                        <div class="card-white p-5 flex justify-between items-center bg-slate-50/50">
-                            <p class="text-[10px] font-bold text-slate-400 italic uppercase">Belum ada aktivitas</p>
-                            <span class="text-xl opacity-30">📋</span>
+                        <h3 class="section-title text-left">Riwayat Transaksi</h3>
+                        <div class="card-white p-5 flex justify-between items-center opacity-40">
+                            <p class="text-[10px] font-bold italic uppercase text-left">Belum ada transaksi</p><span class="text-xl">📋</span>
                         </div>
                     </div>
                 </div>
@@ -217,63 +206,71 @@
         });
     }
 
-    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
-    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
+    function fiturTransfer() {
+        Swal.fire({
+            title: 'Transfer Saldo',
+            html: `
+                <input id="tf_user" class="swal2-input" placeholder="Username Penerima">
+                <input id="tf_amount" type="number" class="swal2-input" placeholder="Nominal Transfer">
+            `,
+            confirmButtonText: 'Kirim Sekarang',
+            showCancelButton: true,
+            confirmButtonColor: '#10b981',
+            preConfirm: () => {
+                const target = document.getElementById('tf_user').value.toLowerCase().trim();
+                const amount = parseInt(document.getElementById('tf_amount').value);
+                if (!target || amount < 1000) return Swal.showValidationMessage('Minimal transfer Rp 1.000');
+                if (target === userAktif) return Swal.showValidationMessage('Tidak bisa kirim ke diri sendiri');
+                if (amount > saldoAktif) return Swal.showValidationMessage('Saldo tidak cukup');
+                return { target, amount };
+            }
+        }).then(res => {
+            if (res.isConfirmed) {
+                const { target, amount } = res.value;
+                db.ref('users/' + target).once('value', (s) => {
+                    if (s.exists()) {
+                        db.ref('users/' + userAktif + '/saldo').set(saldoAktif - amount);
+                        db.ref('users/' + target + '/saldo').set(parseInt(s.val().saldo || 0) + amount);
+                        Swal.fire('Berhasil!', `Berhasil transfer Rp ${amount.toLocaleString()} ke @${target}`, 'success');
+                    } else {
+                        Swal.fire('Gagal', 'Username penerima tidak ditemukan!', 'error');
+                    }
+                });
+            }
+        });
+    }
 
     function bukaModal(name, tipe) {
         document.getElementById('modalTitle').innerText = name;
         document.getElementById('inputTujuan').value = "";
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
-        
-        let nominals = [];
-        if (tipe === 'pulsa' || tipe === 'data') {
-            nominals = [5000, 10000, 20000, 50000, 100000, 200000, 300000, 500000, 1000000];
-        } else if (tipe === 'ewallet') {
-            nominals = [10000, 20000, 50000, 100000, 250000, 500000, 750000, 1000000];
-        } else {
-            nominals = [2000, 10000, 50000, 100000, 250000, 500000, 1000000];
-        }
-
-        nominals.forEach(v => {
-            let h = (tipe === 'pulsa' || tipe === 'data') ? v + PROFIT_PULSA : v + 2000;
-            list.innerHTML += `<div onclick="beli('${name}', '${v.toLocaleString()}', ${h})" class="bg-white p-5 rounded-2xl border border-slate-100 text-center active:scale-95 transition shadow-sm">
-                <p class="text-[11px] font-black italic uppercase">${v >= 1000 ? (v/1000)+'rb' : v}</p>
-                <p class="text-[9px] font-bold text-emerald-600 mt-1">Rp ${h.toLocaleString()}</p>
+        let noms = [5000, 10000, 20000, 50000, 100000, 250000, 500000, 1000000];
+        noms.forEach(v => {
+            let h = v + 2000;
+            list.innerHTML += `<div onclick="beli('${name}', '${v.toLocaleString()}', ${h})" class="bg-white p-5 rounded-2xl border border-slate-100 text-center active:scale-95 shadow-sm">
+                <p class="text-[11px] font-black uppercase text-center">${v >= 1000 ? (v/1000)+'RB' : v}</p>
+                <p class="text-[9px] font-bold text-emerald-600 text-center">Rp ${h.toLocaleString()}</p>
             </div>`;
         });
-        
         document.getElementById('modalProduk').classList.remove('hidden');
         setTimeout(() => document.getElementById('modalContent').classList.add('active'), 10);
     }
 
     function beli(p, n, h) {
         const no = document.getElementById('inputTujuan').value;
-        if(!no) return Swal.fire('Error', 'Nomor/ID Tujuan Kosong!', 'warning');
-        
-        Swal.fire({
-            title: 'Konfirmasi Sandi',
-            input: 'password',
-            inputPlaceholder: 'Masukkan sandi akun Anda',
-            showCancelButton: true,
-            confirmButtonColor: '#10b981'
-        }).then(res => {
+        if(!no) return Swal.fire('Error', 'Tujuan Kosong!', 'warning');
+        Swal.fire({ title: 'Sandi', input: 'password', showCancelButton: true }).then(res => {
             if(res.value === passAktif) {
-                window.location.href = `https://wa.me/${WA_ADMIN}?text=*TRANSAKSI*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${n}*%0AHarga: *Rp ${h.toLocaleString()}*%0ATujuan: *${no}*`;
+                window.location.href = `https://wa.me/${WA_ADMIN}?text=*BELI*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${n}*%0AHarga: *Rp ${h.toLocaleString()}*%0ATujuan: *${no}*`;
             } else if(res.value) { Swal.fire('Gagal', 'Sandi Salah!', 'error'); }
         });
     }
 
     function topUpWA() {
-        Swal.fire({
-            title: 'Isi Saldo',
-            input: 'number',
-            inputLabel: 'Min Rp 10.000 (Fee 500)',
-            showCancelButton: true
-        }).then(res => {
+        Swal.fire({ title: 'Top Up', input: 'number', inputLabel: 'Min Rp 10.000', showCancelButton: true }).then(res => {
             if (res.value >= 10000) {
-                const total = parseInt(res.value) + 500;
-                window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(res.value).toLocaleString()}*%0ATotal: *Rp ${total.toLocaleString()}*`;
+                window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(res.value).toLocaleString()}*`;
             }
         });
     }
@@ -283,10 +280,9 @@
         Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Kode Disalin!', showConfirmButton: false, timer: 1500 });
     }
 
-    function tutupModal() {
-        document.getElementById('modalContent').classList.remove('active');
-        setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 400);
-    }
+    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
+    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
+    function tutupModal() { document.getElementById('modalContent').classList.remove('active'); setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 400); }
 
     pageLogin();
 </script>
