@@ -3,108 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE - Full Features</title>
+    <title>RYD STORE - Green Version</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-app-compat.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.15.0/firebase-database-compat.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        body { background: #0f172a; font-family: sans-serif; scroll-behavior: smooth; }
-        .glass { background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(10px); }
-        .product-card:active { transform: scale(0.96); }
-        ::-webkit-scrollbar { width: 0; }
+        body { background: #f0fdf4; font-family: 'Inter', sans-serif; }
+        .glass { background: #ffffff; border: 1px solid #dcfce7; }
+        .btn-primary { background: #16a34a; color: white; }
+        .btn-primary:hover { background: #15803d; }
+        .product-card:active { transform: scale(0.95); }
     </style>
 </head>
 <body class="p-4 text-slate-800">
 
-    <div id="auth-container" class="max-w-md mx-auto mt-6 glass p-8 rounded-[2.5rem] shadow-2xl border border-blue-100">
+    <div id="auth-container" class="max-w-md mx-auto mt-10 glass p-8 rounded-[2rem] shadow-xl">
         <div class="text-center mb-8">
-            <div class="w-20 h-20 bg-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/50">
+            <div class="w-20 h-20 bg-green-600 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-green-200">
                 <span class="text-white text-4xl font-black italic">R</span>
             </div>
-            <h1 class="text-2xl font-black text-slate-900">RYD STORE</h1>
-            <p class="text-[10px] text-blue-500 font-black uppercase tracking-[0.2em]">Human Verified System</p>
+            <h1 class="text-2xl font-black text-green-700 uppercase tracking-tighter">RYD STORE</h1>
+            <p class="text-[10px] text-green-500 font-bold uppercase tracking-widest">Keamanan Prioritas Manusia</p>
         </div>
 
         <div class="space-y-4">
-            <div class="relative">
-                <i class="fa-solid fa-user absolute left-4 top-4 text-gray-400"></i>
-                <input type="text" id="username" placeholder="Username" class="w-full pl-12 p-4 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all">
-            </div>
-            <div class="relative">
-                <i class="fa-solid fa-lock absolute left-4 top-4 text-gray-400"></i>
-                <input type="password" id="password" placeholder="Password" class="w-full pl-12 p-4 border-2 border-slate-100 rounded-2xl outline-none focus:border-blue-500 transition-all">
-            </div>
+            <input type="text" id="username" placeholder="Username" class="w-full p-4 border-2 border-green-50 rounded-2xl outline-none focus:border-green-500 transition-all bg-green-50/30">
+            <input type="password" id="password" placeholder="Password" class="w-full p-4 border-2 border-green-50 rounded-2xl outline-none focus:border-green-500 transition-all bg-green-50/30">
             
             <div id="reg-extra" class="hidden space-y-4">
-                <div class="relative">
-                    <i class="fa-solid fa-users absolute left-4 top-4 text-blue-400"></i>
-                    <input type="text" id="referral" placeholder="Username Pengajak (Opsional)" class="w-full pl-12 p-4 border-2 border-blue-100 rounded-2xl outline-none bg-blue-50">
-                </div>
-                <div class="bg-red-50 p-3 rounded-xl border border-red-100">
-                    <p class="text-[10px] text-red-600 font-black text-center uppercase animate-bounce">⚠️ WAJIB SCREENSHOT SETELAH KLIK DAFTAR!</p>
+                <input type="text" id="referral" placeholder="Siapa pengajakmu? (Opsional)" class="w-full p-4 border-2 border-green-100 rounded-2xl outline-none bg-white">
+                <div class="bg-yellow-50 p-3 rounded-xl border border-yellow-200">
+                    <p class="text-[10px] text-yellow-700 font-black text-center uppercase animate-pulse">⚠️ WAJIB SCREENSHOT SETELAH KLIK DAFTAR!</p>
                 </div>
             </div>
 
-            <button onclick="handleAuth()" id="btn-auth" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-lg hover:bg-blue-700 active:scale-95 transition-all">MASUK</button>
-            <p class="text-center text-sm font-bold text-slate-400">
+            <button onclick="handleAuth()" id="btn-auth" class="w-full btn-primary p-4 rounded-2xl font-black shadow-lg shadow-green-100 transition-all uppercase tracking-widest">Masuk Ke Akun</button>
+            <p class="text-center text-sm font-bold text-slate-400 mt-4">
                 <span id="auth-text">Belum punya akun?</span> 
-                <button onclick="toggleAuth()" class="text-blue-600 font-black ml-1 uppercase text-xs">Daftar Sekarang</button>
+                <button onclick="toggleAuth()" class="text-green-600 font-black ml-1 uppercase text-xs underline">Daftar</button>
             </p>
         </div>
     </div>
 
     <div id="app-container" class="max-w-md mx-auto hidden pb-10">
-        <div class="glass p-6 rounded-[2.5rem] mb-6 shadow-2xl border-b-8 border-blue-600 relative overflow-hidden">
-            <div class="relative z-10">
-                <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">Total Saldo</p>
-                <h2 class="text-4xl font-black text-slate-900 mb-2">Rp <span id="user-balance">0</span></h2>
-                <div class="flex items-center gap-2">
-                    <span class="px-3 py-1 bg-blue-100 text-blue-600 text-[10px] font-black rounded-full uppercase">User: <span id="display-name"></span></span>
-                </div>
+        <div class="glass p-6 rounded-[2rem] mb-6 shadow-lg border-b-4 border-green-600 flex justify-between items-center">
+            <div>
+                <p class="text-[10px] text-green-400 font-black uppercase tracking-widest mb-1">Saldo Tersedia</p>
+                <h2 class="text-3xl font-black text-slate-800">Rp <span id="user-balance">0</span></h2>
+                <div class="mt-1"><span class="px-2 py-0.5 bg-green-100 text-green-700 text-[9px] font-black rounded-md uppercase">Member: <span id="display-name"></span></span></div>
             </div>
-            <button onclick="logout()" class="absolute top-6 right-6 w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all">
-                <i class="fa-solid fa-power-off"></i>
-            </button>
+            <button onclick="logout()" class="w-10 h-10 bg-red-50 text-red-500 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"><i class="fa-solid fa-power-off"></i></button>
         </div>
 
         <div class="grid grid-cols-2 gap-4 mb-8">
-            <button onclick="topup()" class="bg-white p-5 rounded-[2rem] shadow-xl flex flex-col items-center gap-2 active:scale-95 transition-all border-b-4 border-blue-200">
-                <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <span class="font-black text-[10px] text-slate-600 uppercase">Top Up Saldo</span>
+            <button onclick="topup()" class="bg-white p-5 rounded-3xl shadow-md flex flex-col items-center gap-2 border border-green-50 active:scale-95 transition-all">
+                <div class="w-10 h-10 bg-green-600 text-white rounded-xl flex items-center justify-center shadow-md shadow-green-200"><i class="fa-solid fa-plus"></i></div>
+                <span class="font-black text-[10px] text-slate-600 uppercase">Isi Saldo</span>
             </button>
-            <button onclick="transferSaldo()" class="bg-white p-5 rounded-[2rem] shadow-xl flex flex-col items-center gap-2 active:scale-95 transition-all border-b-4 border-emerald-200">
-                <div class="w-12 h-12 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-200">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </div>
-                <span class="font-black text-[10px] text-slate-600 uppercase">Kirim Saldo</span>
+            <button onclick="transferSaldo()" class="bg-white p-5 rounded-3xl shadow-md flex flex-col items-center gap-2 border border-green-50 active:scale-95 transition-all">
+                <div class="w-10 h-10 bg-emerald-500 text-white rounded-xl flex items-center justify-center shadow-md shadow-emerald-200"><i class="fa-solid fa-paper-plane"></i></div>
+                <span class="font-black text-[10px] text-slate-600 uppercase">Transfer</span>
             </button>
         </div>
 
-        <h3 class="text-white font-black mb-4 ml-2 text-xs tracking-widest uppercase flex items-center gap-2">
-            <i class="fa-solid fa-shopping-cart text-blue-400"></i> Menu Transaksi
+        <h3 class="text-green-800 font-black mb-4 ml-2 text-xs uppercase tracking-widest flex items-center gap-2">
+            <i class="fa-solid fa-store"></i> Menu Top Up
         </h3>
-        
-        <div class="grid grid-cols-2 gap-3" id="product-list">
-            </div>
+        <div class="grid grid-cols-2 gap-3" id="product-list"></div>
 
-        <div class="mt-8 glass p-6 rounded-[2.5rem] border-2 border-dashed border-blue-200 shadow-xl relative">
-            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-[10px] font-black uppercase">Bonus Saldo</div>
-            <div class="text-center">
-                <h4 class="font-black text-slate-800 uppercase text-sm mb-1">Undang Teman & Cuan!</h4>
-                <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">Dapatkan bonus Rp 5.000 setelah temanmu daftar dan melakukan transaksi pertama.</p>
-                <button onclick="bagikanReferral()" class="w-full bg-slate-900 text-white py-3 rounded-2xl font-black text-xs uppercase hover:bg-blue-600 transition-all">
-                    <i class="fa-solid fa-share-nodes mr-2"></i> Bagikan Link Ke Teman
-                </button>
-            </div>
+        <div class="mt-8 glass p-6 rounded-[2rem] border-2 border-dashed border-green-200 text-center shadow-sm">
+            <h4 class="font-black text-green-800 text-sm uppercase mb-1">Ajak Teman & Dapat Bonus</h4>
+            <p class="text-[10px] text-slate-500 font-bold mb-4">Dapatkan saldo gratis dengan membagikan link Anda!</p>
+            <button onclick="bagikanReferral()" class="w-full btn-primary py-3 rounded-2xl font-black text-[10px] uppercase shadow-md shadow-green-100">
+                <i class="fa-solid fa-share-nodes mr-2"></i> Klik Untuk Bagikan Link
+            </button>
         </div>
     </div>
 
     <script>
-        // FIREBASE CONFIG
         const firebaseConfig = { databaseURL: "https://riyadistore3-default-rtdb.firebaseio.com/" };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
@@ -112,31 +90,23 @@
         let currentUser = null;
         let isRegister = false;
 
-        // DAFTAR HARGA (KEUNTUNGAN 1.500 & 500 SESUAI REQUEST)
+        // HARGA DENGAN KEUNTUNGAN SESUAI REQUEST
         const products = [
-            { name: "Royal Dream 1B", price: 66500, icon: "fa-gem", color: "text-purple-500" },
-            { name: "Royal Dream 2B", price: 132000, icon: "fa-gem", color: "text-purple-500" },
-            { name: "Royal Dream 5B", price: 325000, icon: "fa-gem", color: "text-purple-500" },
-            { name: "Pulsa 5.000", price: 7000, icon: "fa-mobile-screen", color: "text-blue-500" },
-            { name: "Pulsa 10.000", price: 12500, icon: "fa-mobile-screen", color: "text-blue-500" },
-            { name: "Pulsa 20.000", price: 21500, icon: "fa-mobile-screen", color: "text-blue-500" },
-            { name: "Pulsa 50.000", price: 51500, icon: "fa-mobile-screen", color: "text-blue-500" },
-            { name: "Pulsa 100.000", price: 101500, icon: "fa-mobile-screen", color: "text-blue-500" },
-            { name: "E-Wallet 50.000", price: 51500, icon: "fa-wallet", color: "text-emerald-500" },
-            { name: "E-Wallet 100.000", price: 101500, icon: "fa-wallet", color: "text-emerald-500" },
-            { name: "Saldo RYD 500k", price: 501500, icon: "fa-coins", color: "text-yellow-500" },
-            { name: "Saldo RYD 1 Juta", price: 1001500, icon: "fa-crown", color: "text-orange-500" }
+            { name: "Royal Dream 1B", price: 66500, icon: "fa-gem", color: "text-green-600" },
+            { name: "Royal Dream 2B", price: 132000, icon: "fa-gem", color: "text-green-600" },
+            { name: "Pulsa 5.000", price: 7000, icon: "fa-mobile-screen", color: "text-green-500" },
+            { name: "Pulsa 10.000", price: 12500, icon: "fa-mobile-screen", color: "text-green-500" },
+            { name: "Saldo RYD 500k", price: 501500, icon: "fa-coins", color: "text-green-700" },
+            { name: "Saldo RYD 1 Juta", price: 1001500, icon: "fa-crown", color: "text-green-800" }
         ];
 
         function renderProducts() {
             const list = document.getElementById('product-list');
             list.innerHTML = products.map(p => `
-                <div onclick="beli('${p.name}', ${p.price})" class="glass p-5 rounded-[2rem] product-card shadow-lg border border-slate-50 flex flex-col items-center text-center">
-                    <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center mb-3">
-                        <i class="fa-solid ${p.icon} ${p.color} text-lg"></i>
-                    </div>
-                    <p class="font-black text-[10px] text-slate-500 uppercase mb-1 leading-tight">${p.name}</p>
-                    <p class="text-blue-600 font-black text-xs tracking-tighter">Rp ${p.price.toLocaleString()}</p>
+                <div onclick="beli('${p.name}', ${p.price})" class="glass p-5 rounded-[2rem] product-card shadow-sm text-center border border-green-50">
+                    <i class="fa-solid ${p.icon} ${p.color} text-lg mb-2"></i>
+                    <p class="font-black text-[10px] text-slate-500 uppercase leading-tight">${p.name}</p>
+                    <p class="text-green-600 font-black text-xs">Rp ${p.price.toLocaleString()}</p>
                 </div>
             `).join('');
         }
@@ -144,7 +114,7 @@
         function toggleAuth() {
             isRegister = !isRegister;
             document.getElementById('auth-text').innerText = isRegister ? 'Sudah punya akun?' : 'Belum punya akun?';
-            document.getElementById('btn-auth').innerText = isRegister ? 'DAFTAR SEKARANG' : 'MASUK KE AKUN';
+            document.getElementById('btn-auth').innerText = isRegister ? 'DAFTAR & SCREENSHOT' : 'MASUK KE AKUN';
             document.getElementById('reg-extra').classList.toggle('hidden');
         }
 
@@ -153,40 +123,37 @@
             const pass = document.getElementById('password').value;
             const ref = document.getElementById('referral').value.trim();
 
-            if (!user || !pass) return Swal.fire('Error', ' Username & Password wajib isi!', 'error');
+            if (!user || !pass) return Swal.fire('Gagal', 'Username & Password wajib diisi!', 'error');
 
             const userRef = db.ref('users/' + user);
-            const snap = await userRef.once('value');
-
-            if (isRegister) {
-                if (snap.exists()) return Swal.fire('Gagal', 'Username sudah terpakai!', 'warning');
-                
-                await userRef.set({
-                    username: user, password: pass, saldo: 0,
-                    invitedBy: ref || "Owner", date: new Date().toLocaleDateString()
-                });
-
-                // NOTIF SCREENSHOT WAJIB
-                await Swal.fire({
-                    title: 'PENDAFTARAN BERHASIL!',
-                    html: `<div style="text-align:left; background:#fff9c4; padding:20px; border-radius:15px; border:3px dashed #fbc02d">
-                            <p style="color:red; font-weight:900; text-align:center; margin-bottom:10px">📸 SCREENSHOT SEKARANG!</p>
-                            <hr style="border:1px solid #fdd835">
-                            <p style="font-size:14px; margin-top:10px"><b>ID USER:</b> ${user}</p>
-                            <p style="font-size:14px"><b>PASSWORD:</b> ${pass}</p>
-                            <p style="font-size:10px; color:gray; margin-top:15px"><i>*Jangan berikan password ke siapapun termasuk Admin!</i></p>
-                           </div>`,
-                    icon: 'success',
-                    confirmButtonText: 'SAYA SUDAH SIMPAN'
-                });
-                location.reload();
-            } else {
-                const data = snap.val();
-                if (data && data.password === pass) {
-                    startApp(data);
+            
+            try {
+                const snap = await userRef.once('value');
+                if (isRegister) {
+                    if (snap.exists()) return Swal.fire('Gagal', 'Username sudah ada!', 'warning');
+                    await userRef.set({ username: user, password: pass, saldo: 0, invitedBy: ref || "Owner" });
+                    
+                    await Swal.fire({
+                        title: 'DAFTAR BERHASIL!',
+                        html: `<div style="text-align:left; background:#fff9c4; padding:15px; border-radius:15px; border:2px dashed #fbc02d">
+                                <p style="color:red; font-weight:900; text-align:center">📸 SCREENSHOT SEKARANG!</p>
+                                <hr>
+                                <p style="margin-top:10px"><b>USER ID:</b> ${user}</p>
+                                <p><b>PASSWORD:</b> ${pass}</p>
+                               </div>`,
+                        icon: 'success'
+                    });
+                    location.reload();
                 } else {
-                    Swal.fire('Gagal', 'Username atau Password salah!', 'error');
+                    const data = snap.val();
+                    if (data && data.password === pass) {
+                        startApp(data);
+                    } else {
+                        Swal.fire('Gagal', 'Akun tidak ditemukan atau sandi salah!', 'error');
+                    }
                 }
+            } catch (e) {
+                Swal.fire('Koneksi Error', 'Cek Firebase Rules Anda!', 'error');
             }
         }
 
@@ -196,88 +163,67 @@
             document.getElementById('app-container').classList.remove('hidden');
             document.getElementById('display-name').innerText = currentUser;
             renderProducts();
-            
             db.ref('users/' + currentUser + '/saldo').on('value', (snap) => {
                 document.getElementById('user-balance').innerText = (snap.val() || 0).toLocaleString();
             });
         }
 
-        // FITUR BELI: KEAMANAN SALDO HARUS CUKUP
         async function beli(produk, harga) {
             const snap = await db.ref('users/' + currentUser).once('value');
-            const dataUser = snap.val();
-            const saldoUser = dataUser.saldo;
+            const data = snap.val();
 
-            if (saldoUser < harga) {
-                return Swal.fire({
-                    title: 'SALDO TIDAK CUKUP',
-                    text: `Harga Rp ${harga.toLocaleString()}, Saldo Anda Rp ${saldoUser.toLocaleString()}. Segera Top Up!`,
-                    icon: 'error'
-                });
-            }
+            if (data.saldo < harga) return Swal.fire('Saldo Kurang', `Butuh Rp ${harga.toLocaleString()}`, 'error');
 
-            const { value: passConfirm } = await Swal.fire({
-                title: 'Konfirmasi',
-                text: `Beli ${produk} seharga Rp ${harga.toLocaleString()}?`,
-                input: 'password',
+            const { value: pConfirm } = await Swal.fire({ 
+                title: 'Konfirmasi Sandi', 
+                input: 'password', 
                 inputPlaceholder: 'Masukkan Password Akun',
-                showCancelButton: true
+                showCancelButton: true,
+                confirmButtonColor: '#16a34a'
             });
 
-            if (passConfirm === dataUser.password) {
-                const saldoBaru = saldoUser - harga;
-                await db.ref('users/' + currentUser).update({ saldo: saldoBaru });
-
-                const pesan = `Halo Admin RYD STORE, Saya ${currentUser} beli ${produk}. Saldo sudah terpotong otomatis. Mohon segera diproses!`;
-                Swal.fire('Berhasil!', 'Saldo terpotong, sedang mengalihkan ke WhatsApp...', 'success');
-                setTimeout(() => window.location.href = `https://wa.me/6281283303643?text=${encodeURIComponent(pesan)}`, 2000);
-            } else if (passConfirm) {
-                Swal.fire('Password Salah!', 'Transaksi dibatalkan.', 'error');
-            }
-        }
-
-        // FITUR TRANSFER SALDO LENGKAP
-        async function transferSaldo() {
-            const { value: target } = await Swal.fire({ title: 'Username Penerima', input: 'text', confirmButtonText: 'Cek User' });
-            if (!target) return;
-
-            const targetUser = target.toLowerCase().trim();
-            if (targetUser === currentUser) return Swal.fire('Gagal', 'Tidak bisa kirim ke diri sendiri!', 'warning');
-
-            const { value: jumlah } = await Swal.fire({ title: 'Jumlah Transfer', input: 'number', inputPlaceholder: 'Min 1.000' });
-            const nominal = parseInt(jumlah);
-
-            if (nominal < 1000) return Swal.fire('Gagal', 'Minimal transfer Rp 1.000', 'warning');
-
-            const snapPengirim = await db.ref('users/' + currentUser).once('value');
-            if (snapPengirim.val().saldo < nominal) return Swal.fire('Gagal', 'Saldo tidak cukup!', 'error');
-
-            const targetRef = db.ref('users/' + targetUser);
-            const snapTarget = await targetRef.once('value');
-
-            if (!snapTarget.exists()) return Swal.fire('Gagal', 'Username tujuan tidak ditemukan!', 'error');
-
-            const { value: p } = await Swal.fire({ title: 'Konfirmasi Password', input: 'password' });
-            if (p === snapPengirim.val().password) {
-                await db.ref('users/' + currentUser).update({ saldo: snapPengirim.val().saldo - nominal });
-                await targetRef.update({ saldo: (snapTarget.val().saldo || 0) + nominal });
-                Swal.fire('Sukses!', `Berhasil transfer Rp ${nominal.toLocaleString()} ke ${targetUser}`, 'success');
-            } else if (p) {
+            if (pConfirm === data.password) {
+                await db.ref('users/' + currentUser).update({ saldo: data.saldo - harga });
+                const pesan = `Halo Admin RYD STORE, saya ${currentUser} beli ${produk}. Saldo saya sudah terpotong otomatis.`;
+                Swal.fire('Sukses!', 'Saldo terpotong. Menghubungi Admin...', 'success');
+                setTimeout(() => window.location.href = `https://wa.me/6281283303643?text=${encodeURIComponent(pesan)}`, 1500);
+            } else if (pConfirm) {
                 Swal.fire('Password Salah!', '', 'error');
             }
         }
 
-        // FITUR UNDANG TEMAN LENGKAP
+        async function transferSaldo() {
+            const { value: target } = await Swal.fire({ title: 'Kirim Ke', input: 'text', inputPlaceholder: 'Username Penerima', confirmButtonColor: '#16a34a' });
+            if (!target) return;
+            const targetUser = target.toLowerCase().trim();
+            if (targetUser === currentUser) return Swal.fire('Gagal', 'Tidak bisa kirim ke diri sendiri!', 'warning');
+
+            const { value: juml } = await Swal.fire({ title: 'Jumlah Saldo', input: 'number' });
+            const nominal = parseInt(juml);
+            if (nominal < 1000) return Swal.fire('Gagal', 'Minimal 1.000', 'warning');
+
+            const pSnap = await db.ref('users/' + currentUser).once('value');
+            const tSnap = await db.ref('users/' + targetUser).once('value');
+
+            if (pSnap.val().saldo < nominal) return Swal.fire('Gagal', 'Saldo tidak mencukupi!', 'error');
+            if (!tSnap.exists()) return Swal.fire('Gagal', 'User tidak ditemukan!', 'error');
+
+            const { value: p } = await Swal.fire({ title: 'Konfirmasi Sandi', input: 'password', confirmButtonColor: '#16a34a' });
+            if (p === pSnap.val().password) {
+                await db.ref('users/' + currentUser).update({ saldo: pSnap.val().saldo - nominal });
+                await db.ref('users/' + targetUser).update({ saldo: (tSnap.val().saldo || 0) + nominal });
+                Swal.fire('Sukses!', `Berhasil transfer ke ${targetUser}`, 'success');
+            } else if (p) {
+                Swal.fire('Sandi Salah!', '', 'error');
+            }
+        }
+
         function bagikanReferral() {
-            const linkAplikasi = window.location.href;
-            const pesan = `🚀 Ayo gabung di RYD STORE! Top Up Game & Pulsa Amanah.\n\nKlik Link: ${linkAplikasi}\n\nMasukkan kode referral: *${currentUser}* saat daftar untuk dapatkan bonus saldo!`;
-            window.location.href = `https://wa.me/?text=${encodeURIComponent(pesan)}`;
+            const msg = `🚀 Top Up Game Amanah di RYD STORE!\nLink: ${window.location.href}\nMasukkan kode: *${currentUser}* saat daftar.`;
+            window.location.href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
         }
 
-        function topup() {
-            window.location.href = "https://wa.me/6281283303643?text=Halo Admin, saya mau isi saldo RYD STORE";
-        }
-
+        function topup() { window.location.href = "https://wa.me/6281283303643?text=Halo Admin, mau isi saldo RYD STORE"; }
         function logout() { location.reload(); }
     </script>
 </body>
