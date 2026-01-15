@@ -19,19 +19,19 @@
 <body>
 
 <div id="app" class="max-w-md mx-auto min-h-screen shadow-2xl flex flex-col relative overflow-hidden">
-    <div class="p-20 text-center animate-pulse text-xs uppercase tracking-widest text-slate-500 text-white">Sinkronisasi Data...</div>
+    <div class="p-20 text-center animate-pulse text-white">Menghubungkan Database...</div>
 </div>
 
 <div id="modalProduk" class="fixed inset-0 bg-black/70 z-50 flex items-end hidden" onclick="tutupModal()">
-    <div class="bg-white w-full p-8 rounded-t-[30px] animate-bounce-in text-slate-900" onclick="event.stopPropagation()">
+    <div class="bg-white w-full p-8 rounded-t-[30px] text-slate-900" onclick="event.stopPropagation()">
         <div class="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mb-6"></div>
         <h3 id="modalTitle" class="text-xl font-black mb-6 italic text-blue-600 uppercase">Pilih Nominal</h3>
-        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pb-10 text-center"></div>
+        <div id="listProduk" class="grid grid-cols-2 gap-4 max-h-[60vh] overflow-y-auto pb-10"></div>
     </div>
 </div>
 
 <script>
-    // --- KONFIGURASI ---
+    // --- KONFIGURASI FIREBASE ---
     const WA_ADMIN = "6285881934739";
     const PROFIT = 2000;
     const firebaseConfig = {
@@ -53,14 +53,14 @@
     function pageLogin() {
         view(`
             <div class="p-8 pt-20 flex-1">
-                <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-900 rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center shadow-2xl font-black text-5xl italic">R</div>
-                <h1 class="text-2xl font-bold text-center mb-1 uppercase tracking-tighter">RYD STORE OFFICIAL</h1>
-                <p class="text-center text-gray-500 text-[10px] mb-12 uppercase tracking-[0.3em] font-black italic">Digital Payment</p>
+                <div class="w-24 h-24 bg-blue-600 rounded-[2.5rem] mx-auto mb-6 flex items-center justify-center font-black text-5xl italic shadow-2xl">R</div>
+                <h1 class="text-2xl font-bold text-center mb-1">RYD STORE OFFICIAL</h1>
+                <p class="text-center text-gray-500 text-[10px] mb-12 uppercase tracking-widest italic font-bold">Digital Payment System</p>
                 <div class="space-y-4">
                     <input id="l_u" type="text" placeholder="Username" class="input-style w-full p-4 outline-none">
                     <input id="l_p" type="password" placeholder="Password" class="input-style w-full p-4 outline-none">
-                    <button onclick="doLogin()" class="w-full btn-primary p-4 rounded-xl font-bold mt-6 shadow-lg shadow-blue-500/20 uppercase tracking-widest text-sm">Masuk</button>
-                    <button onclick="pageRegister()" class="w-full text-gray-500 font-bold text-xs uppercase tracking-widest mt-4 text-center block">Daftar Member</button>
+                    <button onclick="doLogin()" class="w-full btn-primary p-4 rounded-xl font-bold mt-4 shadow-lg">MASUK</button>
+                    <button onclick="pageRegister()" class="w-full text-gray-500 font-bold text-xs mt-4 uppercase text-center block">Daftar Member</button>
                 </div>
             </div>
         `);
@@ -69,73 +69,89 @@
     function pageRegister() {
         view(`
             <div class="p-8 pt-20">
-                <h2 class="text-4xl font-black mb-2 italic tracking-tighter uppercase">Daftar Akun</h2>
-                <h2 class="text-2xl font-bold text-blue-500 mb-8 uppercase italic tracking-tighter">RYADSTIRE5</h2>
+                <h2 class="text-4xl font-black mb-8 italic tracking-tighter uppercase text-blue-500">Daftar Akun</h2>
                 <div class="space-y-4">
                     <input id="r_u" type="text" placeholder="Username Baru" class="input-style w-full p-4 outline-none">
                     <input id="r_p" type="password" placeholder="Password Baru" class="input-style w-full p-4 outline-none">
-                    <button onclick="doRegister()" class="w-full btn-primary p-4 rounded-xl font-bold shadow-lg uppercase tracking-widest">Daftar Sekarang</button>
-                    <button onclick="pageLogin()" class="w-full text-gray-500 font-bold text-xs mt-4 uppercase text-center block">Kembali</button>
+                    <button onclick="doRegister()" class="w-full btn-primary p-4 rounded-xl font-bold shadow-lg">KONFIRMASI DAFTAR</button>
+                    <button onclick="pageLogin()" class="w-full text-gray-500 font-bold text-xs mt-4 uppercase text-center block">Kembali ke Login</button>
                 </div>
             </div>
         `);
     }
 
     function pageDashboard() {
-        // PERBAIKAN: Selalu gunakan huruf kecil untuk username di path database
         const path = 'users/' + userAktif.toLowerCase();
         
         db.ref(path).on('value', (snapshot) => {
             const data = snapshot.val();
             if(!data) {
-                view(`<div class="p-20 text-center text-sm">User tidak ditemukan di database.<br><button onclick="logout()" class="text-blue-500 underline mt-4">Klik Logout</button></div>`);
+                logout();
                 return;
             }
 
-            // --- SISTEM PEMBACA SALDO ANTI-ERROR ---
-            // Mengubah apapun yang masuk (String/Number) menjadi Angka murni
+            // --- PERBAIKAN PEMBACAAN SALDO ---
+            // Mengambil saldo dan memastikan nilainya angka
             let saldoRaw = data.saldo;
             let saldoFinal = 0;
-
-            if (saldoRaw !== undefined && saldoRaw !== null) {
-                saldoFinal = Number(saldoRaw); // Konversi paksa ke angka
+            if (saldoRaw) {
+                // Menghapus titik atau koma jika admin salah input sebagai teks
+                if(typeof saldoRaw === 'string') {
+                    saldoFinal = parseInt(saldoRaw.replace(/[^0-9]/g, '')) || 0;
+                } else {
+                    saldoFinal = saldoRaw;
+                }
             }
 
             view(`
-                <div class="p-6 pb-24">
+                <div class="p-6">
                     <div class="flex justify-between items-center mb-10">
                         <div>
                             <p class="text-[9px] text-gray-500 uppercase font-black tracking-widest mb-1">User Aktif :</p>
                             <h2 class="text-xl font-black uppercase italic tracking-tighter text-blue-400">@${userAktif}</h2>
                         </div>
-                        <button onclick="logout()" class="bg-red-500/10 text-red-500 p-2 px-4 rounded-lg text-[10px] font-bold uppercase">Logout</button>
+                        <button onclick="logout()" class="bg-red-500/10 text-red-500 p-2 px-4 rounded-lg text-[10px] font-bold">LOGOUT</button>
                     </div>
 
                     <div class="bg-gradient-to-br from-blue-600 to-blue-900 p-8 rounded-[2.5rem] shadow-2xl mb-10 border border-white/10">
-                        <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest mb-1">Total Saldo Member</p>
+                        <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest mb-1">Saldo Anda</p>
                         <h2 class="text-4xl font-black italic tracking-tighter">Rp ${saldoFinal.toLocaleString('id-ID')}</h2>
                     </div>
 
-                    <div class="bg-white rounded-[3rem] p-8 text-gray-800 shadow-xl">
-                        <p class="font-black mb-6 uppercase text-[10px] tracking-[0.2em] text-gray-400 border-b pb-2">Kategori Produk</p>
+                    <div class="bg-white rounded-[2.5rem] p-8 text-gray-800 shadow-xl">
+                        <p class="font-black mb-6 uppercase text-[10px] tracking-widest text-gray-400 border-b pb-2">Menu Produk</p>
                         <div class="grid grid-cols-4 gap-4 mb-8">
-                            <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-red-600 font-black">T-SEL</div><span class="text-[9px] font-black uppercase">Telkomsel</span></div>
-                            <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-blue-700 font-black">XL.axi</div><span class="text-[9px] font-black uppercase">XL Axiata</span></div>
-                            <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-yellow-500 text-black font-black">ISAT</div><span class="text-[9px] font-black uppercase">Indosat</span></div>
-                            <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-pink-600 font-black">TRI</div><span class="text-[9px] font-black uppercase">Tri (3)</span></div>
+                            <div onclick="bukaModal('Telkomsel', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-red-600">T-SEL</div><span class="text-[9px] font-bold">T-Sel</span></div>
+                            <div onclick="bukaModal('Indosat', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-yellow-500 text-black">ISAT</div><span class="text-[9px] font-bold">Indosat</span></div>
+                            <div onclick="bukaModal('XL', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-blue-700">XL</div><span class="text-[9px] font-bold">XL</span></div>
+                            <div onclick="bukaModal('Tri', 'pulsa')" class="flex flex-col items-center"><div class="icon-circle bg-pink-600">TRI</div><span class="text-[9px] font-bold">Tri</span></div>
                         </div>
                         <div class="grid grid-cols-4 gap-4">
-                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-blue-500 font-black italic">DANA</div><span class="text-[9px] font-black uppercase tracking-tighter">DANA</span></div>
-                            <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-emerald-600 font-black italic">GoPay</div><span class="text-[9px] font-black uppercase tracking-tighter">GoPay</span></div>
-                            <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="icon-circle bg-orange-600 font-black italic">FF</div><span class="text-[9px] font-black uppercase tracking-tighter">Free Fire</span></div>
-                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-purple-700 font-black italic">OVO</div><span class="text-[9px] font-black uppercase tracking-tighter">OVO</span></div>
+                            <div onclick="bukaModal('DANA', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-blue-500 italic">DANA</div><span class="text-[9px] font-bold">DANA</span></div>
+                            <div onclick="bukaModal('GoPay', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-emerald-600 italic">GOPAY</div><span class="text-[9px] font-bold">GoPay</span></div>
+                            <div onclick="bukaModal('OVO', 'ewallet')" class="flex flex-col items-center"><div class="icon-circle bg-purple-700 italic">OVO</div><span class="text-[9px] font-bold">OVO</span></div>
+                            <div onclick="bukaModal('Free Fire', 'game')" class="flex flex-col items-center"><div class="icon-circle bg-orange-600 italic">FF</div><span class="text-[9px] font-bold">FF</span></div>
                         </div>
                     </div>
                     
-                    <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Halo Admin RYD STORE, Saya @${userAktif.toUpperCase()} ingin ISI SALDO.'" class="w-full bg-blue-500 mt-8 p-4 rounded-2xl font-black italic uppercase tracking-tighter text-sm shadow-xl shadow-blue-500/30">Isi Saldo Member</button>
+                    <button onclick="window.location.href='https://wa.me/${WA_ADMIN}?text=Isi Saldo @${userAktif.toUpperCase()}'" class="w-full bg-blue-500 mt-8 p-4 rounded-2xl font-black italic uppercase tracking-tighter text-sm shadow-xl shadow-blue-500/30">Isi Saldo Lewat WA</button>
+                    
+                    ${userAktif.toLowerCase() === 'admin' ? '<button onclick="adminPanel()" class="w-full border border-blue-500 text-blue-500 mt-4 p-4 rounded-2xl font-bold uppercase text-xs">Admin Panel</button>' : ''}
                 </div>
             `);
         });
+    }
+
+    // --- FITUR ADMIN PANEL ---
+    function adminPanel() {
+        const target = prompt("Masukkan Username yang mau diisi saldonya:");
+        if(!target) return;
+        const jumlah = prompt("Masukkan Jumlah Saldo (angka saja):");
+        if(!jumlah) return;
+        
+        db.ref('users/' + target.toLowerCase()).update({
+            saldo: parseInt(jumlah)
+        }).then(() => alert("Berhasil Update Saldo " + target));
     }
 
     function bukaModal(name, tipe) {
@@ -143,15 +159,15 @@
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
         let nominals = [5000, 10000, 20000, 50000, 100000];
-        if(tipe === 'game') nominals = [70, 140, 355, 720];
+        if(tipe === 'game') nominals = [70, 140, 355];
 
         nominals.forEach(nom => {
             const harga = nom + PROFIT;
             list.innerHTML += `
-                <div onclick="beli('${name}', '${nom}', ${harga})" class="bg-gray-100 p-5 rounded-2xl border border-gray-100 active:bg-gray-300">
+                <div onclick="beli('${name}', '${nom}', ${harga})" class="bg-gray-100 p-5 rounded-2xl border border-gray-100 active:bg-gray-300 text-center">
                     <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest">${tipe}</p>
                     <p class="text-xl font-black text-slate-800 italic">${nom.toLocaleString()}</p>
-                    <p class="text-[10px] font-black text-blue-600 mt-1 pt-1 border-t italic uppercase">Rp ${harga.toLocaleString('id-ID')}</p>
+                    <p class="text-[10px] font-black text-blue-600 mt-1 border-t pt-1 italic uppercase">Rp ${harga.toLocaleString('id-ID')}</p>
                 </div>
             `;
         });
@@ -172,7 +188,7 @@
         db.ref('users/' + u).once('value', s => {
             if(s.exists() && s.val().password === p) {
                 userAktif = u; localStorage.setItem('ryd_user', u); pageDashboard();
-            } else { alert("User atau Password Salah!"); }
+            } else { alert("Data Salah!"); }
         });
     }
 
@@ -181,7 +197,7 @@
         const p = document.getElementById('r_p').value;
         if(u.length < 3) return alert("Minimal 3 Huruf!");
         db.ref('users/' + u).set({ password: p, saldo: 0 }).then(() => {
-            alert("Berhasil Daftar!"); pageLogin();
+            alert("Pendaftaran Berhasil!"); pageLogin();
         });
     }
 
