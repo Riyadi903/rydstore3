@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RYD STORE - Login Google</title>
+    <title>RYD STORE - Digital Payment</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -11,11 +11,15 @@
 </head>
 <body class="bg-gray-100 font-sans">
 
-<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-xl relative pb-10">
+<div id="app" class="max-w-md mx-auto min-h-screen bg-white shadow-xl relative pb-10 text-center">
+    <div id="loading" class="pt-40">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+        <p class="mt-4 text-gray-500 font-bold">Memuat RYD STORE...</p>
     </div>
+</div>
 
 <script>
-    // Konfigurasi Firebase Anda
+    // 1. KONFIGURASI
     const firebaseConfig = {
         apiKey: "AIzaSyAgv7_Ysh6_Pz0q7VvF_Ew8A0p-6pM46eE",
         authDomain: "rydstore3.firebaseapp.com",
@@ -26,72 +30,79 @@
         appId: "1:338805214041:web:248106d91079366e60977e"
     };
 
+    // 2. INITIALIZE
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
     const auth = firebase.auth();
     const db = firebase.database();
     const WA_ADMIN = "6285881934739";
 
-    // Mengecek Status Login saat halaman dibuka
+    // 3. FUNGSI LOGIN (Ditaruh di atas agar terbaca browser)
+    window.loginGoogle = function() {
+        console.log("Tombol Login Diklik");
+        const btn = document.getElementById('btnText');
+        if(btn) btn.innerText = "Mengalihkan...";
+        
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithRedirect(provider);
+    };
+
+    // 4. CEK STATUS LOGIN
     auth.onAuthStateChanged((user) => {
+        document.getElementById('loading').style.display = 'none';
         if (user) {
+            console.log("User Login:", user.displayName);
             renderDashboard(user);
         } else {
             renderLogin();
         }
     });
 
-    // Menangkap hasil login setelah redirect dari Google
-    auth.getRedirectResult().catch((error) => {
-        if (error.code !== "auth/redirect-cancelled-by-user") {
-            alert("Gagal Login: " + error.message);
-        }
+    // Cek hasil redirect
+    auth.getRedirectResult().catch((e) => {
+        if(e.code !== "auth/redirect-cancelled-by-user") alert("Gagal: " + e.message);
     });
 
-    function loginGoogle() {
-        const provider = new firebase.auth.GoogleAuthProvider();
-        // Menggunakan Redirect agar tidak bentrok dengan pop-up browser HP
-        auth.signInWithRedirect(provider);
-    }
-
+    // 5. TAMPILAN LOGIN
     function renderLogin() {
         document.getElementById('app').innerHTML = `
-            <div class="p-10 pt-32 text-center">
+            <div class="p-10 pt-32 animate-fade-in">
                 <div class="w-20 h-20 bg-blue-600 rounded-3xl mx-auto mb-6 flex items-center justify-center text-white text-4xl font-black italic shadow-lg">RS</div>
-                <h1 class="text-3xl font-bold text-gray-800 tracking-tight">RYD STORE</h1>
+                <h1 class="text-3xl font-bold text-gray-800">RYD STORE</h1>
                 <p class="text-gray-500 mb-12 uppercase tracking-widest text-[10px] font-bold">Digital Payment Solution</p>
+                
                 <button onclick="loginGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 p-4 rounded-2xl shadow-sm active:scale-95 transition-all">
                     <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" class="w-6 h-6">
-                    <span class="font-bold text-gray-700">Masuk dengan Google</span>
+                    <span id="btnText" class="font-bold text-gray-700">Masuk dengan Google</span>
                 </button>
             </div>`;
     }
 
+    // 6. TAMPILAN DASHBOARD
     function renderDashboard(user) {
         db.ref('users/' + user.uid).on('value', (s) => {
             let data = s.val();
             if (!data) {
-                // Mendaftarkan user baru ke database jika belum ada
                 db.ref('users/' + user.uid).set({ nama: user.displayName, saldo: 0 });
                 return;
             }
 
             document.getElementById('app').innerHTML = `
-                <div class="bg-blue-700 p-6 pb-24 text-white rounded-b-[40px] shadow-lg">
+                <div class="bg-blue-700 p-6 pb-24 text-white rounded-b-[40px] shadow-lg text-left">
                     <div class="flex justify-between items-center mb-6">
-                        <div class="text-left">
+                        <div>
                             <p class="text-[10px] opacity-70 italic font-bold">SELAMAT DATANG,</p>
                             <p class="font-bold truncate w-40 text-sm">${data.nama.toUpperCase()}</p>
                         </div>
-                        <button onclick="auth.signOut()" class="bg-white/20 px-3 py-1 rounded-xl text-[10px] font-bold border border-white/20 uppercase">Logout</button>
+                        <button onclick="auth.signOut()" class="bg-white/20 px-3 py-1 rounded-xl text-[10px] font-bold border border-white/20">LOGOUT</button>
                     </div>
-                    <div class="bg-white/10 p-5 rounded-3xl border border-white/10 text-left">
+                    <div class="bg-white/10 p-5 rounded-3xl border border-white/10">
                         <p class="text-[10px] font-bold opacity-80 uppercase mb-1">Total Saldo</p>
                         <h2 class="text-4xl font-black">Rp ${Number(data.saldo || 0).toLocaleString('id-ID')}</h2>
                     </div>
                 </div>
-                <div class="px-5 -mt-10 text-center">
+                <div class="px-5 -mt-10">
                     <div class="bg-white p-4 rounded-3xl shadow-xl flex justify-around mb-8 border border-gray-50">
-                        <button onclick="topUpWA()" class="flex flex-col items-center active:scale-90 transition-all">
+                        <button onclick="aksiWA('Isi Saldo')" class="flex flex-col items-center active:scale-90 transition-all">
                             <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mb-1 text-xl font-bold shadow-inner">+</div>
                             <span class="text-[10px] font-black text-gray-500 uppercase">Isi Saldo</span>
                         </button>
@@ -99,7 +110,7 @@
                     <h3 class="font-black text-gray-800 mb-4 text-xs uppercase tracking-widest">PILIH OPERATOR</h3>
                     <div class="grid grid-cols-2 gap-4">
                         ${['Telkomsel', 'Indosat', 'XL Axiata', 'Tri'].map(op => `
-                            <div onclick="beliWA('${op}')" class="bg-gray-50 p-6 rounded-[2rem] border border-white shadow-md active:scale-95 transition-all cursor-pointer">
+                            <div onclick="aksiWA('Beli Pulsa ${op}')" class="bg-gray-50 p-6 rounded-[2rem] border border-white shadow-md active:scale-95 transition-all cursor-pointer">
                                 <p class="font-black text-blue-600 text-[10px] uppercase">${op}</p>
                             </div>
                         `).join('')}
@@ -108,13 +119,8 @@
         });
     }
 
-    function topUpWA() {
-        const msg = `Halo Admin RYD STORE,\nSaya mau TOP UP SALDO.\nNama: ${auth.currentUser.displayName}\nID: ${auth.currentUser.uid}`;
-        window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`;
-    }
-
-    function beliWA(op) {
-        const msg = `Halo Admin,\nSaya ingin membeli produk ${op}.\nUser: ${auth.currentUser.displayName}\nID: ${auth.currentUser.uid}`;
+    function aksiWA(produk) {
+        const msg = `Halo Admin RYD STORE,\nSaya ingin: ${produk}\nNama: ${auth.currentUser.displayName}\nID: ${auth.currentUser.uid}`;
         window.location.href = `https://wa.me/${WA_ADMIN}?text=${encodeURIComponent(msg)}`;
     }
 </script>
