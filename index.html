@@ -3,47 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RYD STORE OFFICIAL - V.SUPREME SECURE</title>
+    <title>RYD STORE OFFICIAL - V.PRO MASTER</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        :root { --emerald: #10b981; --dana: #0086e6; --ovo: #4d2a86; --gopay: #00aa13; --shopee: #ee4d2d; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; margin: 0; -webkit-tap-highlight-color: transparent; }
+        :root { --emerald: #10b981; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; margin: 0; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
         
-        /* UI Components */
         .card-white { background: white; border-radius: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 80; transform: translateX(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; padding: 20px; }
+        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 90; transform: translateX(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; padding: 20px; }
         .sub-page.active { transform: translateX(0); }
         .btn-emerald { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
         
         /* Saldo Responsive */
-        .saldo-font { font-size: clamp(0.65rem, 4.2vw, 1rem); font-weight: 800; letter-spacing: -0.5px; }
+        .saldo-font { font-size: clamp(0.6rem, 4.3vw, 0.95rem); font-weight: 800; letter-spacing: -0.5px; }
         
-        /* Icons */
-        .icon-brand { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; color: white; margin-bottom: 6px; box-shadow: 0 5px 12px rgba(0,0,0,0.1); }
+        /* Logo Products */
+        .icon-brand { width: 50px; height: 50px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 22px; color: white; margin-bottom: 6px; }
         .p-img-nav { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--emerald); }
-        .p-img-main { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--emerald); padding: 3px; background: white; }
+        .p-img-big { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 4px solid var(--emerald); padding: 3px; background: white; }
 
-        .modal-up { background: white; border-radius: 32px 32px 0 0; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 100; transform: translateY(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
+        .modal-up { background: white; border-radius: 32px 32px 0 0; position: fixed; bottom: 0; width: 100%; max-width: 448px; z-index: 110; transform: translateY(100%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.1); }
         .modal-up.active { transform: translateY(0); }
+        
+        /* Animation Banner */
+        .banner-invite { background: linear-gradient(45deg, #1d4ed8, #3b82f6); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.9; } 50% { opacity: 1; } 100% { opacity: 0.9; } }
     </style>
 </head>
 <body>
 
-<div id="app" class="max-w-md mx-auto min-h-screen relative pb-20"></div>
+<div id="app" class="max-w-md mx-auto min-h-screen relative pb-24"></div>
 
-<div id="modalProduk" class="fixed inset-0 bg-black/60 z-[110] hidden" onclick="tutupModal()">
+<div id="modalProduk" class="fixed inset-0 bg-black/60 z-[120] hidden" onclick="tutupModal()">
     <div class="modal-up p-8" id="modalContent" onclick="event.stopPropagation()">
         <div class="w-12 h-1.5 bg-slate-200 rounded-full mx-auto mb-6"></div>
-        <div class="mb-5 text-center">
-            <label class="text-[10px] font-black uppercase text-slate-400 mb-2 block tracking-widest">ID / Nomor Tujuan</label>
-            <input id="inputTujuan" type="number" placeholder="Contoh: 812345678" class="w-full p-4 bg-slate-50 rounded-2xl outline-none border-2 border-slate-100 font-bold text-center text-lg focus:border-emerald-500">
+        <div class="mb-5">
+            <label class="text-[9px] font-black uppercase text-slate-400 mb-2 block tracking-widest text-center">Tujuan / ID Player</label>
+            <input id="inputTujuan" type="number" placeholder="08xxx / 12345678" class="w-full p-4 bg-slate-50 rounded-2xl outline-none border-2 border-slate-100 font-bold text-center text-lg focus:border-emerald-500">
         </div>
-        <h3 id="modalTitle" class="text-lg font-black italic text-emerald-600 mb-4 text-center uppercase">Pilih Produk</h3>
-        <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[42vh] overflow-y-auto pb-10 px-1"></div>
+        <h3 id="modalTitle" class="text-sm font-black text-emerald-600 mb-4 text-center uppercase italic border-b pb-2">Pilih Item</h3>
+        <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[40vh] overflow-y-auto pb-10 px-1"></div>
     </div>
 </div>
 
@@ -51,59 +54,61 @@
     <button onclick="closeSubPage('pageEwallet')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
     <h2 class="text-2xl font-black italic uppercase mb-8 border-l-4 border-blue-500 pl-3">E-Wallet</h2>
     <div class="grid grid-cols-2 gap-4">
-        <div onclick="bukaModal('DANA', 'E-Wallet', 'bg-[#0086e6]', 'D')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#0086e6]">D</div><span class="font-black text-xs uppercase text-slate-600">DANA</span></div>
-        <div onclick="bukaModal('OVO', 'E-Wallet', 'bg-[#4d2a86]', 'O')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#4d2a86]">O</div><span class="font-black text-xs uppercase text-slate-600">OVO</span></div>
-        <div onclick="bukaModal('GOPAY', 'E-Wallet', 'bg-[#00aa13]', 'G')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#00aa13]">G</div><span class="font-black text-xs uppercase text-slate-600">GOPAY</span></div>
-        <div onclick="bukaModal('ShopeePay', 'E-Wallet', 'bg-[#ee4d2d]', 'S')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#ee4d2d]">S</div><span class="font-black text-xs uppercase text-slate-600">SHOPEEPAY</span></div>
+        <div onclick="bukaModal('DANA', 'E-Wallet', 'bg-[#0086e6]', 'D')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#0086e6]">D</div><span class="font-black text-[10px] text-slate-500">DANA</span></div>
+        <div onclick="bukaModal('OVO', 'E-Wallet', 'bg-[#4d2a86]', 'O')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#4d2a86]">O</div><span class="font-black text-[10px] text-slate-500">OVO</span></div>
+        <div onclick="bukaModal('GOPAY', 'E-Wallet', 'bg-[#00aa13]', 'G')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#00aa13]">G</div><span class="font-black text-[10px] text-slate-500">GOPAY</span></div>
+        <div onclick="bukaModal('ShopeePay', 'E-Wallet', 'bg-[#ee4d2d]', 'S')" class="card-white p-6 flex flex-col items-center"><div class="icon-brand bg-[#ee4d2d]">S</div><span class="font-black text-[10px] text-slate-500">SHOPEEPAY</span></div>
     </div>
 </div>
 
 <div id="pageGame" class="sub-page max-w-md mx-auto">
     <button onclick="closeSubPage('pageGame')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
-    <h2 class="text-2xl font-black italic uppercase mb-8 border-l-4 border-orange-600 pl-3">Top Up Game</h2>
+    <h2 class="text-2xl font-black italic uppercase mb-8 border-l-4 border-orange-500 pl-3">Top Up Game</h2>
     <div class="grid grid-cols-3 gap-5 text-center">
-        <div onclick="bukaModal('Mobile Legends', 'Game', 'bg-blue-900', 'ML')" class="flex flex-col items-center"><div class="icon-brand bg-blue-900">ML</div><span class="text-[9px] font-black uppercase">MLBB</span></div>
-        <div onclick="bukaModal('AOV', 'Game', 'bg-sky-600', 'AV')" class="flex flex-col items-center"><div class="icon-brand bg-sky-600">AV</div><span class="text-[9px] font-black uppercase">AOV</span></div>
-        <div onclick="bukaModal('COD Mobile', 'Game', 'bg-zinc-800', 'CO')" class="flex flex-col items-center"><div class="icon-brand bg-zinc-800 text-sm">COD</div><span class="text-[9px] font-black uppercase">CODM</span></div>
-        <div onclick="bukaModal('PUBG Mobile', 'Game', 'bg-orange-700', 'PB')" class="flex flex-col items-center"><div class="icon-brand bg-orange-700">PB</div><span class="text-[9px] font-black uppercase">PUBG</span></div>
-        <div onclick="bukaModal('Free Fire', 'Game', 'bg-orange-500', 'FF')" class="flex flex-col items-center"><div class="icon-brand bg-orange-500">FF</div><span class="text-[9px] font-black uppercase">Free Fire</span></div>
-        <div onclick="bukaModal('Royal Dream', 'Game', 'bg-indigo-600', 'RD')" class="flex flex-col items-center"><div class="icon-brand bg-indigo-600">RD</div><span class="text-[9px] font-black uppercase italic">Royal Dream</span></div>
-        <div onclick="bukaModal('Higgs Domino', 'Game', 'bg-pink-700', 'HD')" class="flex flex-col items-center"><div class="icon-brand bg-pink-700">HD</div><span class="text-[9px] font-black uppercase">Higgs</span></div>
-        <div onclick="bukaModal('Bos Domino', 'Game', 'bg-yellow-600', 'BD')" class="flex flex-col items-center"><div class="icon-brand bg-yellow-600">BD</div><span class="text-[9px] font-black uppercase">Bos Domino</span></div>
-        <div onclick="bukaModal('COC', 'Game', 'bg-amber-800', 'CC')" class="flex flex-col items-center"><div class="icon-brand bg-amber-800">CC</div><span class="text-[9px] font-black uppercase">COC</span></div>
+        <div onclick="bukaModal('Mobile Legends', 'Diamond', 'bg-blue-900', 'ML')" class="flex flex-col items-center"><div class="icon-brand bg-blue-900">ML</div><span class="text-[9px] font-black uppercase">Mobile Legends</span></div>
+        <div onclick="bukaModal('Free Fire', 'Diamond', 'bg-orange-500', 'FF')" class="flex flex-col items-center"><div class="icon-brand bg-orange-500">FF</div><span class="text-[9px] font-black uppercase">Free Fire</span></div>
+        <div onclick="bukaModal('PUBG Mobile', 'UC', 'bg-slate-700', 'PB')" class="flex flex-col items-center"><div class="icon-brand bg-slate-700">PB</div><span class="text-[9px] font-black uppercase">PUBG</span></div>
+        <div onclick="bukaModal('Royal Dream', 'B', 'bg-indigo-600', 'RD')" class="flex flex-col items-center"><div class="icon-brand bg-indigo-600">RD</div><span class="text-[9px] font-black uppercase italic">Royal Dream</span></div>
+        <div onclick="bukaModal('Higgs Domino', 'Koin', 'bg-pink-700', 'HD')" class="flex flex-col items-center"><div class="icon-brand bg-pink-700">HD</div><span class="text-[9px] font-black uppercase">Higgs</span></div>
+        <div onclick="bukaModal('Bos Domino', 'Koin', 'bg-yellow-600', 'BD')" class="flex flex-col items-center"><div class="icon-brand bg-yellow-600">BD</div><span class="text-[9px] font-black uppercase">Bos Domino</span></div>
+        <div onclick="bukaModal('AOV', 'Voucher', 'bg-sky-600', 'AV')" class="flex flex-col items-center"><div class="icon-brand bg-sky-600">AV</div><span class="text-[9px] font-black uppercase">AOV</span></div>
+        <div onclick="bukaModal('COD Mobile', 'CP', 'bg-zinc-800', 'CO')" class="flex flex-col items-center"><div class="icon-brand bg-zinc-800">CO</div><span class="text-[9px] font-black uppercase">CODM</span></div>
+        <div onclick="bukaModal('COC', 'Gems', 'bg-amber-800', 'CC')" class="flex flex-col items-center"><div class="icon-brand bg-amber-800">CC</div><span class="text-[9px] font-black uppercase">COC</span></div>
     </div>
 </div>
 
-<div id="pagePulsa" class="sub-page max-w-md mx-auto">
-    <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
-    <h2 class="text-2xl font-black italic uppercase mb-8 border-l-4 border-red-500 pl-3">Pulsa Seluler</h2>
-    <div class="grid grid-cols-3 gap-5 text-center">
-        <div onclick="bukaModal('Telkomsel', 'Pulsa', 'bg-red-600', 'T')" class="flex flex-col items-center"><div class="icon-brand bg-red-600">T</div><span class="text-[10px] font-black uppercase">T-Sel</span></div>
-        <div onclick="bukaModal('Indosat', 'Pulsa', 'bg-yellow-400 text-black', 'I')" class="flex flex-col items-center"><div class="icon-brand bg-yellow-400 text-black">I</div><span class="text-[10px] font-black uppercase">Indosat</span></div>
-        <div onclick="bukaModal('XL', 'Pulsa', 'bg-blue-600', 'XL')" class="flex flex-col items-center"><div class="icon-brand bg-blue-600">XL</div><span class="text-[10px] font-black uppercase">XL</span></div>
-        <div onclick="bukaModal('Axis', 'Pulsa', 'bg-purple-600', 'AX')" class="flex flex-col items-center"><div class="icon-brand bg-purple-600">AX</div><span class="text-[10px] font-black uppercase">Axis</span></div>
-        <div onclick="bukaModal('Tri', 'Pulsa', 'bg-pink-600', '3')" class="flex flex-col items-center"><div class="icon-brand bg-pink-600">3</div><span class="text-[10px] font-black uppercase">Tri</span></div>
-        <div onclick="bukaModal('Smartfren', 'Pulsa', 'bg-pink-400', 'S')" class="flex flex-col items-center"><div class="icon-brand bg-pink-400">S</div><span class="text-[10px] font-black uppercase">Smart</span></div>
-    </div>
-</div>
-
-<div id="pageProfile" class="sub-page max-w-md mx-auto">
-    <button onclick="closeSubPage('pageProfile')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
-    <div class="flex flex-col items-center mb-8">
-        <div class="relative">
-            <img id="my_photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="p-img-main">
-            <label for="up_foto" class="absolute bottom-1 right-1 bg-emerald-500 p-2 rounded-full text-white cursor-pointer shadow-lg">📷</label>
-            <input type="file" id="up_foto" class="hidden" accept="image/*" onchange="prosesFoto()">
+<div id="pageInvite" class="sub-page max-w-md mx-auto">
+    <button onclick="closeSubPage('pageInvite')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
+    <div class="text-center">
+        <div class="text-6xl mb-4">🎁</div>
+        <h2 class="text-2xl font-black italic uppercase mb-2">Program Referral</h2>
+        <p class="text-[10px] text-slate-400 font-bold uppercase mb-8">Dapatkan Bonus Saldo Melimpah</p>
+        
+        <div class="card-white p-6 mb-8 bg-blue-50 border-blue-100">
+            <h4 class="text-[10px] font-black uppercase text-blue-600 mb-4 tracking-widest italic">Aturan & Syarat</h4>
+            <div class="text-left space-y-3">
+                <div class="flex gap-3 items-start">
+                    <div class="bg-blue-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center shrink-0">1</div>
+                    <p class="text-[11px] font-bold text-slate-600">Undang minimal **3 orang** teman untuk bergabung.</p>
+                </div>
+                <div class="flex gap-3 items-start">
+                    <div class="bg-blue-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center shrink-0">2</div>
+                    <p class="text-[11px] font-bold text-slate-600">Wajib menyimpan saldo minimal **Rp 50.000** selama **7 hari**.</p>
+                </div>
+                <div class="flex gap-3 items-start">
+                    <div class="bg-blue-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center shrink-0">3</div>
+                    <p class="text-[11px] font-bold text-slate-600">Bonus saldo akan cair otomatis setelah syarat terpenuhi.</p>
+                </div>
+            </div>
         </div>
-        <h3 id="my_display_name" class="mt-4 font-black text-xl italic uppercase">USER RYD</h3>
-    </div>
-    <div class="space-y-4">
-        <div><label class="text-[10px] font-black text-slate-400 uppercase italic">Nama Lengkap</label>
-            <input id="up_nama" type="text" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none"></div>
-        <div><label class="text-[10px] font-black text-slate-400 uppercase italic">No WhatsApp</label>
-            <input id="up_wa" type="number" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none"></div>
-        <button onclick="saveDataProfil()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase italic">Simpan Data</button>
-        <button onclick="location.reload()" class="w-full text-red-500 font-bold uppercase text-[10px] pt-10 italic">Keluar Akun</button>
+
+        <div class="space-y-4">
+            <div class="p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl">
+                <p class="text-[8px] font-black text-slate-400 uppercase mb-1">Kode Referral Anda</p>
+                <h3 id="refCode" class="text-2xl font-black text-blue-600 italic">...</h3>
+            </div>
+            <button onclick="salinRef()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase italic">Salin & Undang Teman</button>
+        </div>
     </div>
 </div>
 
@@ -123,17 +128,17 @@
 
     let userAktif = null; let passAktif = null; let saldoAktif = 0; let isHide = false;
 
-    // --- AUTH ---
+    // --- LOGIN & REGISTER ---
     function renderLogin() {
         document.getElementById('app').innerHTML = `
-        <div class="p-10 pt-28 text-center">
-            <div class="w-20 h-20 bg-emerald-500 rounded-3xl mx-auto mb-6 flex items-center justify-center text-4xl font-black italic text-white shadow-xl">R</div>
+        <div class="p-10 pt-24 text-center">
+            <div class="w-20 h-20 bg-emerald-500 rounded-[2rem] mx-auto mb-6 flex items-center justify-center text-4xl font-black italic text-white shadow-xl">R</div>
             <h1 class="text-2xl font-black italic mb-10 text-emerald-600 uppercase tracking-tighter">RYD STORE</h1>
             <div class="space-y-4 max-w-xs mx-auto">
-                <input id="l_u" type="text" placeholder="Username" class="w-full p-4 border-2 rounded-2xl outline-none text-center font-bold bg-slate-50">
-                <input id="l_p" type="password" placeholder="Password" class="w-full p-4 border-2 rounded-2xl outline-none text-center font-bold bg-slate-50">
-                <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase shadow-lg">Login</button>
-                <button onclick="renderRegister()" class="w-full text-slate-400 text-[10px] font-black uppercase pt-6 block italic">Daftar Akun</button>
+                <input id="l_u" type="text" placeholder="Username" class="w-full p-4 border-2 rounded-2xl outline-none text-center font-bold bg-white">
+                <input id="l_p" type="password" placeholder="Password" class="w-full p-4 border-2 rounded-2xl outline-none text-center font-bold bg-white">
+                <button onclick="doLogin()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase italic shadow-lg">Masuk Akun</button>
+                <button onclick="renderRegister()" class="w-full text-slate-400 text-[10px] font-black uppercase pt-6 block italic">Daftar Akun Baru</button>
             </div>
         </div>`;
     }
@@ -142,11 +147,11 @@
         document.getElementById('app').innerHTML = `
         <div class="p-10 pt-20">
             <h2 class="text-2xl font-black italic text-emerald-600 mb-8 uppercase text-center italic">Registrasi</h2>
-            <div class="space-y-4 max-w-xs mx-auto">
-                <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 border-2 rounded-xl font-bold bg-slate-50">
-                <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 border-2 rounded-xl font-bold bg-slate-50">
-                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-xl font-black uppercase shadow-lg">Buat Akun</button>
-                <button onclick="renderLogin()" class="w-full text-slate-400 text-[10px] font-black uppercase mt-6 text-center block">← Kembali</button>
+            <div class="space-y-4 max-w-xs mx-auto text-center">
+                <input id="r_u" type="text" placeholder="Username Baru" class="w-full p-4 border-2 rounded-2xl font-bold bg-white">
+                <input id="r_p" type="password" placeholder="Password Baru" class="w-full p-4 border-2 rounded-2xl font-bold bg-white">
+                <button onclick="doRegister()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase italic shadow-lg">Daftar Sekarang</button>
+                <button onclick="renderLogin()" class="w-full text-slate-400 text-[10px] font-black uppercase mt-6 block">← Kembali</button>
             </div>
         </div>`;
     }
@@ -168,8 +173,8 @@
         db.ref('users/' + u).set({ password: p, saldo: 0, foto: "", nama: "", wa: "" }).then(() => {
             Swal.fire({
                 title: 'WAJIB SCREENSHOT!', icon: 'warning',
-                html: `<div class='bg-yellow-50 p-4 border-2 border-dashed border-yellow-400 rounded-xl'><b>USER:</b> ${u}<br><b>PASS:</b> ${p}</div>`,
-                confirmButtonText: 'OKE, SUDAH SIMPAN'
+                html: `<div class='bg-yellow-50 p-4 border-2 border-dashed border-yellow-400 rounded-xl font-bold'>USER: ${u}<br>PASS: ${p}</div>`,
+                confirmButtonText: 'SUDAH SAYA SIMPAN'
             }).then(() => renderLogin());
         });
     }
@@ -180,11 +185,7 @@
             const data = s.val();
             saldoAktif = data.saldo || 0;
             const myFoto = data.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-            
-            document.getElementById('my_photo').src = myFoto;
-            document.getElementById('my_display_name').innerText = data.nama || userAktif.toUpperCase();
-            document.getElementById('up_nama').value = data.nama || "";
-            document.getElementById('up_wa').value = data.wa || "";
+            document.getElementById('refCode').innerText = userAktif.toUpperCase();
 
             document.getElementById('app').innerHTML = `
                 <div class="p-6">
@@ -193,35 +194,35 @@
                             <img src="${myFoto}" class="p-img-nav">
                             <div>
                                 <h2 class="text-[11px] font-black text-slate-800 uppercase italic leading-none">@${userAktif}</h2>
-                                <p class="text-[8px] font-bold text-emerald-500 uppercase mt-1">Lengkapi Profil ↑</p>
+                                <p class="text-[8px] font-bold text-emerald-500 uppercase mt-1">Ganti Profil ↑</p>
                             </div>
                         </div>
-                        <div class="text-[10px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase italic">V.Supreme</div>
+                        <div class="text-[9px] font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase italic border border-emerald-100">Ryd Store v.Pro</div>
                     </div>
 
-                    <div class="card-white p-4 mb-6 bg-emerald-600 text-white border-none flex justify-between items-center shadow-lg shadow-emerald-100">
-                        <div onclick="toggleSaldo()" class="cursor-pointer max-w-[65%]">
-                            <p class="text-[8px] font-black uppercase opacity-70 tracking-widest mb-0.5">Saldo RYD Store</p>
-                            <div class="flex items-center gap-2">
+                    <div class="card-white p-4 mb-6 bg-emerald-600 text-white border-none flex justify-between items-center shadow-lg shadow-emerald-200">
+                        <div onclick="toggleSaldo()" class="cursor-pointer max-w-[62%]">
+                            <p class="text-[8px] font-black uppercase opacity-70 tracking-tighter mb-0.5">Saldo Tersedia</p>
+                            <div class="flex items-center gap-1.5">
                                 <h2 class="saldo-font truncate">${isHide ? 'Rp ••••••••' : 'Rp ' + saldoAktif.toLocaleString('id-ID')}</h2>
-                                <span class="text-[10px] opacity-60">${isHide ? '👁️' : '🕶️'}</span>
+                                <span class="text-[9px] opacity-50">${isHide ? '👁️' : '🕶️'}</span>
                             </div>
                         </div>
-                        <div class="flex gap-1.5">
-                            <button onclick="topUpSecure()" class="bg-white text-emerald-600 px-3 py-2.5 rounded-xl text-[9px] font-black uppercase">Top Up</button>
-                            <button onclick="fiturTransfer()" class="bg-slate-900 text-white px-3 py-2.5 rounded-xl text-[9px] font-black uppercase">Transfer</button>
+                        <div class="flex gap-1">
+                            <button onclick="topUpSecure()" class="bg-white text-emerald-600 px-3 py-2.5 rounded-xl text-[9px] font-black uppercase italic">Top Up</button>
+                            <button onclick="transferSecure()" class="bg-slate-900 text-white px-3 py-2.5 rounded-xl text-[9px] font-black uppercase italic">Transfer</button>
                         </div>
                     </div>
 
-                    <div onclick="openReferral()" class="bg-gradient-to-r from-blue-700 to-blue-500 p-4 rounded-2xl mb-8 text-white flex items-center justify-between shadow-md active:scale-95 transition-all">
+                    <div onclick="openSubPage('pageInvite')" class="banner-invite p-4 rounded-2xl mb-8 text-white flex items-center justify-between shadow-md active:scale-95 transition-all">
                         <div class="flex items-center gap-4">
                             <div class="text-2xl">🎁</div>
                             <div>
                                 <p class="text-[11px] font-black uppercase leading-tight">Gajian Saldo Gratis!</p>
-                                <p class="text-[8px] opacity-90 font-bold italic uppercase tracking-tighter">Ajak teman pakai kode referralmu</p>
+                                <p class="text-[8px] opacity-90 font-bold italic uppercase">Cek Aturan Undang Teman Baru</p>
                             </div>
                         </div>
-                        <div class="bg-white/20 px-3 py-1.5 rounded-lg text-[9px] font-black uppercase">Undang</div>
+                        <div class="bg-white/20 px-3 py-1.5 rounded-lg text-[9px] font-black italic">BUKA</div>
                     </div>
 
                     <div class="grid grid-cols-4 gap-4 mb-10 text-center">
@@ -243,7 +244,7 @@
                         </div>
                     </div>
 
-                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest border-l-4 border-emerald-500 pl-3">Riwayat Terakhir</h3>
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest border-l-4 border-emerald-500 pl-3">Riwayat Transaksi</h3>
                     <div id="hist_container" class="space-y-2 pb-10"></div>
                 </div>
             `;
@@ -251,36 +252,34 @@
         });
     }
 
-    // --- LOGIKA PRODUK SPESIFIK ---
+    // --- LOGIKA HARGA & PRODUK (MURAH -> 1JT) ---
     function bukaModal(name, tipe, brandColor, initial) {
         document.getElementById('modalTitle').innerText = name;
         document.getElementById('inputTujuan').value = "";
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
         
-        let items = [];
+        let itm = [];
         if(name === 'Royal Dream') {
-            items = [{l:'200M', b:15000}, {l:'500M', b:35000}, {l:'1B', b:65000}, {l:'2B', b:130000}];
+            itm = [{l:'100M', b:8000}, {l:'200M', b:15000}, {l:'500M', b:34000}, {l:'1B', b:65000}, {l:'2B', b:129000}, {l:'5B', b:320000}, {l:'10B', b:640000}];
         } else if(name === 'Mobile Legends') {
-            items = [{l:'86 Diamond', b:19500}, {l:'172 Diamond', b:39000}, {l:'257 Diamond', b:58000}, {l:'706 Diamond', b:155000}];
+            itm = [{l:'11 Diamond', b:3000}, {l:'50 Diamond', b:12000}, {l:'172 Diamond', b:38000}, {l:'257 Diamond', b:58000}, {l:'706 Diamond', b:155000}, {l:'2195 Diamond', b:480000}, {l:'4830 Diamond', b:980000}];
         } else if(name === 'Free Fire') {
-            items = [{l:'140 Diamond', b:18000}, {l:'355 Diamond', b:45000}, {l:'720 Diamond', b:90000}];
-        } else if(tipe === 'Game') {
-            items = [{l:'Starter Pack', b:15000}, {l:'Pro Pack', b:50000}, {l:'Master Pack', b:100000}, {l:'Ultra Pack', b:250000}];
+            itm = [{l:'70 Diamond', b:9000}, {l:'140 Diamond', b:18000}, {l:'355 Diamond', b:45000}, {l:'720 Diamond', b:90000}, {l:'1440 Diamond', b:180000}, {l:'7290 Diamond', b:950000}];
+        } else if(tipe === 'E-Wallet' || tipe === 'Pulsa') {
+            itm = [{l:'5.000', b:5000}, {l:'10.000', b:10000}, {l:'20.000', b:20000}, {l:'50.000', b:50000}, {l:'100.000', b:100000}, {l:'200.000', b:200000}, {l:'500.000', b:500000}, {l:'1.000.000', b:1000000}];
         } else {
-            items = [{l:'5.000', b:5000}, {l:'10.000', b:10000}, {l:'20.000', b:20000}, {l:'50.000', b:50000}, {l:'100.000', b:100000}, {l:'200.000', b:200000}];
+            itm = [{l:'Lite Pack', b:15000}, {l:'Basic Pack', b:45000}, {l:'Pro Pack', b:90000}, {l:'Mega Pack', b:450000}, {l:'Ultra Pack', b:980000}];
         }
 
-        items.forEach(it => {
-            // KEUNTUNGAN OTOMATIS: <100rb (+1500), >=100rb (+2000)
+        itm.forEach(it => {
             let untung = (it.b < 100000) ? 1500 : 2000;
-            let hargaJual = it.b + untung;
-            
+            let total = it.b + untung;
             list.innerHTML += `
-            <div onclick="beli('${name}', '${it.l}', ${hargaJual}, '${tipe}')" class="bg-white p-4 rounded-2xl border border-slate-100 text-center active:scale-95 transition-all">
+            <div onclick="beli('${name}', '${it.l}', ${total}, '${tipe}')" class="bg-white p-4 rounded-2xl border border-slate-100 text-center active:scale-95 transition-all shadow-sm">
                 <div class="icon-brand ${brandColor} mx-auto mb-2 text-sm uppercase">${initial}</div>
-                <p class="text-[11px] font-black text-slate-800">${it.l}</p>
-                <p class="text-[9px] font-bold text-emerald-600 mt-1 italic">Rp ${hargaJual.toLocaleString('id-ID')}</p>
+                <p class="text-[10px] font-black text-slate-800">${it.l}</p>
+                <p class="text-[9px] font-bold text-emerald-600 mt-1 italic">Rp ${total.toLocaleString('id-ID')}</p>
             </div>`;
         });
         
@@ -288,31 +287,29 @@
         setTimeout(() => document.getElementById('modalContent').classList.add('active'), 50);
     }
 
-    // --- KEAMANAN TRANSAKSI (BELI, TRANSFER, TOPUP) ---
+    // --- KEAMANAN TRANS (PASSWORD) ---
     function beli(p, i, h, t) {
         const no = document.getElementById('inputTujuan').value;
         if(!no) return Swal.fire('Error', 'ID/Nomor Kosong!', 'warning');
         if (saldoAktif < h) return Swal.fire('Gagal', 'Saldo Tidak Cukup!', 'error');
 
         Swal.fire({ 
-            title: 'VERIFIKASI', text: `Beli ${p} ${i} - Rp ${h.toLocaleString('id-ID')}?`,
-            input: 'password', inputPlaceholder: 'Masukkan Password Akun', showCancelButton: true, confirmButtonColor: '#10b981'
+            title: 'VERIFIKASI', text: `Beli ${p} ${i}?`,
+            input: 'password', inputPlaceholder: 'Password Akun', showCancelButton: true, confirmButtonColor: '#10b981'
         }).then(res => {
             if(res.value === passAktif) {
                 db.ref('users/' + userAktif + '/saldo').set(saldoAktif - h);
                 saveHistory(p + " " + i, h);
-                const text = `*ORDER RYD STORE*%0AUser: *${userAktif.toUpperCase()}*%0ALayanan: *${t}*%0AItem: *${p} ${i}*%0AHarga: *Rp ${h.toLocaleString('id-ID')}*%0ATujuan: *${no}*`;
-                window.location.href = `https://wa.me/${WA_ADMIN}?text=${text}`;
+                window.location.href = `https://wa.me/${WA_ADMIN}?text=*ORDER*%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${i}*%0AHarga: *Rp ${h.toLocaleString()}*%0ATujuan: *${no}*`;
             } else if(res.isConfirmed) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
         });
     }
 
-    function fiturTransfer() {
+    function transferSecure() {
         Swal.fire({
-            title: 'TRANSFER SALDO',
+            title: 'TRANSFER',
             html: `<input id="tf_u" class="swal2-input" placeholder="User Tujuan"><input id="tf_a" type="number" class="swal2-input" placeholder="Nominal">`,
-            showCancelButton: true, confirmButtonColor: '#10b981',
-            preConfirm: () => {
+            showCancelButton: true, preConfirm: () => {
                 const t = document.getElementById('tf_u').value.toLowerCase().trim();
                 const a = parseInt(document.getElementById('tf_a').value);
                 if (!t || !a || a > saldoAktif) return Swal.showValidationMessage('Cek data/saldo!');
@@ -320,87 +317,107 @@
             }
         }).then(res => {
             if (res.isConfirmed) {
-                const { t, a } = res.value;
-                Swal.fire({ title: 'KEAMANAN', text: 'Masukkan Password Akun', input: 'password', showCancelButton: true }).then(passRes => {
-                    if(passRes.value === passAktif) {
-                        db.ref('users/' + t).once('value', (s) => {
+                Swal.fire({ title: 'KEAMANAN', text: 'Masukkan Password', input: 'password', showCancelButton: true }).then(ps => {
+                    if(ps.value === passAktif) {
+                        db.ref('users/' + res.value.t).once('value', (s) => {
                             if (s.exists()) {
-                                db.ref('users/' + userAktif + '/saldo').set(saldoAktif - a);
-                                db.ref('users/' + t + '/saldo').set(parseInt(s.val().saldo || 0) + a);
-                                saveHistory('Transfer ke @' + t, a);
-                                Swal.fire('Sukses', 'Transfer Berhasil!', 'success');
+                                db.ref('users/' + userAktif + '/saldo').set(saldoAktif - res.value.a);
+                                db.ref('users/' + res.value.t + '/saldo').set(parseInt(s.val().saldo || 0) + res.value.a);
+                                saveHistory('Transfer ke @' + res.value.t, res.value.a);
+                                Swal.fire('Sukses', 'Saldo Terkirim!', 'success');
                             } else { Swal.fire('Gagal', 'User tidak ditemukan!', 'error'); }
                         });
-                    } else if(passRes.isConfirmed) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
+                    } else if(ps.isConfirmed) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
                 });
             }
         });
     }
 
     function topUpSecure() {
-        Swal.fire({ 
-            title: 'TOP UP SALDO', 
-            html: `<input id="tu_a" type="number" class="swal2-input" placeholder="Nominal Top Up">`,
-            showCancelButton: true, confirmButtonColor: '#10b981' 
-        }).then(res => {
-            if (res.isConfirmed) {
-                const a = document.getElementById('tu_a').value;
-                if(a < 10000) return Swal.fire('Error', 'Minimal 10.000', 'warning');
-                Swal.fire({ title: 'VERIFIKASI', text: 'Konfirmasi dengan Password', input: 'password', showCancelButton: true }).then(passRes => {
-                    if(passRes.value === passAktif) {
-                        window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(a).toLocaleString()}*`;
-                    } else if(passRes.isConfirmed) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
+        Swal.fire({ title: 'TOP UP', input: 'number', inputPlaceholder: 'Minimal 10.000', showCancelButton: true }).then(res => {
+            if (res.isConfirmed && res.value >= 10000) {
+                Swal.fire({ title: 'KEAMANAN', text: 'Masukkan Password', input: 'password', showCancelButton: true }).then(ps => {
+                    if(ps.value === passAktif) {
+                        window.location.href = `https://wa.me/${WA_ADMIN}?text=*TOPUP*%0AUser: *${userAktif.toUpperCase()}*%0ANominal: *Rp ${parseInt(res.value).toLocaleString()}*`;
+                    } else if(ps.isConfirmed) { Swal.fire('Gagal', 'Password Salah!', 'error'); }
                 });
             }
         });
     }
 
-    // --- PROFIL & RIWAYAT ---
+    // --- PROFIL & UTILS ---
     function prosesFoto() {
         const file = document.getElementById('up_foto').files[0];
         const r = new FileReader();
-        r.onloadend = () => { db.ref('users/' + userAktif + '/foto').set(r.result); Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Foto Diganti!', showConfirmButton: false, timer: 1500 }); }
+        r.onloadend = () => { db.ref('users/' + userAktif + '/foto').set(r.result); Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Berhasil!', showConfirmButton: false, timer: 1500 }); }
         if(file) r.readAsDataURL(file);
     }
 
     function saveDataProfil() {
         const n = document.getElementById('up_nama').value;
         const w = document.getElementById('up_wa').value;
-        db.ref('users/' + userAktif).update({ nama: n, wa: w }).then(() => { Swal.fire('Sukses', 'Data Tersimpan!', 'success'); closeSubPage('pageProfile'); });
+        db.ref('users/' + userAktif).update({ nama: n, wa: w }).then(() => { Swal.fire('Sukses', 'Profil Disimpan!', 'success'); closeSubPage('pageProfile'); });
     }
 
     function toggleSaldo() { isHide = !isHide; renderDashboard(); }
-    
+    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
+    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
+    function tutupModal() { document.getElementById('modalContent').classList.remove('active'); setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 300); }
+    function salinRef() { navigator.clipboard.writeText(userAktif.toUpperCase()); Swal.fire('Disalin', 'Bagikan kode referralmu!', 'success'); }
+
     function loadHistory() {
         const c = document.getElementById('hist_container');
-        db.ref('history/' + userAktif).limitToLast(6).on('value', (s) => {
-            if(!s.exists()) return c.innerHTML = '<p class="text-[9px] text-center italic py-10 text-slate-300 font-black">TIDAK ADA RIWAYAT</p>';
-            let html = '';
-            s.forEach(item => {
-                const d = item.val();
-                html = `<div class="card-white p-3.5 flex justify-between items-center border-l-4 border-emerald-500 mb-2">
-                    <div><p class="text-[10px] font-black uppercase text-slate-800 italic">${d.item}</p><p class="text-[8px] font-bold text-slate-400 mt-0.5">${d.date}</p></div>
+        db.ref('history/' + userAktif).limitToLast(5).on('value', (s) => {
+            if(!s.exists()) return c.innerHTML = '<p class="text-[9px] text-center italic py-10 text-slate-300 font-black">BELUM ADA TRANSAKSI</p>';
+            let h = '';
+            s.forEach(i => {
+                const d = i.val();
+                h = `<div class="card-white p-3.5 flex justify-between items-center border-l-4 border-emerald-500 mb-2">
+                    <div><p class="text-[10px] font-black uppercase text-slate-800">${d.item}</p><p class="text-[8px] font-bold text-slate-400 mt-0.5">${d.date}</p></div>
                     <p class="text-[10px] font-black text-emerald-600">Rp ${d.price.toLocaleString('id-ID')}</p>
-                </div>` + html;
+                </div>` + h;
             });
-            c.innerHTML = html;
+            c.innerHTML = h;
         });
     }
 
     function saveHistory(item, price) { db.ref('history/' + userAktif).push({ item, price, date: new Date().toLocaleString('id-ID') }); }
 
-    function openReferral() {
-        Swal.fire({ title: 'REFERRAL', html: `<div class='bg-slate-100 p-4 rounded-2xl font-black text-2xl text-blue-600 border-2 border-dashed border-blue-300'>${userAktif.toUpperCase()}</div>`, confirmButtonText: 'SALIN KODE' }).then(() => {
-            navigator.clipboard.writeText(userAktif.toUpperCase());
-            Swal.fire({ toast: true, position: 'top', icon: 'success', title: 'Disalin!', showConfirmButton: false, timer: 1500 });
-        });
-    }
-
-    function openSubPage(id) { document.getElementById(id).classList.add('active'); }
-    function closeSubPage(id) { document.getElementById(id).classList.remove('active'); }
-    function tutupModal() { document.getElementById('modalContent').classList.remove('active'); setTimeout(() => document.getElementById('modalProduk').classList.add('hidden'), 300); }
-
     document.addEventListener('DOMContentLoaded', () => { renderLogin(); });
 </script>
+
+<div id="pageProfile" class="sub-page max-w-md mx-auto">
+    <button onclick="closeSubPage('pageProfile')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
+    <div class="flex flex-col items-center mb-8">
+        <div class="relative">
+            <img id="my_photo" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" class="p-img-big">
+            <label for="up_foto" class="absolute bottom-1 right-1 bg-emerald-500 p-2.5 rounded-full text-white cursor-pointer shadow-lg border-2 border-white">📷</label>
+            <input type="file" id="up_foto" class="hidden" accept="image/*" onchange="prosesFoto()">
+        </div>
+        <h3 id="my_display_name" class="mt-4 font-black text-xl italic uppercase">USER RYD</h3>
+    </div>
+    <div class="space-y-4">
+        <div><label class="text-[10px] font-black text-slate-400 uppercase italic">Nama Lengkap</label>
+            <input id="up_nama" type="text" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none"></div>
+        <div><label class="text-[10px] font-black text-slate-400 uppercase italic">WhatsApp</label>
+            <input id="up_wa" type="number" class="w-full p-4 bg-slate-50 border rounded-2xl font-bold outline-none"></div>
+        <button onclick="saveDataProfil()" class="w-full btn-emerald p-4 rounded-2xl font-black uppercase italic">Simpan Perubahan</button>
+        <button onclick="location.reload()" class="w-full text-red-500 font-bold uppercase text-[10px] pt-10 italic">Keluar Akun</button>
+    </div>
+</div>
+
+<div id="pagePulsa" class="sub-page max-w-md mx-auto">
+    <button onclick="closeSubPage('pagePulsa')" class="w-10 h-10 card-white flex items-center justify-center font-bold mb-6">←</button>
+    <h2 class="text-2xl font-black italic uppercase mb-8 border-l-4 border-red-500 pl-3">Pulsa Seluler</h2>
+    <div class="grid grid-cols-3 gap-5 text-center">
+        <div onclick="bukaModal('Telkomsel', 'Pulsa', 'bg-red-600', 'T')" class="flex flex-col items-center"><div class="icon-brand bg-red-600">T</div><span class="text-[10px] font-black uppercase">Telkomsel</span></div>
+        <div onclick="bukaModal('Indosat', 'Pulsa', 'bg-yellow-400 text-black', 'I')" class="flex flex-col items-center"><div class="icon-brand bg-yellow-400 text-black">I</div><span class="text-[10px] font-black uppercase">Indosat</span></div>
+        <div onclick="bukaModal('XL', 'Pulsa', 'bg-blue-600', 'XL')" class="flex flex-col items-center"><div class="icon-brand bg-blue-600">XL</div><span class="text-[10px] font-black uppercase">XL Axiata</span></div>
+        <div onclick="bukaModal('Axis', 'Pulsa', 'bg-purple-600', 'AX')" class="flex flex-col items-center"><div class="icon-brand bg-purple-600">AX</div><span class="text-[10px] font-black uppercase">Axis</span></div>
+        <div onclick="bukaModal('Tri', 'Pulsa', 'bg-pink-600', '3')" class="flex flex-col items-center"><div class="icon-brand bg-pink-600">3</div><span class="text-[10px] font-black uppercase">Tri</span></div>
+        <div onclick="bukaModal('Smartfren', 'Pulsa', 'bg-pink-400', 'S')" class="flex flex-col items-center"><div class="icon-brand bg-pink-400">S</div><span class="text-[10px] font-black uppercase">Smartfren</span></div>
+    </div>
+</div>
+
 </body>
 </html>
