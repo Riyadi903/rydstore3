@@ -40,7 +40,6 @@
             -webkit-tap-highlight-color: transparent;
         }
         
-        /* Scrollbar Styling */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -56,18 +55,11 @@
             border-radius: 10px;
         }
         
-        /* Utility Classes */
         .glass-effect {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
-        .neumorphism {
-            background: #f0f0f3;
-            box-shadow: 10px 10px 30px rgba(174, 174, 192, 0.2), -10px -10px 30px rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
         }
         
         .gradient-primary {
@@ -76,14 +68,6 @@
         
         .gradient-success {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-        
-        .gradient-warning {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-        }
-        
-        .gradient-danger {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         }
         
         .card-hover {
@@ -123,7 +107,6 @@
             box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
         }
         
-        /* Main App Container */
         #app {
             max-width: 480px;
             margin: 0 auto;
@@ -133,7 +116,6 @@
             box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
         }
         
-        /* Sub Pages */
         .sub-page {
             position: fixed;
             top: 0;
@@ -154,7 +136,6 @@
             display: block;
         }
         
-        /* Modal Styles */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -192,7 +173,6 @@
             }
         }
         
-        /* Loading Animation */
         .loading-spinner {
             width: 40px;
             height: 40px;
@@ -208,74 +188,6 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Badge */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .badge-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-        }
-        
-        .badge-success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-        
-        /* Shimmer Effect for Loading */
-        .shimmer {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        
-        /* Pulse Animation */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            z-index: 100;
-            transition: all 0.3s ease;
-        }
-        
-        .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Category Icons */
         .category-icon {
             width: 60px;
             height: 60px;
@@ -295,7 +207,6 @@
             transform: scale(1.05) rotate(5deg);
         }
         
-        /* Transaction History Items */
         .transaction-item {
             border-left: 4px solid transparent;
             transition: all 0.3s ease;
@@ -306,7 +217,6 @@
             background: rgba(99, 102, 241, 0.05);
         }
         
-        /* Responsive Adjustments */
         @media (max-width: 480px) {
             .sub-page {
                 padding: 16px;
@@ -317,46 +227,178 @@
                 height: 50px;
                 font-size: 20px;
             }
-            
-            .fab {
-                width: 50px;
-                height: 50px;
-                bottom: 20px;
-                right: 20px;
-                font-size: 20px;
-            }
+        }
+        
+        .card-white {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .input-sm {
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        
+        .saldo-amount {
+            font-size: 1.75rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .saldo-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        .promo-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 12px 16px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .promo-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .nav-text {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        
+        .resi-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            color: white;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
         }
         
         @media (max-width: 360px) {
-            .sub-page {
-                padding: 12px;
+            .bank-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
+        
+        .step-1, .step-2 {
+            display: none;
+        }
+        
+        .step-1.active, .step-2.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-<!-- Main App Container -->
 <div id="app" class="max-w-md mx-auto min-h-screen relative pb-32"></div>
 
 <!-- Modal Produk -->
 <div id="modalProduk" class="modal-overlay" onclick="tutupModal()">
     <div class="modal-content p-6" onclick="event.stopPropagation()">
-        <div class="flex justify-between items-center mb-6">
-            <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Pilih Item</h3>
-            <button onclick="tutupModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+        <!-- Step 1: Pilih Item -->
+        <div id="step1Produk" class="step-1 active">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="modalTitle" class="text-lg font-bold text-gray-800">Pilih Item</h3>
+                <button onclick="tutupModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            
+            <div class="mb-5">
+                <label class="block text-sm font-semibold text-gray-600 mb-2">Tujuan / ID Player</label>
+                <input id="inputTujuan" type="text" placeholder="Contoh: 08123456789 atau 12345678" 
+                       class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+            </div>
+            
+            <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pb-4"></div>
+            
+            <div class="mt-6 pt-4 border-t border-gray-100">
+                <p class="text-xs text-gray-500 text-center">Pastikan data tujuan sudah benar sebelum membeli</p>
+            </div>
         </div>
         
-        <div class="mb-5">
-            <label class="block text-sm font-semibold text-gray-600 mb-2">Tujuan / ID Player</label>
-            <input id="inputTujuan" type="text" placeholder="Contoh: 08123456789 atau 12345678" 
-                   class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
-        </div>
-        
-        <div id="listProduk" class="grid grid-cols-2 gap-3 max-h-[50vh] overflow-y-auto pb-4"></div>
-        
-        <div class="mt-6 pt-4 border-t border-gray-100">
-            <p class="text-xs text-gray-500 text-center">Pastikan data tujuan sudah benar sebelum membeli</p>
+        <!-- Step 2: Konfirmasi dengan Password -->
+        <div id="step2Produk" class="step-2">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Konfirmasi Pembelian</h3>
+                <button onclick="kembaliKeStep1()" class="text-gray-400 hover:text-gray-600 text-2xl">←</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                    <h4 class="font-bold text-gray-800 text-sm mb-3">Detail Pembelian:</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Produk:</span>
+                            <span id="confirmProduk" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Tujuan:</span>
+                            <span id="confirmTujuan" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Total Bayar:</span>
+                            <span id="confirmHarga" class="text-sm font-bold text-blue-600">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Saldo Setelah:</span>
+                            <span id="confirmSaldo" class="text-sm font-bold text-red-600">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Password Akun</label>
+                    <input id="confirmPassword" type="password" placeholder="Masukkan password Anda" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <button onclick="kembaliKeStep1()" class="p-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                        Batal
+                    </button>
+                    <button onclick="konfirmasiPembelian()" class="p-3 btn-success rounded-xl font-bold">
+                        Konfirmasi
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -364,31 +406,77 @@
 <!-- Modal Transfer -->
 <div id="modalTransfer" class="modal-overlay" onclick="tutupModalTransfer()">
     <div class="modal-content p-6" onclick="event.stopPropagation()">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-lg font-bold text-gray-800">Transfer Saldo</h3>
-            <button onclick="tutupModalTransfer()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+        <!-- Step 1: Input Data Transfer -->
+        <div id="step1Transfer" class="step-1 active">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Transfer Saldo</h3>
+                <button onclick="tutupModalTransfer()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Username Tujuan</label>
+                    <input id="tfUsername" type="text" placeholder="Masukkan username penerima" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Jumlah Transfer</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">Rp</span>
+                        <input id="tfAmount" type="number" placeholder="Minimal Rp 10.000" 
+                               class="w-full p-3 pl-12 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Saldo Anda: <span id="saldoTransfer" class="font-bold">Rp 0</span></p>
+                </div>
+                
+                <button onclick="lanjutKonfirmasiTransfer()" class="w-full btn-success p-3 rounded-xl font-bold text-base mt-6">
+                    Lanjutkan
+                </button>
+            </div>
         </div>
         
-        <div class="space-y-4">
-            <div>
-                <label class="block text-sm font-semibold text-gray-600 mb-2">Username Tujuan</label>
-                <input id="tfUsername" type="text" placeholder="Masukkan username penerima" 
-                       class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+        <!-- Step 2: Konfirmasi Transfer -->
+        <div id="step2Transfer" class="step-2">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Konfirmasi Transfer</h3>
+                <button onclick="kembaliKeStep1Transfer()" class="text-gray-400 hover:text-gray-600 text-2xl">←</button>
             </div>
             
-            <div>
-                <label class="block text-sm font-semibold text-gray-600 mb-2">Jumlah Transfer</label>
-                <div class="relative">
-                    <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">Rp</span>
-                    <input id="tfAmount" type="number" placeholder="0" 
-                           class="w-full p-4 pl-12 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium text-lg">
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                    <h4 class="font-bold text-gray-800 text-sm mb-3">Detail Transfer:</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Penerima:</span>
+                            <span id="confirmTfPenerima" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Jumlah:</span>
+                            <span id="confirmTfJumlah" class="text-sm font-bold text-blue-600">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Saldo Setelah:</span>
+                            <span id="confirmTfSaldo" class="text-sm font-bold text-red-600">-</span>
+                        </div>
+                    </div>
                 </div>
-                <p class="text-xs text-gray-500 mt-2">Saldo Anda: <span id="saldoTransfer" class="font-bold">Rp 0</span></p>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Password Akun</label>
+                    <input id="confirmTfPassword" type="password" placeholder="Masukkan password Anda" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <button onclick="kembaliKeStep1Transfer()" class="p-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                        Batal
+                    </button>
+                    <button onclick="konfirmasiTransferAkhir()" class="p-3 btn-success rounded-xl font-bold">
+                        Transfer Sekarang
+                    </button>
+                </div>
             </div>
-            
-            <button onclick="prosesTransfer()" class="w-full btn-success p-4 rounded-xl font-bold text-lg mt-6">
-                Transfer Sekarang
-            </button>
         </div>
     </div>
 </div>
@@ -407,23 +495,175 @@
                 <div class="relative">
                     <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">Rp</span>
                     <input id="topupAmount" type="number" placeholder="Minimal Rp 10.000" 
-                           class="w-full p-4 pl-12 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium text-lg">
+                           class="w-full p-3 pl-12 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
                 </div>
                 <p class="text-xs text-gray-500 mt-2">Saldo akan bertambah setelah pembayaran dikonfirmasi</p>
             </div>
             
             <div class="grid grid-cols-3 gap-2 mt-4">
-                <button onclick="setTopUpAmount(10000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">10K</button>
-                <button onclick="setTopUpAmount(50000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">50K</button>
-                <button onclick="setTopUpAmount(100000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">100K</button>
-                <button onclick="setTopUpAmount(200000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">200K</button>
-                <button onclick="setTopUpAmount(500000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">500K</button>
-                <button onclick="setTopUpAmount(1000000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all">1 JT</button>
+                <button onclick="setTopUpAmount(10000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">10K</button>
+                <button onclick="setTopUpAmount(50000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">50K</button>
+                <button onclick="setTopUpAmount(100000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">100K</button>
+                <button onclick="setTopUpAmount(200000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">200K</button>
+                <button onclick="setTopUpAmount(500000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">500K</button>
+                <button onclick="setTopUpAmount(1000000)" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-all text-sm">1 JT</button>
             </div>
             
-            <button onclick="prosesTopUp()" class="w-full btn-primary p-4 rounded-xl font-bold text-lg mt-6">
+            <button onclick="konfirmasiTopUp()" class="w-full btn-primary p-3 rounded-xl font-bold text-base mt-6">
                 Lanjutkan ke WhatsApp
             </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Top Up -->
+<div id="modalKonfirmasiTopUp" class="modal-overlay" onclick="tutupModalKonfirmasiTopUp()">
+    <div class="modal-content p-6" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-lg font-bold text-gray-800">Konfirmasi Top Up</h3>
+            <button onclick="tutupModalKonfirmasiTopUp()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+        </div>
+        
+        <div class="space-y-4">
+            <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                <h4 class="font-bold text-gray-800 text-sm mb-3">Detail Top Up:</h4>
+                <div class="space-y-2">
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">User:</span>
+                        <span id="confirmTopUpUser" class="text-sm font-bold text-gray-800">@username</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Jumlah:</span>
+                        <span id="confirmTopUpAmount" class="text-sm font-bold text-blue-600">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-sm text-gray-600">Waktu:</span>
+                        <span id="confirmTopUpWaktu" class="text-sm font-bold text-gray-800">-</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold text-gray-600 mb-2">Password Akun</label>
+                <input id="confirmTopUpPassword" type="password" placeholder="Masukkan password Anda" 
+                       class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3 mt-6">
+                <button onclick="tutupModalKonfirmasiTopUp()" class="p-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                    Batal
+                </button>
+                <button onclick="prosesTopUpAkhir()" class="p-3 btn-primary rounded-xl font-bold">
+                    Lanjut ke WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Bank Transfer -->
+<div id="modalBank" class="modal-overlay" onclick="tutupModalBank()">
+    <div class="modal-content p-6" onclick="event.stopPropagation()">
+        <!-- Step 1: Input Data Bank -->
+        <div id="step1Bank" class="step-1 active">
+            <div class="flex justify-between items-center mb-6">
+                <h3 id="bankTitle" class="text-lg font-bold text-gray-800">Transfer Bank</h3>
+                <button onclick="tutupModalBank()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">No. Rekening Tujuan</label>
+                    <input id="bankRekening" type="text" placeholder="Contoh: 1234567890" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Nama Penerima</label>
+                    <input id="bankNama" type="text" placeholder="Nama sesuai rekening" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Nominal Transfer</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">Rp</span>
+                        <input id="bankNominal" type="number" placeholder="Minimal Rp 10.000 (Maksimal 10jt)" 
+                               class="w-full p-3 pl-12 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium"
+                               oninput="hitungAdminBank(this.value)">
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Saldo Anda: <span id="saldoBank" class="font-bold">Rp 0</span></p>
+                </div>
+                
+                <div id="adminInfoBank" class="p-4 bg-blue-50 border-2 border-blue-100 rounded-xl">
+                    <p class="text-xs font-bold text-blue-600 uppercase mb-1">Total Bayar</p>
+                    <h2 id="totalBank" class="text-lg font-bold text-gray-800">Rp 0</h2>
+                    <p class="text-xs text-gray-500 mt-1">Termasuk biaya admin</p>
+                </div>
+                
+                <button onclick="lanjutKonfirmasiBank()" class="w-full btn-primary p-3 rounded-xl font-bold text-base mt-4">
+                    Lanjutkan
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Konfirmasi Bank -->
+        <div id="step2Bank" class="step-2">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-bold text-gray-800">Konfirmasi Transfer Bank</h3>
+                <button onclick="kembaliKeStep1Bank()" class="text-gray-400 hover:text-gray-600 text-2xl">←</button>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                    <h4 class="font-bold text-gray-800 text-sm mb-3">Detail Transfer Bank:</h4>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Bank:</span>
+                            <span id="confirmBankNama" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Rekening:</span>
+                            <span id="confirmBankRek" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Nama:</span>
+                            <span id="confirmBankNamaPenerima" class="text-sm font-bold text-gray-800">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Nominal:</span>
+                            <span id="confirmBankNominal" class="text-sm font-bold text-blue-600">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Biaya Admin:</span>
+                            <span id="confirmBankAdmin" class="text-sm font-bold text-orange-600">-</span>
+                        </div>
+                        <div class="flex justify-between border-t pt-2">
+                            <span class="text-sm font-bold text-gray-700">Total Bayar:</span>
+                            <span id="confirmBankTotal" class="text-sm font-bold text-green-600">-</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm text-gray-600">Saldo Setelah:</span>
+                            <span id="confirmBankSaldo" class="text-sm font-bold text-red-600">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600 mb-2">Password Akun</label>
+                    <input id="confirmBankPassword" type="password" placeholder="Masukkan password Anda" 
+                           class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mt-6">
+                    <button onclick="kembaliKeStep1Bank()" class="p-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                        Batal
+                    </button>
+                    <button onclick="konfirmasiBankAkhir()" class="p-3 btn-success rounded-xl font-bold">
+                        Transfer Sekarang
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -476,9 +716,9 @@
     </div>
     
     <div class="mt-8 px-2">
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-4">
-            <h4 class="font-bold text-gray-800 text-sm mb-2">💡 Tips Pembelian</h4>
-            <p class="text-xs text-gray-600">Pastikan nomor tujuan sudah benar sebelum melakukan pembelian. Transaksi yang sudah berhasil tidak dapat dibatalkan.</p>
+        <div class="promo-banner">
+            <h4 class="font-bold text-sm mb-2">💡 Tips Pembelian</h4>
+            <p class="text-xs opacity-90">Pastikan nomor tujuan sudah benar sebelum melakukan pembelian. Transaksi yang sudah berhasil tidak dapat dibatalkan.</p>
         </div>
     </div>
 </div>
@@ -509,7 +749,7 @@
             <div class="category-icon bg-gradient-to-br from-gray-700 to-gray-900">PB</div>
             <span class="text-xs font-bold text-gray-800 text-center">PUBG Mobile</span>
         </div>
-        <div onclick="bukaModal('Royal Dream', 'B', 'bg-gradient-to-br from-purple-600 to-indigo-700', 'RD')" class="card-hover flex flex-col items-center cursor-pointer">
+        <div onclick="bukaModal('Royal Dream', 'CHIP', 'bg-gradient-to-br from-purple-600 to-indigo-700', 'RD')" class="card-hover flex flex-col items-center cursor-pointer">
             <div class="category-icon bg-gradient-to-br from-purple-600 to-indigo-700">RD</div>
             <span class="text-xs font-bold text-gray-800 text-center">Royal Dream</span>
         </div>
@@ -533,12 +773,40 @@
             <div class="category-icon bg-gradient-to-br from-blue-400 to-teal-500">GI</div>
             <span class="text-xs font-bold text-gray-800 text-center">Genshin Impact</span>
         </div>
+        <div onclick="bukaModal('Honkai Star Rail', 'Stellar Jade', 'bg-gradient-to-br from-indigo-500 to-purple-600', 'HSR')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-indigo-500 to-purple-600">HS</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Honkai Star Rail</span>
+        </div>
+        <div onclick="bukaModal('League of Legends', 'RP', 'bg-gradient-to-br from-blue-600 to-blue-800', 'LOL')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-blue-600 to-blue-800">LOL</div>
+            <span class="text-xs font-bold text-gray-800 text-center">League of Legends</span>
+        </div>
+        <div onclick="bukaModal('Wild Rift', 'Wild Cores', 'bg-gradient-to-br from-teal-500 to-green-600', 'WR')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-teal-500 to-green-600">WR</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Wild Rift</span>
+        </div>
+        <div onclick="bukaModal('Point Blank', 'Cash', 'bg-gradient-to-br from-red-600 to-red-800', 'PB')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-red-600 to-red-800">PB</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Point Blank</span>
+        </div>
+        <div onclick="bukaModal('Apex Legends', 'Coins', 'bg-gradient-to-br from-yellow-500 to-orange-600', 'AL')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-yellow-500 to-orange-600">AL</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Apex Legends</span>
+        </div>
+        <div onclick="bukaModal('Ragnarok M', 'BCoin', 'bg-gradient-to-br from-yellow-600 to-amber-700', 'RO')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-yellow-600 to-amber-700">RO</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Ragnarok M</span>
+        </div>
+        <div onclick="bukaModal('Clash of Clans', 'Gems', 'bg-gradient-to-br from-orange-400 to-red-500', 'COC')" class="card-hover flex flex-col items-center cursor-pointer">
+            <div class="category-icon bg-gradient-to-br from-orange-400 to-red-500">COC</div>
+            <span class="text-xs font-bold text-gray-800 text-center">Clash of Clans</span>
+        </div>
     </div>
     
     <div class="mt-8 px-2">
-        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 rounded-2xl p-4">
-            <h4 class="font-bold text-gray-800 text-sm mb-2">🎮 Game Lainnya</h4>
-            <p class="text-xs text-gray-600">Game tidak tersedia? Hubungi admin untuk request game yang ingin Anda top up.</p>
+        <div class="promo-banner" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+            <h4 class="font-bold text-sm mb-2">🎮 Game Lainnya</h4>
+            <p class="text-xs opacity-90">Game tidak tersedia? Hubungi admin untuk request game yang ingin Anda top up.</p>
         </div>
     </div>
 </div>
@@ -561,8 +829,8 @@
             <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span class="text-3xl">🎁</span>
             </div>
-            <h3 class="text-xl font-bold mb-2">Dapatkan Bonus 10%</h3>
-            <p class="text-sm opacity-90">Dari setiap top up teman yang Anda undang</p>
+            <h3 class="text-xl font-bold mb-2">Dapatkan Bonus Rp 3.000</h3>
+            <p class="text-sm opacity-90">Per undangan yang top up minimal Rp 100.000 (maks 5 orang)</p>
         </div>
         
         <div class="space-y-6">
@@ -589,10 +857,10 @@
                 </h4>
                 <p class="text-sm text-gray-600 mb-4">Bagikan kode referral Anda ke teman dan ajak mereka bergabung di RYD STORE.</p>
                 <div class="grid grid-cols-2 gap-3">
-                    <button onclick="shareToWhatsApp()" class="p-3 bg-green-50 text-green-600 rounded-lg font-medium flex items-center justify-center gap-2">
+                    <button onclick="shareToWhatsApp()" class="p-3 bg-green-50 text-green-600 rounded-lg font-medium flex items-center justify-center gap-2 text-sm">
                         <span>📱</span> WhatsApp
                     </button>
-                    <button onclick="shareToTelegram()" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium flex items-center justify-center gap-2">
+                    <button onclick="shareToTelegram()" class="p-3 bg-blue-50 text-blue-600 rounded-lg font-medium flex items-center justify-center gap-2 text-sm">
                         <span>✈️</span> Telegram
                     </button>
                 </div>
@@ -603,10 +871,24 @@
                     <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs">3</span>
                     Dapatkan Komisi
                 </h4>
-                <p class="text-sm text-gray-600">Anda akan mendapatkan komisi 10% dari setiap top up yang dilakukan oleh teman yang Anda undang.</p>
+                <p class="text-sm text-gray-600">Anda akan mendapatkan komisi Rp 3.000 untuk setiap teman yang Anda undang dan melakukan top up minimal Rp 100.000. Maksimal 5 orang (total bonus Rp 15.000).</p>
                 <div class="mt-4 p-3 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl">
-                    <p class="text-xs font-bold text-gray-600">Contoh: Jika teman top up Rp 100.000, Anda dapat Rp 10.000!</p>
+                    <p class="text-xs font-bold text-gray-600">Contoh: Jika 5 teman top up minimal Rp 100.000, Anda dapat Rp 15.000!</p>
                 </div>
+            </div>
+            
+            <div class="card-white p-5">
+                <h4 class="font-bold text-gray-800 text-sm mb-4 flex items-center gap-2">
+                    <span class="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs">!</span>
+                    Syarat dan Ketentuan
+                </h4>
+                <ul class="text-sm text-gray-600 space-y-2">
+                    <li>• Bonus diberikan jika teman yang diundang top up minimal Rp 100.000</li>
+                    <li>• Bonus Rp 3.000 per undangan yang memenuhi syarat</li>
+                    <li>• Maksimal 5 undangan yang mendapatkan bonus (total Rp 15.000)</li>
+                    <li>• Bonus akan diproses dalam 7 hari setelah top up</li>
+                    <li>• Bonus hanya diberikan sekali per undangan</li>
+                </ul>
             </div>
         </div>
     </div>
@@ -646,12 +928,12 @@
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 mb-2">Nama Lengkap</label>
                         <input id="up_nama" type="text" placeholder="Masukkan nama lengkap" 
-                               class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                               class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-gray-500 mb-2">Nomor WhatsApp</label>
                         <input id="up_wa" type="number" placeholder="Contoh: 628123456789" 
-                               class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
+                               class="w-full p-3 input-sm bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium">
                     </div>
                 </div>
             </div>
@@ -674,11 +956,11 @@
                 </div>
             </div>
             
-            <button onclick="saveDataProfil()" class="w-full btn-primary p-4 rounded-xl font-bold text-lg">
+            <button onclick="saveDataProfil()" class="w-full btn-primary p-3 rounded-xl font-bold text-base">
                 Simpan Perubahan
             </button>
             
-            <button onclick="konfirmasiLogout()" class="w-full p-4 text-red-500 font-bold border border-red-200 rounded-xl hover:bg-red-50 transition-all">
+            <button onclick="konfirmasiLogout()" class="w-full p-3 text-red-500 font-bold border border-red-200 rounded-xl hover:bg-red-50 transition-all text-base">
                 Keluar Akun
             </button>
         </div>
@@ -699,13 +981,20 @@
     </div>
     
     <div class="px-2">
+        <div class="promo-banner mb-6" style="background: linear-gradient(135deg, #059669 0%, #047857 100%);">
+            <h4 class="font-bold text-sm mb-1">💡 Biaya Admin Transfer Bank</h4>
+            <p class="text-xs opacity-90">
+                ≤100rb: Rp1.500 | ≤500rb: Rp2.000 | ≤1jt: Rp5.000 | ≤10jt: Rp10.000
+            </p>
+        </div>
+        
         <div class="relative mb-6">
             <input type="text" id="searchBank" onkeyup="filterBank()" placeholder="Cari nama bank..." 
-                   class="w-full p-4 pl-12 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                   class="w-full p-3 pl-12 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
             <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
         </div>
         
-        <div id="listBank" class="grid grid-cols-2 gap-4 pb-20">
+        <div id="listBank" class="bank-grid pb-20">
             <!-- Daftar bank akan dimuat di sini -->
         </div>
     </div>
@@ -758,9 +1047,9 @@
     </div>
     
     <div class="mt-8 px-2">
-        <div class="bg-gradient-to-r from-green-50 to-teal-50 border border-green-100 rounded-2xl p-4">
-            <h4 class="font-bold text-gray-800 text-sm mb-2">📶 Paket Data</h4>
-            <p class="text-xs text-gray-600">Tersedia juga paket internet harian, mingguan, dan bulanan untuk semua operator.</p>
+        <div class="promo-banner" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            <h4 class="font-bold text-sm mb-2">📶 Paket Data</h4>
+            <p class="text-xs opacity-90">Tersedia juga paket internet harian, mingguan, dan bulanan untuk semua operator.</p>
         </div>
     </div>
 </div>
@@ -778,51 +1067,53 @@
         </div>
     </div>
     
-    <div class="px-2">
-        <div class="card-white overflow-hidden mb-6">
-            <div class="gradient-primary p-8 text-center text-white">
-                <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-inner">
-                    <span class="text-3xl">✅</span>
-                </div>
-                <h2 class="text-xl font-bold">Transaksi Berhasil</h2>
-                <p class="text-sm opacity-90 mt-1">Official Digital Receipt</p>
+    <div class="px-4">
+        <div class="resi-card mb-8">
+            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <span class="text-3xl">✅</span>
             </div>
+            <h2 class="text-2xl font-bold text-center mb-2">Transaksi Berhasil</h2>
+            <p class="text-sm text-center opacity-90 mb-4">Official Digital Receipt</p>
+            <p class="text-xs text-center opacity-75">ID: <span id="res_id" class="font-mono font-bold">---</span></p>
+        </div>
 
-            <div class="p-6 space-y-5">
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-sm text-gray-600 font-medium">Pelanggan</span>
-                    <span id="res_user" class="text-sm font-bold text-gray-800">---</span>
-                </div>
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-sm text-gray-600 font-medium">Waktu</span>
-                    <span id="res_jam" class="text-sm font-bold text-gray-800">---</span>
-                </div>
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-sm text-gray-600 font-medium">Layanan</span>
-                    <span id="res_layanan" class="text-sm font-bold text-blue-600">---</span>
-                </div>
-                <div class="flex justify-between items-center py-3 border-b border-gray-100">
-                    <span class="text-sm text-gray-600 font-medium">Total Bayar</span>
-                    <span id="res_total" class="text-lg font-bold text-gray-800">---</span>
-                </div>
-                
-                <div class="pt-4">
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 text-center">
-                        <span class="text-xs font-bold text-gray-400 uppercase block mb-1">Nomor Referensi</span>
-                        <span id="res_id" class="text-sm font-mono font-bold text-gray-600 break-all">---</span>
+        <div class="bg-white rounded-3xl shadow-lg p-6 mb-8">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                    <div>
+                        <p class="text-sm text-gray-500">Pelanggan</p>
+                        <p id="res_user" class="font-bold text-gray-800 text-lg">---</p>
                     </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Waktu</p>
+                        <p id="res_jam" class="font-bold text-gray-800">---</p>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center pb-4 border-b border-gray-100">
+                    <div>
+                        <p class="text-sm text-gray-500">Layanan</p>
+                        <p id="res_layanan" class="font-bold text-blue-600 text-lg">---</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-500">Total Bayar</p>
+                        <p id="res_total" class="text-2xl font-bold text-gray-800">---</p>
+                    </div>
+                </div>
+                <div class="text-center pt-4">
+                    <p class="text-sm text-gray-500 mb-2">Status Transaksi</p>
+                    <span class="inline-block px-4 py-2 bg-green-100 text-green-800 rounded-full font-bold text-sm">SUKSES</span>
                 </div>
             </div>
         </div>
         
         <div class="space-y-4">
-            <button onclick="window.print()" class="w-full btn-primary p-4 rounded-xl font-bold text-lg">
+            <button onclick="window.print()" class="w-full btn-primary p-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-xl transition-all">
                 📥 Download Resi (PDF)
             </button>
-            <button onclick="shareResi()" class="w-full p-4 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+            <button onclick="shareResi()" class="w-full p-4 bg-white border-2 border-gray-300 text-gray-700 rounded-2xl font-bold text-lg hover:bg-gray-50 transition-all">
                 🔗 Bagikan Resi
             </button>
-            <p class="text-center text-xs text-gray-500 font-medium">RYD STORE - Payment System Protected</p>
+            <p class="text-center text-xs text-gray-500 font-medium mt-8">RYD STORE - Payment System Protected</p>
         </div>
     </div>
 </div>
@@ -850,19 +1141,27 @@
         appId: "1:28764528472:web:941e615ef35d62b4724f2d"
     };
     
-    // Inisialisasi Firebase
     if (!firebase.apps.length) {
         firebase.initializeApp(firebaseConfig);
     }
     const db = firebase.database();
 
-    // Variabel global
     let userAktif = null;
     let passAktif = null;
     let saldoAktif = 0;
     let isHide = false;
     let userData = {};
-    let transactionHistory = [];
+    let currentTransaction = {
+        type: null,
+        product: null,
+        target: null,
+        amount: 0,
+        adminFee: 0,
+        total: 0,
+        bankName: null,
+        bankAccount: null,
+        bankRecipient: null
+    };
 
     // ============================================
     // FUNGSI LOGIN & REGISTER
@@ -883,13 +1182,13 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input id="l_u" type="text" placeholder="Masukkan username" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                 </div>
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <input id="l_p" type="password" placeholder="Masukkan password" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                 </div>
                 
                 <div class="flex items-center justify-between">
@@ -902,7 +1201,7 @@
                     </button>
                 </div>
                 
-                <button onclick="doLogin()" class="w-full btn-primary p-4 rounded-xl font-bold text-lg shadow-lg">
+                <button onclick="doLogin()" class="w-full btn-primary p-3 rounded-xl font-bold text-base shadow-lg">
                     Masuk Akun
                 </button>
                 
@@ -915,7 +1214,7 @@
                     </div>
                 </div>
                 
-                <button onclick="renderRegister()" class="w-full p-4 border-2 border-blue-500 text-blue-500 rounded-xl font-bold hover:bg-blue-50 transition-all">
+                <button onclick="renderRegister()" class="w-full p-3 border-2 border-blue-500 text-blue-500 rounded-xl font-bold hover:bg-blue-50 transition-all">
                     Daftar Akun Baru
                 </button>
             </div>
@@ -925,7 +1224,6 @@
             </div>
         </div>`;
         
-        // Cek jika ada data login tersimpan
         const savedUser = localStorage.getItem('ryd_username');
         const savedPass = localStorage.getItem('ryd_password');
         if (savedUser && savedPass && document.getElementById('rememberMe')) {
@@ -951,26 +1249,26 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Username</label>
                     <input id="r_u" type="text" placeholder="Pilih username unik" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                     <p class="text-xs text-gray-500 mt-1">Username tidak bisa diubah setelah pendaftaran</p>
                 </div>
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                     <input id="r_p" type="password" placeholder="Minimal 6 karakter" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                 </div>
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
                     <input id="r_p2" type="password" placeholder="Ulangi password" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                 </div>
                 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Kode Referral (Opsional)</label>
                     <input id="r_ref" type="text" placeholder="Kosongkan jika tidak ada" 
-                           class="w-full p-4 bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
+                           class="w-full p-3 input-sm bg-white rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium shadow-sm">
                     <p class="text-xs text-gray-500 mt-1">Dapatkan bonus jika mendaftar dengan kode referral</p>
                 </div>
                 
@@ -984,7 +1282,7 @@
                     </ul>
                 </div>
                 
-                <button onclick="doRegister()" class="w-full btn-primary p-4 rounded-xl font-bold text-lg mt-6 shadow-lg">
+                <button onclick="doRegister()" class="w-full btn-primary p-3 rounded-xl font-bold text-base mt-6 shadow-lg">
                     Daftar Sekarang
                 </button>
             </div>
@@ -997,11 +1295,15 @@
         const remember = document.getElementById('rememberMe')?.checked;
         
         if (!u || !p) {
-            Swal.fire('Peringatan', 'Username dan password harus diisi!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Username dan password harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
-        // Tampilkan loading
         Swal.fire({
             title: 'Memproses...',
             allowOutsideClick: false,
@@ -1019,7 +1321,6 @@
                 userData = snapshot.val();
                 saldoAktif = userData.saldo || 0;
                 
-                // Simpan ke localStorage jika remember me dicentang
                 if (remember) {
                     localStorage.setItem('ryd_username', u);
                     localStorage.setItem('ryd_password', p);
@@ -1028,7 +1329,6 @@
                     localStorage.removeItem('ryd_password');
                 }
                 
-                // Update last login
                 db.ref('users/' + u).update({
                     lastLogin: new Date().toISOString(),
                     loginCount: (userData.loginCount || 0) + 1
@@ -1045,12 +1345,21 @@
                 });
                 
             } else {
-                Swal.fire('Gagal', 'Username atau password salah!', 'error');
+                Swal.fire({
+                    title: 'Gagal Login!',
+                    text: 'Username atau password salah!',
+                    icon: 'error',
+                    confirmButtonColor: '#6366f1'
+                });
             }
         }).catch((error) => {
             Swal.close();
-            console.error("Login error:", error);
-            Swal.fire('Error', 'Terjadi kesalahan: ' + error.message, 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
         });
     }
 
@@ -1061,22 +1370,42 @@
         const inputRef = document.getElementById('r_ref').value.toUpperCase().trim();
         
         if (!u || !p || !p2) {
-            Swal.fire('Peringatan', 'Data harus diisi lengkap!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Data harus diisi lengkap!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (p.length < 6) {
-            Swal.fire('Error', 'Password minimal 6 karakter!', 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Password minimal 6 karakter!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (p !== p2) {
-            Swal.fire('Error', 'Password tidak cocok!', 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Password tidak cocok!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (!/^[a-z0-9_]+$/.test(u)) {
-            Swal.fire('Error', 'Username hanya boleh huruf kecil, angka, dan underscore!', 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Username hanya boleh huruf kecil, angka, dan underscore!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
@@ -1092,10 +1421,16 @@
         
         db.ref('users/' + u).once('value', (snapshot) => {
             if (snapshot.exists()) {
-                Swal.fire('Gagal', 'Username sudah digunakan!', 'error');
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: 'Username sudah digunakan!',
+                    icon: 'error',
+                    confirmButtonColor: '#6366f1'
+                });
                 return;
             }
             
+            // PERBAIKAN: Tambah field untuk sistem referral baru
             db.ref('users/' + u).set({ 
                 password: p, 
                 saldo: 0, 
@@ -1108,7 +1443,12 @@
                 lastLogin: null,
                 loginCount: 0,
                 totalTransaksi: 0,
-                totalSpent: 0
+                totalSpent: 0,
+                // Sistem referral baru
+                referralCount: 0,
+                referralBonus: 0,
+                referralUsers: {},
+                referralBonusPending: 0
             }).then(() => {
                 Swal.fire({
                     title: 'PENDAFTARAN BERHASIL!', 
@@ -1123,10 +1463,16 @@
                         </div>
                         <p class='text-xs text-gray-600'>Simpan baik-baik data ini untuk login ke akun Anda.</p>
                     </div>`,
-                    confirmButtonText: 'SAYA MENGERTI'
+                    confirmButtonText: 'SAYA MENGERTI',
+                    confirmButtonColor: '#6366f1'
                 }).then(() => renderLogin());
             }).catch((error) => {
-                Swal.fire('Error', 'Gagal mendaftar: ' + error.message, 'error');
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Gagal mendaftar: ' + error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#6366f1'
+                });
             });
         });
     }
@@ -1146,6 +1492,7 @@
             </div>`,
             showCancelButton: true,
             cancelButtonText: 'Batal',
+            cancelButtonColor: '#ef4444',
             showConfirmButton: false
         });
     }
@@ -1155,14 +1502,19 @@
     }
 
     // ============================================
-    // DASHBOARD & FUNGSI UTAMA
+    // DASHBOARD
     // ============================================
     
     function renderDashboard() {
         db.ref('users/' + userAktif).on('value', (snapshot) => {
             const data = snapshot.val();
             if (!data) {
-                Swal.fire('Error', 'Data user tidak ditemukan!', 'error');
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Data user tidak ditemukan!',
+                    icon: 'error',
+                    confirmButtonColor: '#6366f1'
+                });
                 renderLogin();
                 return;
             }
@@ -1171,20 +1523,6 @@
             saldoAktif = data.saldo || 0;
             const myFoto = data.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
             const nama = data.nama || userAktif;
-            const joinDate = data.createdAt ? new Date(data.createdAt).toLocaleDateString('id-ID') : '-';
-            
-            // Update informasi di halaman profil
-            if (document.getElementById('info_username')) {
-                document.getElementById('info_username').textContent = '@' + userAktif;
-                document.getElementById('info_refcode').textContent = data.myReferralCode || '-';
-                document.getElementById('info_transaksi').textContent = data.totalTransaksi || 0;
-                document.getElementById('my_member_since').textContent = 'Member sejak: ' + joinDate;
-            }
-            
-            // Update kode referral di halaman invite
-            if (document.getElementById('refCode')) {
-                document.getElementById('refCode').textContent = data.myReferralCode || '-';
-            }
             
             document.getElementById('app').innerHTML = `
                 <div class="min-h-screen">
@@ -1216,48 +1554,65 @@
                         </div>
                         
                         <!-- Saldo Card -->
-                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-5 mb-6">
-                            <div class="flex justify-between items-center mb-2">
-                                <p class="text-sm opacity-90">Saldo Tersedia</p>
-                                <button onclick="toggleSaldo()" class="text-white/70 hover:text-white">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4 mb-6">
+                            <div class="flex justify-between items-center mb-1">
+                                <p class="text-xs opacity-90 saldo-label">Saldo Tersedia</p>
+                                <button onclick="toggleSaldo()" class="text-white/70 hover:text-white text-sm">
                                     ${isHide ? '👁️' : '🕶️'}
                                 </button>
                             </div>
-                            <div class="flex items-end justify-between">
-                                <h1 class="text-3xl font-bold">
-                                    ${isHide ? '••••••••' : 'Rp ' + saldoAktif.toLocaleString('id-ID')}
-                                </h1>
-                                <span class="badge bg-white/30 text-white font-bold">IDR</span>
+                            <div class="flex items-baseline justify-between">
+                                <div class="flex items-baseline">
+                                    <span class="text-lg font-bold mr-1">Rp</span>
+                                    <h1 class="saldo-amount">
+                                        ${isHide ? '••••••••' : saldoAktif.toLocaleString('id-ID')}
+                                    </h1>
+                                </div>
+                                <span class="text-xs font-bold bg-white/30 text-white px-2 py-1 rounded">IDR</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Banner Promosi -->
+                    <div class="px-6 mb-6 -mt-3">
+                        <div class="promo-banner">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="font-bold text-sm mb-1">🎉 PROMO SPESIAL!</h3>
+                                    <p class="text-xs opacity-90">Cashback 5% untuk top up pertama!</p>
+                                </div>
+                                <span class="text-lg">🔥</span>
                             </div>
                         </div>
                     </div>
                     
                     <!-- Quick Actions -->
-                    <div class="px-6 -mt-8 mb-8">
-                        <div class="grid grid-cols-4 gap-4">
-                            <button onclick="openTopUp()" class="card-hover card-white p-4 flex flex-col items-center">
-                                <div class="w-12 h-12 gradient-primary rounded-xl flex items-center justify-center text-white text-xl mb-2">
+                    <div class="px-6 mb-8">
+                        <h3 class="font-bold text-gray-800 mb-4">Aksi Cepat</h3>
+                        <div class="grid grid-cols-4 gap-3">
+                            <button onclick="openTopUp()" class="card-hover card-white p-3 flex flex-col items-center">
+                                <div class="w-10 h-10 gradient-primary rounded-xl flex items-center justify-center text-white text-lg mb-2">
                                     ⬆️
                                 </div>
                                 <span class="text-xs font-bold text-gray-700">Top Up</span>
                             </button>
                             
-                            <button onclick="openTransfer()" class="card-hover card-white p-4 flex flex-col items-center">
-                                <div class="w-12 h-12 gradient-success rounded-xl flex items-center justify-center text-white text-xl mb-2">
+                            <button onclick="openTransfer()" class="card-hover card-white p-3 flex flex-col items-center">
+                                <div class="w-10 h-10 gradient-success rounded-xl flex items-center justify-center text-white text-lg mb-2">
                                     ➡️
                                 </div>
                                 <span class="text-xs font-bold text-gray-700">Transfer</span>
                             </button>
                             
-                            <button onclick="openSubPage('pageGame')" class="card-hover card-white p-4 flex flex-col items-center">
-                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center text-white text-xl mb-2">
+                            <button onclick="openSubPage('pageGame')" class="card-hover card-white p-3 flex flex-col items-center">
+                                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center text-white text-lg mb-2">
                                     🎮
                                 </div>
                                 <span class="text-xs font-bold text-gray-700">Game</span>
                             </button>
                             
-                            <button onclick="openSubPage('pageEwallet')" class="card-hover card-white p-4 flex flex-col items-center">
-                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-xl mb-2">
+                            <button onclick="openSubPage('pageEwallet')" class="card-hover card-white p-3 flex flex-col items-center">
+                                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white text-lg mb-2">
                                     💰
                                 </div>
                                 <span class="text-xs font-bold text-gray-700">E-Wallet</span>
@@ -1318,26 +1673,26 @@
                     </div>
                     
                     <!-- Bottom Navigation -->
-                    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 p-4 grid grid-cols-5">
+                    <div class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-gray-200 p-3 grid grid-cols-5 z-50">
                         <button onclick="renderDashboard()" class="flex flex-col items-center text-blue-600">
-                            <span class="text-xl">🏠</span>
-                            <span class="text-[10px] font-bold mt-1">Home</span>
+                            <div class="nav-icon">🏠</div>
+                            <span class="nav-text">Home</span>
                         </button>
                         <button onclick="openSubPage('pageGame')" class="flex flex-col items-center text-gray-500 hover:text-blue-600">
-                            <span class="text-xl">🎮</span>
-                            <span class="text-[10px] font-bold mt-1">Game</span>
+                            <div class="nav-icon">🎮</div>
+                            <span class="nav-text">Game</span>
                         </button>
                         <button onclick="openTopUp()" class="flex flex-col items-center text-gray-500 hover:text-blue-600">
-                            <span class="text-xl">💰</span>
-                            <span class="text-[10px] font-bold mt-1">Top Up</span>
+                            <div class="nav-icon">💰</div>
+                            <span class="nav-text">Top Up</span>
                         </button>
                         <button onclick="openSubPage('pagePulsa')" class="flex flex-col items-center text-gray-500 hover:text-blue-600">
-                            <span class="text-xl">📱</span>
-                            <span class="text-[10px] font-bold mt-1">Pulsa</span>
+                            <div class="nav-icon">📱</div>
+                            <span class="nav-text">Pulsa</span>
                         </button>
                         <button onclick="openSubPage('pageProfile')" class="flex flex-col items-center text-gray-500 hover:text-blue-600">
-                            <span class="text-xl">👤</span>
-                            <span class="text-[10px] font-bold mt-1">Profil</span>
+                            <div class="nav-icon">👤</div>
+                            <span class="nav-text">Profil</span>
                         </button>
                     </div>
                     
@@ -1350,11 +1705,20 @@
     }
 
     // ============================================
-    // FUNGSI PRODUK & TRANSAKSI
+    // FUNGSI PRODUK & TRANSAKSI (PERBAIKAN)
     // ============================================
     
     function bukaModal(name, tipe, brandColor, initial) {
-        document.getElementById('modalTitle').innerText = `${name} - ${tipe}`;
+        currentTransaction = {
+            type: 'produk',
+            product: name,
+            target: '',
+            amount: 0,
+            adminFee: 0,
+            total: 0
+        };
+        
+        document.getElementById('modalTitle').textContent = `${name} - ${tipe}`;
         document.getElementById('inputTujuan').value = "";
         const list = document.getElementById('listProduk');
         list.innerHTML = "";
@@ -1362,23 +1726,23 @@
         let itm = [];
         if (name === 'Royal Dream') {
             itm = [
-                {l:'100M', b:8000}, 
-                {l:'200M', b:15000}, 
-                {l:'500M', b:34000}, 
-                {l:'1B', b:65000}, 
-                {l:'2B', b:129000}, 
-                {l:'5B', b:320000}, 
-                {l:'10B', b:640000}
+                {l:'150M CHIP', b:11000}, 
+                {l:'300M CHIP', b:22000}, 
+                {l:'500M CHIP', b:36000}, 
+                {l:'1B CHIP', b:71000}, 
+                {l:'2B CHIP', b:141000}, 
+                {l:'5B CHIP', b:351000}, 
+                {l:'10B CHIP', b:701000}
             ];
         } else if (name === 'Mobile Legends') {
             itm = [
                 {l:'11 Diamond', b:3000}, 
                 {l:'50 Diamond', b:12000}, 
                 {l:'172 Diamond', b:38000}, 
-                {l:'257 Diamond', b:58000}, 
-                {l:'706 Diamond', b:155000}, 
-                {l:'2195 Diamond', b:480000}, 
-                {l:'4830 Diamond', b:980000}
+                {l:'257 Diamond', b:57000}, 
+                {l:'706 Diamond', b:154000}, 
+                {l:'2195 Diamond', b:479000}, 
+                {l:'4830 Diamond', b:979000}
             ];
         } else if (name === 'Free Fire') {
             itm = [
@@ -1388,6 +1752,15 @@
                 {l:'720 Diamond', b:90000}, 
                 {l:'1440 Diamond', b:180000}, 
                 {l:'7290 Diamond', b:950000}
+            ];
+        } else if (name === 'PUBG Mobile') {
+            itm = [
+                {l:'60 UC', b:10000},
+                {l:'325 UC', b:50000},
+                {l:'660 UC', b:100000},
+                {l:'1800 UC', b:250000},
+                {l:'3850 UC', b:500000},
+                {l:'8100 UC', b:1000000}
             ];
         } else if (tipe === 'E-Wallet' || tipe === 'Pulsa') {
             itm = [
@@ -1402,34 +1775,38 @@
             ];
         } else {
             itm = [
-                {l:'Paket Lite', b:15000}, 
-                {l:'Paket Basic', b:45000}, 
-                {l:'Paket Pro', b:90000}, 
-                {l:'Paket Mega', b:450000}, 
-                {l:'Paket Ultra', b:980000}
+                {l:'Paket Basic', b:15000}, 
+                {l:'Paket Standard', b:45000}, 
+                {l:'Paket Premium', b:90000}, 
+                {l:'Paket Max', b:450000}, 
+                {l:'Paket Ultimate', b:980000}
             ];
         }
 
         itm.forEach(it => {
-            let untung = 0;
-            if (it.b <= 50000) {
-                untung = 1500;
-            } else if (it.b <= 499999) {
-                untung = 2000;
-            } else if (it.b <= 1000000) {
-                untung = 5000;
-            } else {
-                untung = 10000;
+            let untung = 1500; // Keuntungan tetap 1500 untuk game
+            
+            // Jika bukan game (e-wallet, pulsa, dll) gunakan aturan lama
+            if (tipe !== 'Diamond' && tipe !== 'CHIP' && tipe !== 'UC' && tipe !== 'Points' && tipe !== 'Crystals' && tipe !== 'Voucher' && tipe !== 'Koin') {
+                if (it.b <= 50000) {
+                    untung = 1500;
+                } else if (it.b <= 499999) {
+                    untung = 2000;
+                } else if (it.b <= 1000000) {
+                    untung = 5000;
+                } else {
+                    untung = 10000;
+                }
             }
 
             let total = it.b + untung;
             list.innerHTML += `
-            <div onclick="beli('${name}', '${it.l}', ${total}, '${tipe}')" 
+            <div onclick="pilihProduk('${name}', '${it.l}', ${total}, ${untung}, '${tipe}')" 
                  class="card-hover card-white p-4 text-center cursor-pointer">
                 <div class="category-icon ${brandColor} mx-auto mb-3 text-sm">${initial}</div>
                 <p class="font-bold text-gray-800 text-sm">${it.l}</p>
                 <p class="text-xs text-gray-500 mt-1">Harga Normal</p>
-                <p class="text-lg font-bold text-blue-600 mt-1">Rp ${total.toLocaleString('id-ID')}</p>
+                <p class="text-base font-bold text-blue-600 mt-1">Rp ${total.toLocaleString('id-ID')}</p>
                 <div class="mt-2 text-[10px] text-green-600 font-medium">
                     ✓ Tersedia
                 </div>
@@ -1437,14 +1814,27 @@
         });
         
         document.getElementById('modalProduk').style.display = 'flex';
+        document.getElementById('step1Produk').classList.add('active');
+        document.getElementById('step2Produk').classList.remove('active');
     }
 
-    function beli(p, i, h, t) {
+    function pilihProduk(p, i, h, untung, t) {
         const no = document.getElementById('inputTujuan').value.trim();
         if (!no) {
-            Swal.fire('Peringatan', 'ID/Nomor tujuan harus diisi!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'ID/Nomor tujuan harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
+        
+        currentTransaction.target = no;
+        currentTransaction.product = `${p} ${i}`;
+        currentTransaction.amount = h - untung;
+        currentTransaction.adminFee = untung;
+        currentTransaction.total = h;
         
         if (saldoAktif < h) {
             Swal.fire({
@@ -1453,7 +1843,9 @@
                 icon: 'error',
                 showCancelButton: true,
                 confirmButtonText: 'Top Up Saldo',
-                cancelButtonText: 'Batal'
+                confirmButtonColor: '#6366f1',
+                cancelButtonText: 'Batal',
+                cancelButtonColor: '#ef4444'
             }).then((result) => {
                 if (result.isConfirmed) {
                     tutupModal();
@@ -1463,193 +1855,283 @@
             return;
         }
 
-        Swal.fire({ 
-            title: 'Konfirmasi Pembelian',
-            html: `
-            <div class="text-left">
-                <div class="bg-gray-50 p-4 rounded-xl mb-4">
-                    <p class="font-bold text-gray-800">Detail Pembelian:</p>
-                    <p class="text-sm mt-2"><strong>Produk:</strong> ${p} ${i}</p>
-                    <p class="text-sm"><strong>Tujuan:</strong> ${no}</p>
-                    <p class="text-sm"><strong>Total:</strong> Rp ${h.toLocaleString()}</p>
-                </div>
-                <p class="text-sm text-gray-600">Masukkan password untuk melanjutkan:</p>
-            </div>`,
-            input: 'password', 
-            inputPlaceholder: 'Password akun Anda',
-            showCancelButton: true, 
-            confirmButtonColor: '#10b981',
-            confirmButtonText: 'Beli Sekarang',
-            preConfirm: (pass) => {
-                if (!pass) {
-                    Swal.showValidationMessage('Password harus diisi');
-                }
-                return pass;
-            }
-        }).then(res => {
-            if (res.value === passAktif) {
-                // Kurangi saldo
-                const newSaldo = saldoAktif - h;
-                db.ref('users/' + userAktif).update({
-                    saldo: newSaldo,
-                    totalTransaksi: (userData.totalTransaksi || 0) + 1,
-                    totalSpent: (userData.totalSpent || 0) + h
-                });
-                
-                // Simpan history
-                saveHistory(`${p} ${i} ke ${no}`, h);
-                
-                // Kirim ke WhatsApp Admin
-                const pesan = `*ORDER BARU*%0A%0AUser: *${userAktif.toUpperCase()}*%0AItem: *${p} ${i}*%0ATujuan: *${no}*%0AHarga: *Rp ${h.toLocaleString()}*%0A%0AStatus: *MENUNGGU PROSES*%0A%0A_Silahkan proses pesanan ini segera._`;
-                window.open(`https://wa.me/${WA_ADMIN}?text=${pesan}`, '_blank');
-                
-                Swal.fire({
-                    title: 'Berhasil!',
-                    html: `
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span class="text-2xl">✅</span>
-                        </div>
-                        <p class="font-bold text-gray-800">Pembelian Berhasil</p>
-                        <p class="text-sm text-gray-600 mt-2">Pesanan sedang diproses oleh admin</p>
-                    </div>`,
-                    icon: 'success',
-                    timer: 3000,
-                    showConfirmButton: false
-                });
-                
-                tutupModal();
-                
-            } else if (res.isConfirmed) { 
-                Swal.fire('Gagal', 'Password salah!', 'error'); 
-            }
+        // Tampilkan step 2 konfirmasi
+        document.getElementById('step1Produk').classList.remove('active');
+        document.getElementById('step2Produk').classList.add('active');
+        
+        // Isi data konfirmasi
+        document.getElementById('confirmProduk').textContent = `${p} ${i}`;
+        document.getElementById('confirmTujuan').textContent = no;
+        document.getElementById('confirmHarga').textContent = `Rp ${h.toLocaleString()}`;
+        document.getElementById('confirmSaldo').textContent = `Rp ${(saldoAktif - h).toLocaleString()}`;
+        document.getElementById('confirmPassword').value = '';
+    }
+
+    function kembaliKeStep1() {
+        document.getElementById('step2Produk').classList.remove('active');
+        document.getElementById('step1Produk').classList.add('active');
+    }
+
+    function konfirmasiPembelian() {
+        const password = document.getElementById('confirmPassword').value;
+        
+        if (!password) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Password harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (password !== passAktif) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Password salah! Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (saldoAktif < currentTransaction.total) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Saldo tidak mencukupi! Silakan top up terlebih dahulu.',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        // Kurangi saldo
+        const newSaldo = saldoAktif - currentTransaction.total;
+        db.ref('users/' + userAktif).update({
+            saldo: newSaldo,
+            totalTransaksi: (userData.totalTransaksi || 0) + 1,
+            totalSpent: (userData.totalSpent || 0) + currentTransaction.total
         });
+        
+        // Simpan history
+        saveHistory(`${currentTransaction.product} ke ${currentTransaction.target}`, currentTransaction.total);
+        
+        // Kirim ke WhatsApp Admin
+        const tgl = new Date().toLocaleString('id-ID', { 
+            dateStyle: 'short', 
+            timeStyle: 'short' 
+        });
+        
+        const pesan = `*ORDER BARU - RYD STORE*%0A%0A📋 *DETAIL TRANSAKSI*%0A├ User: *${userAktif.toUpperCase()}*%0A├ Produk: *${currentTransaction.product}*%0A├ Tujuan: *${currentTransaction.target}*%0A├ Harga Dasar: *Rp ${currentTransaction.amount.toLocaleString()}*%0A├ Keuntungan: *Rp ${currentTransaction.adminFee.toLocaleString()}*%0A├ Total Bayar: *Rp ${currentTransaction.total.toLocaleString()}*%0A├ Saldo Sebelum: *Rp ${saldoAktif.toLocaleString()}*%0A├ Saldo Sesudah: *Rp ${newSaldo.toLocaleString()}*%0A├ Waktu: *${tgl}*%0A└ Status: *MENUNGGU PROSES*%0A%0A_Silahkan proses pesanan ini segera._`;
+        window.open(`https://wa.me/${WA_ADMIN}?text=${pesan}`, '_blank');
+        
+        Swal.fire({
+            title: 'Berhasil!',
+            html: `
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">✅</span>
+                </div>
+                <p class="font-bold text-gray-800">Pembelian Berhasil</p>
+                <p class="text-sm text-gray-600 mt-2">Pesanan sedang diproses oleh admin</p>
+            </div>`,
+            icon: 'success',
+            timer: 3000,
+            showConfirmButton: false
+        });
+        
+        tutupModal();
+        renderDashboard();
+    }
+
+    function tutupModal() { 
+        document.getElementById('modalProduk').style.display = 'none';
     }
 
     // ============================================
-    // FUNGSI TRANSFER SALDO
+    // FUNGSI TRANSFER SALDO (PERBAIKAN NOTIFIKASI)
     // ============================================
     
     function openTransfer() {
         document.getElementById('saldoTransfer').textContent = 'Rp ' + saldoAktif.toLocaleString('id-ID');
         document.getElementById('modalTransfer').style.display = 'flex';
-    }
-
-    function tutupModalTransfer() {
-        document.getElementById('modalTransfer').style.display = 'none';
+        document.getElementById('step1Transfer').classList.add('active');
+        document.getElementById('step2Transfer').classList.remove('active');
         document.getElementById('tfUsername').value = '';
         document.getElementById('tfAmount').value = '';
     }
 
-    function prosesTransfer() {
+    function tutupModalTransfer() {
+        document.getElementById('modalTransfer').style.display = 'none';
+    }
+
+    function lanjutKonfirmasiTransfer() {
         const tujuan = document.getElementById('tfUsername').value.toLowerCase().trim();
         const jumlah = parseInt(document.getElementById('tfAmount').value);
         
         if (!tujuan) {
-            Swal.fire('Peringatan', 'Username tujuan harus diisi!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Username tujuan harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (!jumlah || jumlah < 10000) {
-            Swal.fire('Peringatan', 'Minimal transfer Rp 10.000!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Minimal transfer Rp 10.000!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (tujuan === userAktif) {
-            Swal.fire('Peringatan', 'Tidak bisa transfer ke diri sendiri!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Tidak bisa transfer ke diri sendiri!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (jumlah > saldoAktif) {
-            Swal.fire('Gagal', 'Saldo tidak mencukupi!', 'error');
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Saldo tidak mencukupi! Saldo Anda: Rp ' + saldoAktif.toLocaleString(),
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
-        Swal.fire({
-            title: 'Konfirmasi Transfer',
-            html: `
-            <div class="text-left">
-                <div class="bg-blue-50 p-4 rounded-xl mb-4">
-                    <p class="font-bold text-gray-800">Detail Transfer:</p>
-                    <p class="text-sm mt-2"><strong>Ke:</strong> @${tujuan}</p>
-                    <p class="text-sm"><strong>Jumlah:</strong> Rp ${jumlah.toLocaleString()}</p>
-                </div>
-                <p class="text-sm text-gray-600">Masukkan password untuk melanjutkan:</p>
-            </div>`,
-            input: 'password',
-            inputPlaceholder: 'Password akun Anda',
-            showCancelButton: true,
-            confirmButtonText: 'Transfer Sekarang',
-            preConfirm: (pass) => {
-                if (!pass) {
-                    Swal.showValidationMessage('Password harus diisi');
-                }
-                return pass;
-            }
-        }).then(res => {
-            if (res.value === passAktif) {
-                // Cek apakah user tujuan ada
-                db.ref('users/' + tujuan).once('value', (snapshot) => {
-                    if (!snapshot.exists()) {
-                        Swal.fire('Gagal', 'User tujuan tidak ditemukan!', 'error');
-                        return;
-                    }
-                    
-                    const tujuanData = snapshot.val();
-                    
-                    // Kurangi saldo pengirim
-                    const newSaldoSender = saldoAktif - jumlah;
-                    db.ref('users/' + userAktif).update({
-                        saldo: newSaldoSender
-                    });
-                    
-                    // Tambah saldo penerima
-                    const newSaldoReceiver = (tujuanData.saldo || 0) + jumlah;
-                    db.ref('users/' + tujuan).update({
-                        saldo: newSaldoReceiver
-                    });
-                    
-                    // Simpan history untuk pengirim
-                    saveHistory(`Transfer ke @${tujuan}`, jumlah);
-                    
-                    // Simpan history untuk penerima
-                    const tgl = new Date().toLocaleString('id-ID', { 
-                        dateStyle: 'short', 
-                        timeStyle: 'short' 
-                    }).replace(/\//g, '-');
-                    
-                    db.ref('history/' + tujuan).push({
-                        item: `Transfer dari @${userAktif}`,
-                        price: jumlah,
-                        date: tgl,
-                        type: 'credit'
-                    });
-                    
-                    Swal.fire({
-                        title: 'Transfer Berhasil!',
-                        html: `
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl">✅</span>
-                            </div>
-                            <p class="font-bold text-gray-800">Rp ${jumlah.toLocaleString()}</p>
-                            <p class="text-sm text-gray-600 mt-2">Terkirim ke @${tujuan}</p>
-                        </div>`,
-                        icon: 'success',
-                        timer: 3000,
-                        showConfirmButton: false
-                    });
-                    
-                    tutupModalTransfer();
-                    renderDashboard();
-                    
-                }).catch(error => {
-                    Swal.fire('Error', 'Terjadi kesalahan: ' + error.message, 'error');
+        currentTransaction = {
+            type: 'transfer',
+            target: tujuan,
+            amount: jumlah,
+            adminFee: 0,
+            total: jumlah
+        };
+        
+        // Cek apakah user tujuan ada
+        db.ref('users/' + tujuan).once('value', (snapshot) => {
+            if (!snapshot.exists()) {
+                Swal.fire({
+                    title: 'Gagal!',
+                    text: 'User tujuan tidak ditemukan!',
+                    icon: 'error',
+                    confirmButtonColor: '#6366f1'
                 });
-                
-            } else if (res.isConfirmed) {
-                Swal.fire('Gagal', 'Password salah!', 'error');
+                return;
             }
+            
+            // Tampilkan step 2
+            document.getElementById('step1Transfer').classList.remove('active');
+            document.getElementById('step2Transfer').classList.add('active');
+            
+            document.getElementById('confirmTfPenerima').textContent = '@' + tujuan;
+            document.getElementById('confirmTfJumlah').textContent = 'Rp ' + jumlah.toLocaleString();
+            document.getElementById('confirmTfSaldo').textContent = 'Rp ' + (saldoAktif - jumlah).toLocaleString();
+            document.getElementById('confirmTfPassword').value = '';
+            
+        }).catch(error => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+        });
+    }
+
+    function kembaliKeStep1Transfer() {
+        document.getElementById('step2Transfer').classList.remove('active');
+        document.getElementById('step1Transfer').classList.add('active');
+    }
+
+    function konfirmasiTransferAkhir() {
+        const password = document.getElementById('confirmTfPassword').value;
+        
+        if (!password) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Password harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (password !== passAktif) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Password salah! Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        // Kurangi saldo pengirim
+        const newSaldoSender = saldoAktif - currentTransaction.amount;
+        db.ref('users/' + userAktif).update({
+            saldo: newSaldoSender
+        });
+        
+        // Tambah saldo penerima
+        db.ref('users/' + currentTransaction.target).once('value', (snapshot) => {
+            const tujuanData = snapshot.val();
+            const newSaldoReceiver = (tujuanData.saldo || 0) + currentTransaction.amount;
+            
+            db.ref('users/' + currentTransaction.target).update({
+                saldo: newSaldoReceiver
+            });
+            
+            // Simpan history untuk pengirim
+            saveHistory(`Transfer ke @${currentTransaction.target}`, currentTransaction.amount);
+            
+            // Simpan history untuk penerima
+            const tgl = new Date().toLocaleString('id-ID', { 
+                dateStyle: 'short', 
+                timeStyle: 'short' 
+            }).replace(/\//g, '-');
+            
+            db.ref('history/' + currentTransaction.target).push({
+                item: `Transfer dari @${userAktif}`,
+                price: currentTransaction.amount,
+                date: tgl,
+                type: 'credit'
+            });
+            
+            Swal.fire({
+                title: 'Transfer Berhasil!',
+                html: `
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">✅</span>
+                    </div>
+                    <p class="font-bold text-gray-800">Rp ${currentTransaction.amount.toLocaleString()}</p>
+                    <p class="text-sm text-gray-600 mt-2">Terkirim ke @${currentTransaction.target}</p>
+                </div>`,
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+            });
+            
+            tutupModalTransfer();
+            renderDashboard();
+            
+        }).catch(error => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Terjadi kesalahan: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
         });
     }
 
@@ -1670,34 +2152,84 @@
         document.getElementById('topupAmount').value = amount;
     }
 
-    function prosesTopUp() {
+    function konfirmasiTopUp() {
         const amount = parseInt(document.getElementById('topupAmount').value);
         
         if (!amount || amount < 10000) {
-            Swal.fire('Peringatan', 'Minimal top up Rp 10.000!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Minimal top up Rp 10.000!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
+        currentTransaction = {
+            type: 'topup',
+            amount: amount,
+            total: amount
+        };
+        
+        const tgl = new Date().toLocaleString('id-ID', { 
+            dateStyle: 'short', 
+            timeStyle: 'short' 
+        });
+        
+        document.getElementById('confirmTopUpUser').textContent = '@' + userAktif;
+        document.getElementById('confirmTopUpAmount').textContent = 'Rp ' + amount.toLocaleString();
+        document.getElementById('confirmTopUpWaktu').textContent = tgl;
+        document.getElementById('confirmTopUpPassword').value = '';
+        
+        document.getElementById('modalTopUp').style.display = 'none';
+        document.getElementById('modalKonfirmasiTopUp').style.display = 'flex';
+    }
+
+    function tutupModalKonfirmasiTopUp() {
+        document.getElementById('modalKonfirmasiTopUp').style.display = 'none';
+    }
+
+    function prosesTopUpAkhir() {
+        const password = document.getElementById('confirmTopUpPassword').value;
+        
+        if (!password) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Password harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (password !== passAktif) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Password salah! Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        const pesan = `*TOP UP SALDO - RYD STORE*%0A%0A📋 *DETAIL TOP UP*%0A├ User: *${userAktif.toUpperCase()}*%0A├ Jumlah: *Rp ${currentTransaction.amount.toLocaleString()}*%0A├ Waktu: *${new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })}*%0A└ Status: *MENUNGGU KONFIRMASI*%0A%0A_Silahkan konfirmasi pembayaran untuk menambah saldo._`;
+        window.open(`https://wa.me/${WA_ADMIN}?text=${pesan}`, '_blank');
+        
+        tutupModalKonfirmasiTopUp();
+        
         Swal.fire({
-            title: 'Konfirmasi Top Up',
+            title: 'Berhasil!',
             html: `
-            <div class="text-left">
-                <div class="bg-blue-50 p-4 rounded-xl mb-4">
-                    <p class="font-bold text-gray-800">Detail Top Up:</p>
-                    <p class="text-sm mt-2"><strong>Jumlah:</strong> Rp ${amount.toLocaleString()}</p>
-                    <p class="text-sm"><strong>User:</strong> @${userAktif}</p>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">✅</span>
                 </div>
-                <p class="text-sm text-gray-600">Anda akan diarahkan ke WhatsApp untuk konfirmasi pembayaran.</p>
+                <p class="font-bold text-gray-800">Konfirmasi Dikirim</p>
+                <p class="text-sm text-gray-600 mt-2">Silahkan hubungi admin untuk konfirmasi pembayaran</p>
             </div>`,
-            showCancelButton: true,
-            confirmButtonText: 'Lanjutkan ke WhatsApp',
-            confirmButtonColor: '#25D366'
-        }).then(res => {
-            if (res.isConfirmed) {
-                const pesan = `*TOP UP SALDO*%0A%0AUser: *${userAktif.toUpperCase()}*%0AJumlah: *Rp ${amount.toLocaleString()}*%0A%0A_Silahkan konfirmasi pembayaran untuk menambah saldo._`;
-                window.open(`https://wa.me/${WA_ADMIN}?text=${pesan}`, '_blank');
-                tutupModalTopUp();
-            }
+            icon: 'success',
+            timer: 3000,
+            showConfirmButton: false
         });
     }
 
@@ -1705,49 +2237,51 @@
     // FUNGSI PROFIL & UTILITAS
     // ============================================
     
-    function prosesFoto() {
-        const file = document.getElementById('up_foto').files[0];
-        if (!file) return;
-        
-        // Validasi ukuran file (max 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-            Swal.fire('Error', 'Ukuran file maksimal 2MB!', 'error');
-            return;
-        }
-        
-        // Validasi tipe file
-        if (!file.type.match('image.*')) {
-            Swal.fire('Error', 'File harus berupa gambar!', 'error');
-            return;
-        }
-        
-        const reader = new FileReader();
-        reader.onloadend = () => { 
-            Swal.fire({
-                title: 'Memproses...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
+    function openSubPage(id) {
+        const target = document.getElementById(id);
+        if (target) {
+            target.classList.add('active');
+            document.body.style.overflow = 'hidden';
             
-            db.ref('users/' + userAktif + '/foto').set(reader.result)
-                .then(() => {
-                    Swal.close();
-                    Swal.fire({ 
-                        title: 'Berhasil!',
-                        text: 'Foto profil berhasil diperbarui', 
-                        icon: 'success',
-                        timer: 1500,
-                        showConfirmButton: false
-                    });
-                    renderDashboard();
-                })
-                .catch(error => {
-                    Swal.fire('Error', 'Gagal mengupload foto: ' + error.message, 'error');
+            if (id === 'pageProfile') {
+                loadProfileData();
+            } else if (id === 'pageBank') {
+                renderBankList();
+            } else if (id === 'pageInvite') {
+                document.getElementById('refCode').textContent = userData.myReferralCode || '-';
+            }
+        }
+    }
+
+    function closeSubPage(id) {
+        const target = document.getElementById(id);
+        if (target) {
+            target.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    function loadProfileData() {
+        if (userData) {
+            document.getElementById('my_display_name').textContent = userData.nama || '@' + userAktif;
+            document.getElementById('up_nama').value = userData.nama || '';
+            document.getElementById('up_wa').value = userData.wa || '';
+            document.getElementById('my_photo').src = userData.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            
+            if (userData.createdAt) {
+                const joinDate = new Date(userData.createdAt).toLocaleDateString('id-ID', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
                 });
-        };
-        reader.readAsDataURL(file);
+                document.getElementById('my_member_since').textContent = 'Member sejak: ' + joinDate;
+            }
+            
+            document.getElementById('info_username').textContent = '@' + userAktif;
+            document.getElementById('info_refcode').textContent = userData.myReferralCode || '-';
+            document.getElementById('info_transaksi').textContent = userData.totalTransaksi || 0;
+        }
     }
 
     function saveDataProfil() {
@@ -1755,12 +2289,22 @@
         const w = document.getElementById('up_wa').value.trim();
         
         if (!w && n) {
-            Swal.fire('Peringatan', 'Nomor WhatsApp diperlukan!', 'warning');
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Nomor WhatsApp diperlukan!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
         if (w && !/^[0-9]{10,15}$/.test(w)) {
-            Swal.fire('Error', 'Nomor WhatsApp tidak valid!', 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Nomor WhatsApp tidak valid!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
             return;
         }
         
@@ -1787,7 +2331,12 @@
             closeSubPage('pageProfile');
             renderDashboard();
         }).catch(error => {
-            Swal.fire('Error', 'Gagal menyimpan profil: ' + error.message, 'error');
+            Swal.fire({
+                title: 'Error!',
+                text: 'Gagal menyimpan profil: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
         });
     }
 
@@ -1805,56 +2354,62 @@
         renderDashboard(); 
     }
 
-    function openSubPage(id) {
-        const target = document.getElementById(id);
-        if (target) {
-            target.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            
-            // Load data jika diperlukan
-            if (id === 'pageProfile') {
-                loadProfileData();
-            } else if (id === 'pageBank') {
-                renderBankList();
-            } else if (id === 'pageInvite') {
-                document.getElementById('refCode').textContent = userData.myReferralCode || '-';
-            }
+    function prosesFoto() {
+        const file = document.getElementById('up_foto').files[0];
+        if (!file) return;
+        
+        if (file.size > 2 * 1024 * 1024) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ukuran file maksimal 2MB!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
         }
-    }
-
-    function closeSubPage(id) {
-        const target = document.getElementById(id);
-        if (target) {
-            target.classList.remove('active');
-            document.body.style.overflow = 'auto';
+        
+        if (!file.type.match('image.*')) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'File harus berupa gambar!',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
         }
-    }
-
-    function tutupModal() { 
-        document.getElementById('modalProduk').style.display = 'none';
-    }
-
-    function loadProfileData() {
-        if (userData) {
-            document.getElementById('my_display_name').textContent = userData.nama || '@' + userAktif;
-            document.getElementById('up_nama').value = userData.nama || '';
-            document.getElementById('up_wa').value = userData.wa || '';
-            document.getElementById('my_photo').src = userData.foto || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+        
+        const reader = new FileReader();
+        reader.onloadend = () => { 
+            Swal.fire({
+                title: 'Memproses...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
             
-            if (userData.createdAt) {
-                const joinDate = new Date(userData.createdAt).toLocaleDateString('id-ID', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
+            db.ref('users/' + userAktif + '/foto').set(reader.result)
+                .then(() => {
+                    Swal.close();
+                    Swal.fire({ 
+                        title: 'Berhasil!',
+                        text: 'Foto profil berhasil diperbarui', 
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    renderDashboard();
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Gagal mengupload foto: ' + error.message,
+                        icon: 'error',
+                        confirmButtonColor: '#6366f1'
+                    });
                 });
-                document.getElementById('my_member_since').textContent = 'Member sejak: ' + joinDate;
-            }
-            
-            document.getElementById('info_username').textContent = '@' + userAktif;
-            document.getElementById('info_refcode').textContent = userData.myReferralCode || '-';
-            document.getElementById('info_transaksi').textContent = userData.totalTransaksi || 0;
-        }
+        };
+        reader.readAsDataURL(file);
     }
 
     function salinRef() {
@@ -1897,13 +2452,13 @@
 
     function shareToWhatsApp() {
         const code = document.getElementById('refCode').textContent;
-        const message = `Halo! Saya ingin mengajak kamu bergabung di RYD STORE. Gunakan kode referral saya: *${code}* untuk mendapatkan bonus saldo! 🎁`;
+        const message = `Halo! Ayo bergabung di RYD STORE. Gunakan kode referral saya: *${code}* saat mendaftar. Jika kamu top up minimal Rp 100.000, saya akan dapat bonus Rp 3.000! 🎁`;
         window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     }
 
     function shareToTelegram() {
         const code = document.getElementById('refCode').textContent;
-        const message = `Halo! Saya ingin mengajak kamu bergabung di RYD STORE. Gunakan kode referral saya: ${code} untuk mendapatkan bonus saldo! 🎁`;
+        const message = `Halo! Ayo bergabung di RYD STORE. Gunakan kode referral saya: ${code} saat mendaftar. Jika kamu top up minimal Rp 100.000, saya akan dapat bonus Rp 3.000! 🎁`;
         window.open(`https://t.me/share/url?url=${encodeURIComponent('https://rydstore.com')}&text=${encodeURIComponent(message)}`, '_blank');
     }
 
@@ -1914,17 +2469,15 @@
             icon: 'question',
             showCancelButton: true,
             confirmButtonText: 'Ya, Keluar',
+            confirmButtonColor: '#ef4444',
             cancelButtonText: 'Batal',
-            confirmButtonColor: '#ef4444'
+            cancelButtonColor: '#6366f1'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Clear data
                 userAktif = null;
                 passAktif = null;
                 saldoAktif = 0;
                 userData = {};
-                
-                // Kembali ke halaman login
                 renderLogin();
                 
                 Swal.fire({
@@ -1942,6 +2495,20 @@
     // FUNGSI RIWAYAT TRANSAKSI
     // ============================================
     
+    function saveHistory(item, harga) {
+        const tgl = new Date().toLocaleString('id-ID', { 
+            dateStyle: 'short', 
+            timeStyle: 'short' 
+        }).replace(/\//g, '-');
+        
+        db.ref('history/' + userAktif).push({
+            item: item,
+            price: harga,
+            date: tgl,
+            type: 'debit'
+        });
+    }
+
     function loadRecentHistory() {
         const container = document.getElementById('hist_container');
         const emptyMsg = document.getElementById('emptyHistory');
@@ -1962,7 +2529,6 @@
                     });
                 });
                 
-                // Urutkan dari yang terbaru
                 transactions.reverse();
                 
                 transactions.forEach(trans => {
@@ -2017,10 +2583,8 @@
                     });
                 });
                 
-                // Urutkan dari yang terbaru
                 transactions.reverse();
                 
-                // Tampilkan dalam modal
                 let historyHTML = `
                 <div class="text-center mb-6">
                     <h3 class="text-lg font-bold text-gray-800">Riwayat Transaksi</h3>
@@ -2062,23 +2626,10 @@
                     title: 'Belum Ada Transaksi',
                     text: 'Anda belum melakukan transaksi apapun',
                     icon: 'info',
-                    confirmButtonText: 'Mengerti'
+                    confirmButtonText: 'Mengerti',
+                    confirmButtonColor: '#6366f1'
                 });
             }
-        });
-    }
-
-    function saveHistory(item, harga) {
-        const tgl = new Date().toLocaleString('id-ID', { 
-            dateStyle: 'short', 
-            timeStyle: 'short' 
-        }).replace(/\//g, '-');
-        
-        db.ref('history/' + userAktif).push({
-            item: item,
-            price: harga,
-            date: tgl,
-            type: 'debit'
         });
     }
 
@@ -2087,21 +2638,16 @@
     // ============================================
     
     const daftarBank = [
-        { n: "BCA", c: "bg-gradient-to-br from-blue-800 to-blue-900" }, 
-        { n: "BRI", c: "bg-gradient-to-br from-blue-600 to-blue-700" }, 
+        { n: "BCA", c: "bg-gradient-to-br from-blue-800 to-blue-900" },
+        { n: "BRI", c: "bg-gradient-to-br from-blue-600 to-blue-700" },
         { n: "MANDIRI", c: "bg-gradient-to-br from-yellow-500 to-yellow-600" },
-        { n: "BNI", c: "bg-gradient-to-br from-orange-600 to-orange-700" }, 
-        { n: "BSI", c: "bg-gradient-to-br from-teal-700 to-teal-800" }, 
-        { n: "SEA BANK", c: "bg-gradient-to-br from-orange-500 to-orange-600" },
-        { n: "BANK JAGO", c: "bg-gradient-to-br from-orange-400 to-orange-500" }, 
-        { n: "ALOBANK", c: "bg-gradient-to-br from-pink-500 to-pink-600" }, 
-        { n: "NEOBANK", c: "bg-gradient-to-br from-yellow-400 to-yellow-500" },
-        { n: "BLU", c: "bg-gradient-to-br from-blue-400 to-blue-500" }, 
-        { n: "DANAMON", c: "bg-gradient-to-br from-orange-700 to-orange-800" }, 
+        { n: "BNI", c: "bg-gradient-to-br from-orange-600 to-orange-700" },
+        { n: "BSI", c: "bg-gradient-to-br from-teal-700 to-teal-800" },
         { n: "CIMB NIAGA", c: "bg-gradient-to-br from-red-700 to-red-800" },
-        { n: "PERMATA", c: "bg-gradient-to-br from-green-600 to-green-700" }, 
-        { n: "BTN", c: "bg-gradient-to-br from-blue-900 to-black" }, 
-        { n: "MAYBANK", c: "bg-gradient-to-br from-yellow-600 to-yellow-700" }
+        { n: "DANAMON", c: "bg-gradient-to-br from-orange-700 to-orange-800" },
+        { n: "PANIN BANK", c: "bg-gradient-to-br from-blue-700 to-blue-800" },
+        { n: "OCBC NISP", c: "bg-gradient-to-br from-green-700 to-green-800" },
+        { n: "BANK MEGA", c: "bg-gradient-to-br from-purple-700 to-purple-800" }
     ];
 
     function renderBankList() {
@@ -2111,14 +2657,11 @@
         container.innerHTML = "";
         daftarBank.forEach(b => {
             container.innerHTML += `
-                <div onclick="bukaFormBank('${b.n}', '${b.c}')" class="bank-item card-hover card-white p-4 flex items-center gap-4 cursor-pointer">
-                    <div class="w-12 h-12 ${b.c} rounded-xl flex items-center justify-center text-white font-bold text-xs">
+                <div onclick="bukaFormBank('${b.n}', '${b.c}')" class="bank-item card-hover card-white p-3 flex flex-col items-center cursor-pointer">
+                    <div class="w-12 h-12 ${b.c} rounded-xl flex items-center justify-center text-white font-bold text-xs mb-2">
                         ${b.n.substring(0,3)}
                     </div>
-                    <div>
-                        <span class="font-bold text-gray-800 block">${b.n}</span>
-                        <span class="text-xs text-gray-500">Transfer Bank</span>
-                    </div>
+                    <span class="text-xs font-bold text-gray-800 text-center">${b.n}</span>
                 </div>`;
         });
     }
@@ -2133,175 +2676,209 @@
     }
 
     function bukaFormBank(namaBank, warna) {
-        Swal.fire({
-            title: `<div class="flex items-center gap-3">
-                        <div class="w-10 h-10 ${warna} rounded-lg flex items-center justify-center text-white font-bold">
-                            ${namaBank.substring(0,3)}
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-800">Transfer ${namaBank}</h4>
-                            <p class="text-xs text-gray-500">Isi data transfer dengan benar</p>
-                        </div>
-                    </div>`,
-            html: `
-                <div class="space-y-4 mt-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">No. Rekening Tujuan</label>
-                        <input id="rek_no" type="text" 
-                            class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium" 
-                            placeholder="Contoh: 1234567890">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama Penerima</label>
-                        <input id="rek_nama" type="text" 
-                            class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium" 
-                            placeholder="Nama sesuai rekening">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nominal Transfer</label>
-                        <input id="rek_nom" type="number" 
-                            class="w-full p-4 bg-gray-50 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all font-medium" 
-                            placeholder="Minimal Rp 50.000" 
-                            oninput="hitungAdmin(this.value)">
-                    </div>
-                    
-                    <div id="admin_info" class="p-4 bg-blue-50 border-2 border-blue-100 rounded-xl">
-                        <p class="text-xs font-bold text-blue-600 uppercase mb-1">Total Bayar</p>
-                        <h2 id="total_bayar" class="text-xl font-bold text-gray-800">Rp 0</h2>
-                        <p class="text-xs text-gray-500 mt-1">Termasuk biaya admin</p>
-                    </div>
-                </div>
-            `,
-            showCancelButton: true,
-            cancelButtonText: 'Batal',
-            confirmButtonText: 'Lanjutkan',
-            width: '90%',
-            padding: '1.5rem',
-            customClass: {
-                confirmButton: '!btn-primary !rounded-xl !font-bold !px-6 !py-3',
-                cancelButton: '!bg-gray-100 !text-gray-700 !rounded-xl !font-bold !px-6 !py-3',
-                popup: '!rounded-3xl'
-            },
-            didOpen: () => {
-                Swal.getConfirmButton().disabled = true;
-            },
-            preConfirm: () => {
-                const rek = document.getElementById('rek_no').value;
-                const nama = document.getElementById('rek_nama').value;
-                const nominal = parseInt(document.getElementById('rek_nom').value);
-                
-                if (!rek || !nama || !nominal) {
-                    Swal.showValidationMessage('Semua data harus diisi!');
-                    return false;
-                }
-                
-                if (nominal < 50000) {
-                    Swal.showValidationMessage('Minimal Rp 50.000!');
-                    return false;
-                }
-                
-                return { rek, nama, nominal };
-            }
-        }).then(res => {
-            if (res.isConfirmed) {
-                mintaPasswordBank(namaBank, res.value.rek, res.value.nama, res.value.nominal);
-            }
-        });
+        currentTransaction.bankName = namaBank;
+        document.getElementById('bankTitle').textContent = `Transfer ${namaBank}`;
+        document.getElementById('modalBank').style.display = 'flex';
+        document.getElementById('step1Bank').classList.add('active');
+        document.getElementById('step2Bank').classList.remove('active');
+        
+        document.getElementById('bankRekening').value = '';
+        document.getElementById('bankNama').value = '';
+        document.getElementById('bankNominal').value = '';
+        document.getElementById('saldoBank').textContent = 'Rp ' + saldoAktif.toLocaleString();
+        document.getElementById('totalBank').textContent = 'Rp 0';
     }
 
-    function hitungAdmin(val) {
+    function hitungAdminBank(val) {
         const n = parseInt(val) || 0;
-        const totalText = document.getElementById('total_bayar');
-        const btnLanjut = Swal.getConfirmButton();
-
-        if (n < 50000) {
-            totalText.innerText = "Minimal Rp 50.000";
-            totalText.className = "text-xl font-bold text-red-600";
-            if (btnLanjut) btnLanjut.disabled = true;
+        const totalText = document.getElementById('totalBank');
+        
+        if (n < 10000) {
+            totalText.innerText = "Minimal Rp 10.000";
+            totalText.className = "text-lg font-bold text-red-600";
             return;
         }
 
-        let untung = (n <= 50000) ? 1500 : (n <= 499999) ? 2000 : (n <= 1000000) ? 5000 : 10000;
+        if (n > 10000000) {
+            totalText.innerText = "Maksimal Rp 10.000.000";
+            totalText.className = "text-lg font-bold text-red-600";
+            return;
+        }
+
+        // Aturan keuntungan BANK
+        let untung = 0;
+        if (n <= 100000) {
+            untung = 1500; // ≤100rb: Rp1.500
+        } else if (n <= 500000) {
+            untung = 2000; // ≤500rb: Rp2.000
+        } else if (n <= 1000000) {
+            untung = 5000; // ≤1jt: Rp5.000
+        } else if (n <= 10000000) {
+            untung = 10000; // ≤10jt: Rp10.000
+        }
+        
         const total = n + untung;
 
         if (total > saldoAktif) {
             totalText.innerText = "Saldo Tidak Cukup!";
-            totalText.className = "text-xl font-bold text-red-600";
-            if (btnLanjut) btnLanjut.disabled = true;
+            totalText.className = "text-lg font-bold text-red-600";
         } else {
             totalText.innerText = "Rp " + total.toLocaleString('id-ID');
-            totalText.className = "text-xl font-bold text-gray-800";
-            if (btnLanjut) btnLanjut.disabled = false;
+            totalText.className = "text-lg font-bold text-gray-800";
         }
     }
 
-    function mintaPasswordBank(bank, rek, nama, nom) {
-        let untung = (nom <= 50000) ? 1500 : (nom <= 499999) ? 2000 : (nom <= 1000000) ? 5000 : 10000;
-        let total = nom + untung;
+    function lanjutKonfirmasiBank() {
+        const rek = document.getElementById('bankRekening').value.trim();
+        const nama = document.getElementById('bankNama').value.trim();
+        const nominal = parseInt(document.getElementById('bankNominal').value);
+        
+        if (!rek || !nama || !nominal) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Semua data harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (nominal < 10000) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Minimal Rp 10.000!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (nominal > 10000000) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Maksimal Rp 10.000.000!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        // Hitung ulang admin fee
+        let untung = 0;
+        if (nominal <= 100000) {
+            untung = 1500;
+        } else if (nominal <= 500000) {
+            untung = 2000;
+        } else if (nominal <= 1000000) {
+            untung = 5000;
+        } else if (nominal <= 10000000) {
+            untung = 10000;
+        }
+        
+        const total = nominal + untung;
+        
+        if (total > saldoAktif) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Saldo tidak mencukupi! Saldo Anda: Rp ' + saldoAktif.toLocaleString(),
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        currentTransaction.bankAccount = rek;
+        currentTransaction.bankRecipient = nama;
+        currentTransaction.amount = nominal;
+        currentTransaction.adminFee = untung;
+        currentTransaction.total = total;
+        
+        // Tampilkan step 2
+        document.getElementById('step1Bank').classList.remove('active');
+        document.getElementById('step2Bank').classList.add('active');
+        
+        document.getElementById('confirmBankNama').textContent = currentTransaction.bankName;
+        document.getElementById('confirmBankRek').textContent = rek;
+        document.getElementById('confirmBankNamaPenerima').textContent = nama;
+        document.getElementById('confirmBankNominal').textContent = 'Rp ' + nominal.toLocaleString();
+        document.getElementById('confirmBankAdmin').textContent = 'Rp ' + untung.toLocaleString();
+        document.getElementById('confirmBankTotal').textContent = 'Rp ' + total.toLocaleString();
+        document.getElementById('confirmBankSaldo').textContent = 'Rp ' + (saldoAktif - total).toLocaleString();
+        document.getElementById('confirmBankPassword').value = '';
+    }
 
-        Swal.fire({
-            title: 'Konfirmasi Transfer',
-            html: `
-            <div class="text-left">
-                <div class="bg-blue-50 p-4 rounded-xl mb-4">
-                    <p class="font-bold text-gray-800">Detail Transfer Bank:</p>
-                    <p class="text-sm mt-2"><strong>Bank:</strong> ${bank}</p>
-                    <p class="text-sm"><strong>Rekening:</strong> ${rek}</p>
-                    <p class="text-sm"><strong>Nama:</strong> ${nama}</p>
-                    <p class="text-sm"><strong>Nominal:</strong> Rp ${nom.toLocaleString()}</p>
-                    <p class="text-sm font-bold text-blue-600"><strong>Total Bayar:</strong> Rp ${total.toLocaleString()}</p>
-                </div>
-                <p class="text-sm text-gray-600">Masukkan password untuk melanjutkan:</p>
-            </div>`,
-            input: 'password',
-            inputPlaceholder: 'Password akun Anda',
-            showCancelButton: true,
-            confirmButtonColor: '#10b981',
-            confirmButtonText: 'Konfirmasi Transfer',
-            preConfirm: (pass) => {
-                if (!pass) {
-                    Swal.showValidationMessage('Password harus diisi');
-                }
-                return pass;
-            }
-        }).then(result => {
-            if (result.isConfirmed && result.value === passAktif) {
-                // Kurangi saldo
-                const newSaldo = saldoAktif - total;
-                db.ref('users/' + userAktif).update({
-                    saldo: newSaldo,
-                    totalTransaksi: (userData.totalTransaksi || 0) + 1,
-                    totalSpent: (userData.totalSpent || 0) + total
-                })
-                .then(() => {
-                    saveHistory(`TF Bank ${bank} ke ${nama}`, total);
-                    
-                    const pesanWA = `*TRANSFER BANK*%0A%0AUser: *${userAktif.toUpperCase()}*%0ABank: *${bank}*%0ARekening: *${rek}*%0ANama: *${nama}*%0ANominal: *Rp ${nom.toLocaleString()}*%0ATotal Bayar: *Rp ${total.toLocaleString()}*%0A%0AStatus: *PENDING (SALDO TERPOTONG)*%0A%0A_Silahkan proses transfer ini segera._`;
-                    
-                    window.open(`https://wa.me/${WA_ADMIN}?text=${pesanWA}`, '_blank');
-                    
-                    Swal.fire({
-                        title: 'Berhasil!',
-                        html: `
-                        <div class="text-center">
-                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <span class="text-2xl">✅</span>
-                            </div>
-                            <p class="font-bold text-gray-800">Transfer Diproses</p>
-                            <p class="text-sm text-gray-600 mt-2">Admin akan memproses transfer Anda</p>
-                        </div>`,
-                        icon: 'success',
-                        timer: 3000,
-                        showConfirmButton: false
-                    });
-                    
-                })
-                .catch((error) => {
-                    Swal.fire('Error', 'Gagal mengurangi saldo: ' + error.message, 'error');
-                });
-            }
+    function kembaliKeStep1Bank() {
+        document.getElementById('step2Bank').classList.remove('active');
+        document.getElementById('step1Bank').classList.add('active');
+    }
+
+    function tutupModalBank() {
+        document.getElementById('modalBank').style.display = 'none';
+    }
+
+    function konfirmasiBankAkhir() {
+        const password = document.getElementById('confirmBankPassword').value;
+        
+        if (!password) {
+            Swal.fire({
+                title: 'Peringatan!',
+                text: 'Password harus diisi!',
+                icon: 'warning',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        if (password !== passAktif) {
+            Swal.fire({
+                title: 'Gagal!',
+                text: 'Password salah! Silakan coba lagi.',
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
+            return;
+        }
+        
+        // Kurangi saldo
+        const newSaldo = saldoAktif - currentTransaction.total;
+        db.ref('users/' + userAktif).update({
+            saldo: newSaldo,
+            totalTransaksi: (userData.totalTransaksi || 0) + 1,
+            totalSpent: (userData.totalSpent || 0) + currentTransaction.total
+        })
+        .then(() => {
+            saveHistory(`TF Bank ${currentTransaction.bankName} ke ${currentTransaction.bankRecipient}`, currentTransaction.total);
+            
+            const pesanWA = `*TRANSFER BANK - RYD STORE*%0A%0A📋 *DETAIL TRANSFER*%0A├ User: *${userAktif.toUpperCase()}*%0A├ Bank: *${currentTransaction.bankName}*%0A├ Rekening: *${currentTransaction.bankAccount}*%0A├ Nama: *${currentTransaction.bankRecipient}*%0A├ Nominal: *Rp ${currentTransaction.amount.toLocaleString()}*%0A├ Biaya Admin: *Rp ${currentTransaction.adminFee.toLocaleString()}*%0A├ Total Bayar: *Rp ${currentTransaction.total.toLocaleString()}*%0A├ Saldo Sebelum: *Rp ${saldoAktif.toLocaleString()}*%0A├ Saldo Sesudah: *Rp ${newSaldo.toLocaleString()}*%0A├ Waktu: *${new Date().toLocaleString('id-ID', { dateStyle: 'short', timeStyle: 'short' })}*%0A└ Status: *PENDING (SALDO TERPOTONG)*%0A%0A_Silahkan proses transfer ini segera._`;
+            
+            window.open(`https://wa.me/${WA_ADMIN}?text=${pesanWA}`, '_blank');
+            
+            Swal.fire({
+                title: 'Berhasil!',
+                html: `
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">✅</span>
+                    </div>
+                    <p class="font-bold text-gray-800">Transfer Diproses</p>
+                    <p class="text-sm text-gray-600 mt-2">Admin akan memproses transfer Anda</p>
+                </div>`,
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false
+            });
+            
+            tutupModalBank();
+            renderDashboard();
+            
+        })
+        .catch((error) => {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Gagal mengurangi saldo: ' + error.message,
+                icon: 'error',
+                confirmButtonColor: '#6366f1'
+            });
         });
     }
 
@@ -2320,7 +2897,12 @@
 
     function shareResi() {
         const resi = document.getElementById('res_id').textContent;
-        const pesan = `Resi Transaksi RYD STORE%0A%0AID Resi: *${resi}*%0APelanggan: *${userAktif.toUpperCase()}*%0aLayanan: *${document.getElementById('res_layanan').textContent}*%0aTotal: *${document.getElementById('res_total').textContent}*%0aWaktu: *${document.getElementById('res_jam').textContent}*`;
+        const pelanggan = document.getElementById('res_user').textContent;
+        const layanan = document.getElementById('res_layanan').textContent;
+        const total = document.getElementById('res_total').textContent;
+        const waktu = document.getElementById('res_jam').textContent;
+        
+        const pesan = `Resi Transaksi RYD STORE%0A%0AID Resi: *${resi}*%0APelanggan: *${pelanggan}*%0aLayanan: *${layanan}*%0aTotal: *${total}*%0aWaktu: *${waktu}*`;
         
         Swal.fire({
             title: 'Bagikan Resi',
@@ -2328,14 +2910,23 @@
             showCancelButton: true,
             showDenyButton: true,
             confirmButtonText: 'WhatsApp',
+            confirmButtonColor: '#25D366',
             denyButtonText: 'Salin Teks',
-            cancelButtonText: 'Batal'
+            denyButtonColor: '#6366f1',
+            cancelButtonText: 'Batal',
+            cancelButtonColor: '#ef4444'
         }).then((result) => {
             if (result.isConfirmed) {
                 window.open(`https://wa.me/?text=${encodeURIComponent(pesan)}`, '_blank');
             } else if (result.isDenied) {
                 navigator.clipboard.writeText(pesan.replace(/%0a/gi, '\n').replace(/%0A/gi, '\n'));
-                Swal.fire('Berhasil!', 'Resi berhasil disalin', 'success');
+                Swal.fire({
+                    title: 'Berhasil!',
+                    text: 'Resi berhasil disalin',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
         });
     }
@@ -2345,12 +2936,10 @@
     // ============================================
     
     document.addEventListener('DOMContentLoaded', () => {
-        // Cek jika ada user yang tersimpan di localStorage
         const savedUser = localStorage.getItem('ryd_username');
         const savedPass = localStorage.getItem('ryd_password');
         
         if (savedUser && savedPass) {
-            // Auto login dengan data yang tersimpan
             document.getElementById('app').innerHTML = `
             <div class="min-h-screen flex items-center justify-center">
                 <div class="text-center">
@@ -2359,7 +2948,6 @@
                 </div>
             </div>`;
             
-            // Coba login otomatis
             setTimeout(() => {
                 db.ref('users/' + savedUser).once('value', (snapshot) => {
                     if (snapshot.exists() && snapshot.val().password === savedPass) {
@@ -2379,12 +2967,13 @@
             renderLogin();
         }
         
-        // Tambahkan event listener untuk menutup modal dengan ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 tutupModal();
                 tutupModalTransfer();
                 tutupModalTopUp();
+                tutupModalKonfirmasiTopUp();
+                tutupModalBank();
             }
         });
     });
